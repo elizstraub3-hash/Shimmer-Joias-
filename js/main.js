@@ -115,6 +115,21 @@ formSenha.addEventListener('submit', (e) => {
   }
 });
 
+// ===== BOTÃO SACOLA → WHATSAPP =====
+const WA_NUMBER = '554199441433';
+document.querySelectorAll('.btn-sacola').forEach(btn => {
+  btn.addEventListener('click', () => {
+    const card = btn.closest('.produto-card');
+    const code = card.dataset.code || '';
+    const name = card.dataset.name || '';
+    const preco = card.dataset.preco || '';
+    const msg = encodeURIComponent(
+      `Olá! Tenho interesse no produto:\n\n🏷️ *${name}*\nCódigo: ${code}\nPreço: ${preco}\n\nGostaria de mais informações!`
+    );
+    window.open(`https://wa.me/${WA_NUMBER}?text=${msg}`, '_blank');
+  });
+});
+
 // ===== SMOOTH ANCHOR SCROLL =====
 document.querySelectorAll('a[href^="#"]').forEach(a => {
   a.addEventListener('click', (e) => {

@@ -561,6 +561,7 @@ ul { list-style: none; }
   margin-bottom: 4px;
 }
 .produto-material { font-size: 11px; color: var(--gray); margin-bottom: 8px; }
+.produto-code { font-size: 10px; color: #bbb; letter-spacing: 0.05em; margin-top: 4px; }
 .produto-preco {
   font-size: 16px;
   font-weight: 600;
