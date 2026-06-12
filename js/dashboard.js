@@ -184,13 +184,13 @@ if (dateEl) {
 const mockData = {
   instagram: {
     username: '@shimmer_joias',
-    totalFollowers: 12847,
-    newToday: 23,
-    newMonth: 387,
-    newYear: 2140,
-    posts: 248,
-    following: 312,
-    engagement: '4.2%',
+    totalFollowers: 3800,
+    newToday: 0,
+    newMonth: 0,
+    newYear: 0,
+    posts: 0,
+    following: 0,
+    engagement: '—',
   },
   facebook: {
     pageName: 'Shimmer Joias',
