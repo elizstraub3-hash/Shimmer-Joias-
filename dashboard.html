@@ -207,29 +207,20 @@
         </div>
       </div>
 
-      <div class="card">
-        <div class="card-header">
-          <h3>Direct Messages (DMs)</h3>
-          <div class="filter-tabs">
-            <button class="filter-tab active" data-filter="all">Todas</button>
-            <button class="filter-tab" data-filter="unread">Não lidas</button>
-            <button class="filter-tab" data-filter="unanswered">Sem resposta</button>
-          </div>
+      <div class="card inbox-redirect-card">
+        <div class="inbox-redirect-icon" style="background:linear-gradient(135deg,#f09433,#e6683c,#dc2743,#cc2366,#bc1888)">
+          <svg viewBox="0 0 24 24" width="36" height="36" fill="none" stroke="white" stroke-width="1.8"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg>
         </div>
-        <div class="conv-layout">
-          <div class="conv-list" id="ig-conv-list"></div>
-          <div class="conv-detail" id="ig-conv-detail">
-            <div class="conv-placeholder">
-              <svg viewBox="0 0 24 24" width="48" height="48" fill="none" stroke="rgba(0,0,0,0.2)" stroke-width="1.5"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg>
-              <p>Selecione uma conversa</p>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div class="api-notice">
-        <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
-        Para ver DMs reais, conecte sua conta em <b>Configurações → Integrações</b> usando o Instagram Graph API (requer conta Business/Creator verificada).
+        <h3>Direct Messages do Instagram</h3>
+        <p>Visualize e responda todas as suas DMs diretamente pela Caixa de Entrada unificada do Meta Business Suite — em tempo real, no mesmo lugar que o Facebook Messenger.</p>
+        <a href="https://business.facebook.com/latest/inbox/all" target="_blank" class="btn-inbox-open">
+          <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg>
+          Abrir Caixa de Entrada do Instagram
+        </a>
+        <a href="https://www.instagram.com/direct/inbox/" target="_blank" class="btn-inbox-open btn-inbox-secondary">
+          <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 8h1a4 4 0 010 8h-1M2 8h16v9a4 4 0 01-4 4H6a4 4 0 01-4-4V8zM6 1v3M10 1v3M14 1v3"/></svg>
+          Abrir DMs no Instagram
+        </a>
       </div>
     </section>
 
@@ -327,28 +318,20 @@
         </div>
       </div>
 
-      <div class="card">
-        <div class="card-header">
-          <h3>Mensagens da Página (Messenger)</h3>
-          <div class="filter-tabs">
-            <button class="filter-tab active" data-filter="all">Todas</button>
-            <button class="filter-tab" data-filter="unread">Não lidas</button>
-          </div>
+      <div class="card inbox-redirect-card">
+        <div class="inbox-redirect-icon" style="background:#1877F2">
+          <svg viewBox="0 0 24 24" width="36" height="36" fill="none" stroke="white" stroke-width="1.8"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg>
         </div>
-        <div class="conv-layout">
-          <div class="conv-list" id="fb-conv-list"></div>
-          <div class="conv-detail" id="fb-conv-detail">
-            <div class="conv-placeholder">
-              <svg viewBox="0 0 24 24" width="48" height="48" fill="none" stroke="rgba(0,0,0,0.2)" stroke-width="1.5"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg>
-              <p>Selecione uma conversa</p>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div class="api-notice">
-        <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
-        Para ver mensagens reais do Messenger, conecte sua Página em <b>Configurações → Integrações</b> com o <b>Meta Graph API</b>.
+        <h3>Mensagens do Facebook (Messenger)</h3>
+        <p>Visualize e responda todas as mensagens da sua Página do Facebook pela Caixa de Entrada unificada do Meta Business Suite — junto com as DMs do Instagram.</p>
+        <a href="https://business.facebook.com/latest/inbox/all" target="_blank" class="btn-inbox-open" style="background:#1877F2">
+          <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg>
+          Abrir Caixa de Entrada do Facebook
+        </a>
+        <a href="https://www.messenger.com" target="_blank" class="btn-inbox-open btn-inbox-secondary">
+          <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M8 12l2.5 2.5L16 9"/></svg>
+          Abrir Messenger
+        </a>
       </div>
     </section>
 

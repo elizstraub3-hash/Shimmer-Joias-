@@ -748,6 +748,42 @@ input, textarea, select { font-family: 'Montserrat', sans-serif; }
 }
 .integ-info input:focus { border-color: var(--gold); }
 
+/* ===== INBOX REDIRECT CARD ===== */
+.inbox-redirect-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  padding: 40px 32px;
+  gap: 16px;
+}
+.inbox-redirect-icon {
+  width: 72px; height: 72px;
+  border-radius: 20px;
+  display: flex; align-items: center; justify-content: center;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.15);
+}
+.inbox-redirect-card h3 { font-size: 18px; font-weight: 700; }
+.inbox-redirect-card p { color: #666; font-size: 14px; max-width: 420px; line-height: 1.6; }
+.btn-inbox-open {
+  display: inline-flex; align-items: center; gap: 8px;
+  padding: 12px 24px;
+  background: linear-gradient(135deg,#f09433,#dc2743,#bc1888);
+  color: #fff; border-radius: 10px;
+  font-size: 14px; font-weight: 600;
+  text-decoration: none;
+  transition: opacity 0.2s, transform 0.2s;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.15);
+}
+.btn-inbox-open:hover { opacity: 0.9; transform: translateY(-1px); }
+.btn-inbox-secondary {
+  background: transparent;
+  border: 1.5px solid #ddd;
+  color: #555;
+  box-shadow: none;
+}
+.btn-inbox-secondary:hover { border-color: var(--gold); color: var(--gold); opacity: 1; }
+
 .integ-status {
   display: inline-block;
   font-size: 11px;
