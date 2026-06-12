@@ -60,14 +60,42 @@ async function loadRealInstagramData() {
     return null;
   }
 
+  // Busca insights de crescimento de seguidores
+  let newToday = 0, newMonth = 0, newYear = 0;
+  const igId = igProfile.id;
+  if (igId) {
+    const now = Math.floor(Date.now() / 1000);
+    const since30 = now - 86400 * 30;
+    const since365 = now - 86400 * 365;
+
+    const insightsMonth = await apiFetch(
+      `/${igId}/insights?metric=follower_count&period=day&since=${since30}&until=${now}`,
+      token
+    );
+    if (insightsMonth && !insightsMonth.__error && insightsMonth.data && insightsMonth.data[0]) {
+      const vals = insightsMonth.data[0].values || [];
+      newToday = vals[vals.length - 1]?.value || 0;
+      newMonth = vals.reduce((s, v) => s + (v.value || 0), 0);
+    }
+
+    const insightsYear = await apiFetch(
+      `/${igId}/insights?metric=follower_count&period=day&since=${since365}&until=${now}`,
+      token
+    );
+    if (insightsYear && !insightsYear.__error && insightsYear.data && insightsYear.data[0]) {
+      const vals = insightsYear.data[0].values || [];
+      newYear = vals.reduce((s, v) => s + (v.value || 0), 0);
+    }
+  }
+
   return {
     username: '@' + (igProfile.username || 'shimmer_joias'),
     totalFollowers: igProfile.followers_count || 3770,
     posts: igProfile.media_count || 0,
     following: igProfile.follows_count || 0,
-    newToday: 0,
-    newMonth: 0,
-    newYear: 0,
+    newToday,
+    newMonth,
+    newYear,
     engagement: '—',
     real: true,
   };
