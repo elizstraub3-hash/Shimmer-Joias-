@@ -60,7 +60,7 @@ async function loadRealInstagramData() {
   }
 
   return {
-    username: '@' + (profile.username || 'shimmerjoias'),
+    username: '@' + (profile.username || 'shimmer_joias'),
     totalFollowers: profile.followers_count || 0,
     posts: profile.media_count || 0,
     following: profile.follows_count || 0,
@@ -128,7 +128,7 @@ if (dateEl) {
 // ===== MOCK DATA — substitua por chamadas reais às APIs =====
 const mockData = {
   instagram: {
-    username: '@shimmerjoias',
+    username: '@shimmer_joias',
     totalFollowers: 12847,
     newToday: 23,
     newMonth: 387,
