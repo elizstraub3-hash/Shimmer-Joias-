@@ -48,21 +48,13 @@ input, textarea, select { font-family: 'Montserrat', sans-serif; }
 }
 .sidebar-logo {
   display: flex;
-  flex-direction: column;
+  align-items: center;
 }
-.logo-s {
-  font-family: 'Cormorant Garamond', serif;
-  font-size: 16px;
-  font-weight: 300;
-  letter-spacing: 0.25em;
-  color: #fff;
-}
-.logo-j {
-  font-size: 8px;
-  letter-spacing: 0.5em;
-  text-transform: uppercase;
-  color: var(--gold);
-  font-weight: 600;
+.sidebar-logo-img {
+  height: 36px;
+  width: auto;
+  display: block;
+  filter: brightness(0) invert(1);
 }
 .sidebar-toggle {
   background: none;
