@@ -30,8 +30,19 @@ async function loadRealInstagramData() {
 
   // Token Instagram Business (IGAAV...) — chama /me diretamente
   if (token.startsWith('IGAAV') || token.startsWith('IGQ') || token.startsWith('EAA')) {
-    const me = await apiFetch('/me?fields=username,followers_count,media_count,follows_count,biography', token);
+    const me = await apiFetch('/me?fields=id,username,followers_count,media_count,follows_count,biography', token);
     if (me && !me.__error && me.followers_count !== undefined) {
+      // Se media_count não veio, busca via /me/media
+      if (!me.media_count) {
+        const mediaResp = await apiFetch('/me/media?fields=id&limit=100', token);
+        if (mediaResp && !mediaResp.__error && mediaResp.data) {
+          me.media_count = mediaResp.data.length;
+          // Verifica se há mais páginas
+          if (mediaResp.paging && mediaResp.paging.next) {
+            me.media_count = me.media_count + '+';
+          }
+        }
+      }
       igProfile = me;
     }
   }
@@ -91,7 +102,7 @@ async function loadRealInstagramData() {
   return {
     username: '@' + (igProfile.username || 'shimmer_joias'),
     totalFollowers: igProfile.followers_count || 3770,
-    posts: igProfile.media_count || 0,
+    posts: igProfile.media_count ?? 0,
     following: igProfile.follows_count || 0,
     newToday,
     newMonth,
