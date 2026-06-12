@@ -35,14 +35,27 @@ async function loadRealInstagramData() {
     }
   }
 
-  // Tenta via Page Token (instagram_business_account direto em /me)
+  // Tenta via Page Token (/me direto)
   if (!igId) {
     const me = await apiFetch('/me?fields=instagram_business_account', token);
     if (me && !me.__error && me.instagram_business_account) {
       igId = me.instagram_business_account.id;
     }
   }
-  if (!igId) return null;
+
+  // Tenta diretamente pelo Page ID conhecido
+  const PAGE_ID = '232048553323097';
+  if (!igId) {
+    const pageData = await apiFetch(`/${PAGE_ID}?fields=instagram_business_account`, token);
+    if (pageData && !pageData.__error && pageData.instagram_business_account) {
+      igId = pageData.instagram_business_account.id;
+    }
+  }
+
+  if (!igId) {
+    showInstagramNotLinkedBanner();
+    return null;
+  }
 
   // Busca dados do perfil Instagram
   const profile = await apiFetch(
@@ -128,6 +141,15 @@ async function loadRealData() {
       showTokenExpiredBanner('Token expirado ou sem permissão.');
     }
   }
+}
+
+function showInstagramNotLinkedBanner() {
+  if (document.getElementById('ig-not-linked-banner')) return;
+  const banner = document.createElement('div');
+  banner.id = 'ig-not-linked-banner';
+  banner.style.cssText = 'position:fixed;top:0;left:0;right:0;background:#e67e22;color:#fff;padding:14px 20px;text-align:center;z-index:9999;font-size:13px;font-weight:600;';
+  banner.innerHTML = `📷 Instagram não vinculado como conta Business à Página do Facebook. <span style="font-weight:400">Acesse: Configurações da Página → Instagram → Conectar conta</span> <button onclick="document.getElementById('ig-not-linked-banner').remove()" style="background:none;border:none;color:#fff;font-size:18px;cursor:pointer;margin-left:12px;">✕</button>`;
+  document.body.prepend(banner);
 }
 
 function showTokenExpiredBanner(msg) {
