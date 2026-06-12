@@ -968,8 +968,10 @@ ul { list-style: none; }
 
 /* ===== CONTATO ===== */
 .contato { padding: 100px 0; background: var(--cream); }
-.contato-simples .contato-info-center { text-align: center; max-width: 600px; margin: 0 auto; }
-.contato-simples .contato-canais { justify-content: center; }
+.contato-simples { display: flex; justify-content: center; align-items: center; }
+.contato-simples .contato-info-center { text-align: center; max-width: 560px; width: 100%; margin: 0 auto; }
+.contato-simples .contato-canais { justify-content: center; align-items: center; }
+.contato-simples .canal { justify-content: center; max-width: 380px; margin: 0 auto; width: 100%; }
 .contato-inner {
   display: grid;
   grid-template-columns: 1fr 1fr;
