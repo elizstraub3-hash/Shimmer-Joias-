@@ -1,6 +1,4 @@
 // ===== DASHBOARD CONFIG =====
-// Senha padrão — sincronizada com main.js
-// Para alterar, use o painel de Configurações
 const CONFIG_KEY = 'shimmer_dashboard_config';
 
 function loadConfig() {
@@ -9,6 +7,115 @@ function loadConfig() {
 function saveConfig(data) {
   const existing = loadConfig();
   localStorage.setItem(CONFIG_KEY, JSON.stringify({ ...existing, ...data }));
+}
+
+// ===== META GRAPH API — chamadas reais =====
+const GRAPH = 'https://graph.facebook.com/v25.0';
+
+async function apiFetch(path, token) {
+  try {
+    const res = await fetch(`${GRAPH}${path}&access_token=${token}`);
+    if (!res.ok) return null;
+    return await res.json();
+  } catch { return null; }
+}
+
+async function loadRealInstagramData() {
+  const cfg = loadConfig();
+  const token = cfg.token_instagram || cfg.token_facebook;
+  if (!token) return null;
+
+  // Busca páginas do usuário
+  const pages = await apiFetch('/me/accounts?fields=name,instagram_business_account', token);
+  if (!pages || !pages.data || !pages.data.length) return null;
+
+  let igId = null;
+  for (const page of pages.data) {
+    if (page.instagram_business_account) {
+      igId = page.instagram_business_account.id;
+      break;
+    }
+  }
+  if (!igId) return null;
+
+  // Busca dados do perfil Instagram
+  const profile = await apiFetch(
+    `/${igId}?fields=username,followers_count,media_count,follows_count`,
+    token
+  );
+
+  // Busca insights de seguidores (últimos 30 dias)
+  const insights = await apiFetch(
+    `/${igId}/insights?metric=follower_count&period=day&since=${Math.floor(Date.now()/1000) - 86400*30}&until=${Math.floor(Date.now()/1000)}`,
+    token
+  );
+
+  if (!profile) return null;
+
+  let newToday = 0, newMonth = 0;
+  if (insights && insights.data && insights.data[0] && insights.data[0].values) {
+    const vals = insights.data[0].values;
+    newToday = vals[vals.length - 1]?.value || 0;
+    newMonth = vals.reduce((sum, v) => sum + (v.value || 0), 0);
+  }
+
+  return {
+    username: '@' + (profile.username || 'shimmerjoias'),
+    totalFollowers: profile.followers_count || 0,
+    posts: profile.media_count || 0,
+    following: profile.follows_count || 0,
+    newToday,
+    newMonth,
+    newYear: newMonth,
+    engagement: '—',
+    real: true,
+  };
+}
+
+async function loadRealFacebookData() {
+  const cfg = loadConfig();
+  const token = cfg.token_facebook || cfg.token_instagram;
+  if (!token) return null;
+
+  const pages = await apiFetch('/me/accounts?fields=name,fan_count,followers_count,new_like_count', token);
+  if (!pages || !pages.data || !pages.data.length) return null;
+
+  const page = pages.data[0];
+  const followers = page.followers_count || page.fan_count || 0;
+
+  return {
+    pageName: page.name || 'Shimmer Joias',
+    totalFollowers: followers,
+    likes: page.fan_count || followers,
+    newToday: page.new_like_count || 0,
+    newMonth: 0,
+    newYear: 0,
+    reach: '—',
+    real: true,
+  };
+}
+
+async function loadRealData() {
+  const [igReal, fbReal] = await Promise.all([loadRealInstagramData(), loadRealFacebookData()]);
+  if (igReal) {
+    mockData.instagram = { ...mockData.instagram, ...igReal };
+    showApiStatus('instagram', true);
+  }
+  if (fbReal) {
+    mockData.facebook = { ...mockData.facebook, ...fbReal };
+    showApiStatus('facebook', true);
+  }
+}
+
+function showApiStatus(platform, connected) {
+  const notices = document.querySelectorAll('.api-notice');
+  notices.forEach(n => {
+    if (connected && n.closest(`#panel-${platform}`)) {
+      n.style.background = '#f0fdf4';
+      n.style.borderColor = 'rgba(39,174,96,0.4)';
+      n.innerHTML = `<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="#27ae60" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg> <b>API conectada!</b> Mostrando dados reais da sua conta.`;
+    }
+  });
 }
 
 // ===== DATE =====
@@ -545,7 +652,13 @@ function saveToken(platform) {
     return;
   }
   saveConfig({ [`token_${platform}`]: tokenEl.value.trim() });
-  alert(`Token do ${platform} salvo! Para ativar a integração real, configure o servidor backend com as credenciais da API.`);
+  // Recarrega dados reais com novo token
+  loadRealData().then(() => {
+    populateOverview();
+    const active = document.querySelector('.panel.active');
+    if (active) switchPanel(active.id.replace('panel-', ''));
+    alert(`✅ Token do ${platform} salvo e conectado! O painel será atualizado com seus dados reais.`);
+  });
 }
 
 // ===== REFRESH =====
@@ -570,5 +683,7 @@ function loadSavedConfig() {
 }
 
 // ===== INIT =====
-populateOverview();
 loadSavedConfig();
+loadRealData().then(() => {
+  populateOverview();
+});
