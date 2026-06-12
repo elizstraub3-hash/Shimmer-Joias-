@@ -561,7 +561,40 @@ ul { list-style: none; }
   margin-bottom: 4px;
 }
 .produto-material { font-size: 11px; color: var(--gray); margin-bottom: 8px; }
-.produto-code { font-size: 10px; color: #bbb; letter-spacing: 0.05em; margin-top: 4px; }
+.produto-code-img {
+  position: absolute; top: 10px; left: 12px; z-index: 2;
+  font-size: 10px; color: rgba(0,0,0,0.35); letter-spacing: 0.06em;
+  font-family: 'Montserrat', sans-serif; font-weight: 500;
+  background: rgba(255,255,255,0.7); padding: 2px 6px; border-radius: 4px;
+}
+
+/* ===== CHECKOUT MODAL ===== */
+.checkout-box { max-width: 440px; width: 100%; }
+.checkout-label { font-size: 11px; letter-spacing: 0.1em; color: var(--gold); font-weight: 600; text-transform: uppercase; margin-bottom: 4px; }
+.checkout-box h3 { font-family: 'Cormorant Garamond', serif; font-size: 22px; margin-bottom: 4px; }
+.checkout-preco { font-size: 18px; font-weight: 600; color: var(--dark); margin-bottom: 2px; }
+.checkout-code { font-size: 11px; color: #bbb; margin-bottom: 20px; }
+.checkout-pergunta { font-size: 13px; font-weight: 600; margin-bottom: 12px; color: #444; }
+.checkout-opcoes { display: flex; flex-direction: column; gap: 10px; }
+.checkout-opcao {
+  display: flex; align-items: center; gap: 14px;
+  padding: 14px 16px; border: 1.5px solid #e0e0e0; border-radius: 12px;
+  background: #fff; cursor: pointer; text-align: left; transition: all 0.2s;
+}
+.checkout-opcao:hover, .checkout-opcao.selected { border-color: var(--gold); background: #fdf8ee; }
+.checkout-opcao-icon { font-size: 24px; }
+.checkout-opcao div { display: flex; flex-direction: column; }
+.checkout-opcao strong { font-size: 14px; font-weight: 600; }
+.checkout-opcao span { font-size: 12px; color: #888; margin-top: 2px; }
+.checkout-info-entrega { display: flex; flex-direction: column; gap: 16px; }
+.checkout-msg { background: #faf8f3; border: 1px solid #e8dcc8; border-radius: 12px; padding: 16px; font-size: 13px; line-height: 1.6; }
+.checkout-msg-icon { font-size: 28px; margin-bottom: 8px; }
+.checkout-msg strong { display: block; margin-bottom: 8px; font-size: 14px; }
+.checkout-msg ul { padding-left: 4px; list-style: none; display: flex; flex-direction: column; gap: 4px; margin: 8px 0; }
+.checkout-wa-btn { display: flex; align-items: center; justify-content: center; gap: 10px; background: #25D366 !important; border-color: #25D366 !important; font-size: 14px; }
+.checkout-wa-btn:hover { background: #1da851 !important; }
+.checkout-voltar { background: none; border: none; color: #888; font-size: 13px; cursor: pointer; text-align: left; padding: 0; }
+.checkout-voltar:hover { color: var(--gold); }
 .produto-preco {
   font-size: 16px;
   font-weight: 600;
@@ -928,6 +961,8 @@ ul { list-style: none; }
 
 /* ===== CONTATO ===== */
 .contato { padding: 100px 0; background: var(--cream); }
+.contato-simples .contato-info-center { text-align: center; max-width: 600px; margin: 0 auto; }
+.contato-simples .contato-canais { justify-content: center; }
 .contato-inner {
   display: grid;
   grid-template-columns: 1fr 1fr;

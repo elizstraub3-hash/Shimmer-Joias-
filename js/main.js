@@ -115,20 +115,66 @@ formSenha.addEventListener('submit', (e) => {
   }
 });
 
-// ===== BOTÃO SACOLA → WHATSAPP =====
+// ===== MODAL CHECKOUT =====
 const WA_NUMBER = '554199441433';
+let _checkoutProduto = {};
+
+const modalCheckout = document.getElementById('modal-checkout');
+document.getElementById('checkout-close').addEventListener('click', () => { modalCheckout.style.display = 'none'; });
+modalCheckout.addEventListener('click', (e) => { if (e.target === modalCheckout) modalCheckout.style.display = 'none'; });
+
 document.querySelectorAll('.btn-sacola').forEach(btn => {
   btn.addEventListener('click', () => {
     const card = btn.closest('.produto-card');
-    const code = card.dataset.code || '';
-    const name = card.dataset.name || '';
-    const preco = card.dataset.preco || '';
-    const msg = encodeURIComponent(
-      `Olá! Tenho interesse no produto:\n\n🏷️ *${name}*\nCódigo: ${code}\nPreço: ${preco}\n\nGostaria de mais informações!`
-    );
-    window.open(`https://wa.me/${WA_NUMBER}?text=${msg}`, '_blank');
+    _checkoutProduto = {
+      code: card.dataset.code || '',
+      name: card.dataset.name || '',
+      preco: card.dataset.preco || '',
+    };
+    document.getElementById('checkout-nome-produto').textContent = _checkoutProduto.name;
+    document.getElementById('checkout-preco-produto').textContent = _checkoutProduto.preco;
+    document.getElementById('checkout-code-produto').textContent = _checkoutProduto.code;
+    document.getElementById('checkout-step1').style.display = 'flex';
+    document.getElementById('checkout-info').style.display = 'none';
+    document.querySelectorAll('.checkout-opcao').forEach(o => o.classList.remove('selected'));
+    modalCheckout.style.display = 'flex';
   });
 });
+
+function escolherEntrega(tipo) {
+  document.getElementById('checkout-step1').style.display = 'none';
+  document.getElementById('checkout-info').style.display = 'flex';
+
+  const msgEl = document.getElementById('checkout-msg-entrega');
+  const waBtn = document.getElementById('checkout-wa-btn');
+  let msgWA = '';
+
+  if (tipo === 'entrega') {
+    msgEl.innerHTML = `
+      <div class="checkout-msg-icon">🚚</div>
+      <strong>Entrega com todo cuidado que sua joia merece</strong>
+      <p>Por se tratar de uma peça de alto valor, garantimos uma entrega segura e cuidadosa. Trabalhamos com:</p>
+      <ul>
+        <li>📦 <strong>Correios</strong> — envio rastreado para todo o Brasil com embalagem especial</li>
+        <li>🤝 <strong>Entrega pessoal</strong> — realizamos entregas presenciais na região de Curitiba e Grande Curitiba</li>
+      </ul>
+      <p style="font-size:12px;color:#888;margin-top:8px">O frete será combinado via WhatsApp conforme seu endereço.</p>`;
+    msgWA = `Olá! Quero finalizar meu pedido com *entrega*:\n\n🏷️ *${_checkoutProduto.name}*\nCódigo: ${_checkoutProduto.code}\nPreço: ${_checkoutProduto.preco}\n\nPor favor, me informe o valor do frete e as opções de entrega. 😊`;
+  } else {
+    msgEl.innerHTML = `
+      <div class="checkout-msg-icon">🏪</div>
+      <strong>Retirada na Loja — Curitiba</strong>
+      <p>Você pode retirar sua joia diretamente conosco em Curitiba. Combinamos o local e horário de retirada pelo WhatsApp após a confirmação do pedido.</p>`;
+    msgWA = `Olá! Quero finalizar meu pedido com *retirada na loja*:\n\n🏷️ *${_checkoutProduto.name}*\nCódigo: ${_checkoutProduto.code}\nPreço: ${_checkoutProduto.preco}\n\nGostaria de combinar o horário de retirada. 😊`;
+  }
+
+  waBtn.href = `https://wa.me/${WA_NUMBER}?text=${encodeURIComponent(msgWA)}`;
+}
+
+function voltarCheckout() {
+  document.getElementById('checkout-step1').style.display = 'flex';
+  document.getElementById('checkout-info').style.display = 'none';
+}
 
 // ===== SMOOTH ANCHOR SCROLL =====
 document.querySelectorAll('a[href^="#"]').forEach(a => {

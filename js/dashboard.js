@@ -620,7 +620,7 @@ function populateTrafego() {
 const navItems = document.querySelectorAll('.nav-item');
 const panels = document.querySelectorAll('.panel');
 const pageTitle = document.getElementById('page-title');
-const titles = { overview: 'Visão Geral', instagram: 'Instagram', whatsapp: 'WhatsApp', facebook: 'Facebook', trafego: 'Tráfego Pago', config: 'Configurações' };
+const titles = { overview: 'Visão Geral', instagram: 'Instagram', whatsapp: 'WhatsApp', facebook: 'Facebook', produtos: 'Produtos', trafego: 'Tráfego Pago', config: 'Configurações' };
 
 function switchPanel(panelName) {
   navItems.forEach(n => n.classList.remove('active'));
@@ -636,6 +636,7 @@ function switchPanel(panelName) {
   if (panelName === 'whatsapp') populateWhatsApp();
   if (panelName === 'facebook') populateFacebook();
   if (panelName === 'trafego') populateTrafego();
+  if (panelName === 'produtos') renderProdutosAdmin();
 }
 
 navItems.forEach(item => {
@@ -810,8 +811,108 @@ async function testToken(platform) {
   }
 }
 
+// ===== PRODUTOS =====
+const PRODUTOS_KEY = 'shimmer_produtos';
+
+const PRODUTOS_DEFAULT = [
+  { code: 'SH-1001', name: 'Anel Solitário Brilhante', colecao: 'Coleção Aurora', material: 'Ouro 18k · Diamante 0,5ct', preco: 'R$ 4.850,00', precoOld: '', badge: 'Novo', foto: '' },
+  { code: 'SH-1002', name: 'Colar Lágrima de Diamante', colecao: 'Coleção Aurora', material: 'Ouro 18k · Diamante 0,3ct', preco: 'R$ 3.200,00', precoOld: '', badge: '', foto: '' },
+  { code: 'SH-1003', name: 'Brincos Argola Cravejada', colecao: 'Botânica', material: 'Ouro 18k · Brilhantes', preco: 'R$ 1.785,00', precoOld: 'R$ 2.100,00', badge: '-15%', foto: '' },
+  { code: 'SH-1004', name: 'Pulseira Tennis Diamantes', colecao: 'Eternidade', material: 'Ouro 18k · Diamantes 2,0ct', preco: 'R$ 12.500,00', precoOld: '', badge: '', foto: '' },
+];
+
+function getProdutos() {
+  try { return JSON.parse(localStorage.getItem(PRODUTOS_KEY)) || PRODUTOS_DEFAULT; } catch { return PRODUTOS_DEFAULT; }
+}
+function saveProdutos(produtos) {
+  localStorage.setItem(PRODUTOS_KEY, JSON.stringify(produtos));
+}
+
+function renderProdutosAdmin() {
+  const lista = document.getElementById('produtos-lista');
+  if (!lista) return;
+  const produtos = getProdutos();
+  lista.innerHTML = produtos.map(p => `
+    <div class="produto-admin-item" data-code="${p.code}">
+      <div class="produto-admin-img">
+        ${p.foto ? `<img src="${p.foto}" alt="${p.name}" style="width:100%;height:100%;object-fit:cover;border-radius:8px">` : `<div style="width:100%;height:100%;background:linear-gradient(135deg,#f5f0e8,#e8dcc8);border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:24px">💎</div>`}
+      </div>
+      <div class="produto-admin-info">
+        <span class="produto-admin-code">${p.code}</span>
+        <strong>${p.name}</strong>
+        <span>${p.colecao} · ${p.material}</span>
+        <span class="produto-admin-preco">${p.preco}${p.precoOld ? ` <s style="color:#bbb;font-size:12px">${p.precoOld}</s>` : ''}</span>
+        ${p.badge ? `<span class="produto-admin-badge">${p.badge}</span>` : ''}
+      </div>
+      <div class="produto-admin-actions">
+        <button class="btn-sm" onclick="editarProduto('${p.code}')">Editar</button>
+        <button class="btn-sm btn-sm-outline" onclick="deletarProduto('${p.code}')">Excluir</button>
+      </div>
+    </div>
+  `).join('');
+}
+
+let _editCode = null;
+function abrirModalProduto(code = null) {
+  _editCode = code;
+  const modal = document.getElementById('modal-produto');
+  const titulo = document.getElementById('modal-produto-titulo');
+  if (code) {
+    const p = getProdutos().find(x => x.code === code);
+    if (!p) return;
+    titulo.textContent = 'Editar Produto';
+    document.getElementById('edit-code').value = p.code;
+    document.getElementById('edit-name').value = p.name;
+    document.getElementById('edit-colecao').value = p.colecao;
+    document.getElementById('edit-material').value = p.material;
+    document.getElementById('edit-preco').value = p.preco;
+    document.getElementById('edit-preco-old').value = p.precoOld || '';
+    document.getElementById('edit-badge').value = p.badge || '';
+    document.getElementById('edit-foto').value = p.foto || '';
+  } else {
+    titulo.textContent = 'Novo Produto';
+    ['edit-code','edit-name','edit-colecao','edit-material','edit-preco','edit-preco-old','edit-badge','edit-foto'].forEach(id => { document.getElementById(id).value = ''; });
+  }
+  modal.style.display = 'flex';
+}
+
+function fecharModalProduto() {
+  document.getElementById('modal-produto').style.display = 'none';
+}
+
+function editarProduto(code) { abrirModalProduto(code); }
+
+function deletarProduto(code) {
+  if (!confirm(`Excluir o produto ${code}?`)) return;
+  const produtos = getProdutos().filter(p => p.code !== code);
+  saveProdutos(produtos);
+  renderProdutosAdmin();
+}
+
+function salvarProduto() {
+  const novo = {
+    code: document.getElementById('edit-code').value.trim(),
+    name: document.getElementById('edit-name').value.trim(),
+    colecao: document.getElementById('edit-colecao').value.trim(),
+    material: document.getElementById('edit-material').value.trim(),
+    preco: document.getElementById('edit-preco').value.trim(),
+    precoOld: document.getElementById('edit-preco-old').value.trim(),
+    badge: document.getElementById('edit-badge').value.trim(),
+    foto: document.getElementById('edit-foto').value.trim(),
+  };
+  if (!novo.code || !novo.name || !novo.preco) { alert('Preencha código, nome e preço.'); return; }
+  let produtos = getProdutos();
+  const idx = produtos.findIndex(p => p.code === (_editCode || novo.code));
+  if (idx >= 0) { produtos[idx] = novo; } else { produtos.push(novo); }
+  saveProdutos(produtos);
+  fecharModalProduto();
+  renderProdutosAdmin();
+  alert('✅ Produto salvo! As alterações aparecem no site ao recarregar.');
+}
+
 // ===== INIT =====
 loadSavedConfig();
 loadRealData().then(() => {
   populateOverview();
 });
+renderProdutosAdmin();

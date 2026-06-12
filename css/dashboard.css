@@ -806,6 +806,23 @@ input, textarea, select { font-family: 'Montserrat', sans-serif; }
 }
 .btn-sm-outline:hover { border-color: var(--gold); color: var(--gold); }
 
+/* ===== PRODUTOS ADMIN ===== */
+.produtos-admin-lista { display: flex; flex-direction: column; gap: 12px; }
+.produto-admin-item {
+  display: flex; align-items: center; gap: 16px;
+  padding: 16px; border: 1px solid var(--border); border-radius: 12px;
+  background: #fafafa; transition: box-shadow 0.2s;
+}
+.produto-admin-item:hover { box-shadow: 0 2px 12px rgba(0,0,0,0.07); background: #fff; }
+.produto-admin-img { width: 64px; height: 64px; flex-shrink: 0; border-radius: 8px; overflow: hidden; background: #f0ebe0; }
+.produto-admin-info { flex: 1; display: flex; flex-direction: column; gap: 2px; }
+.produto-admin-code { font-size: 10px; color: #bbb; letter-spacing: 0.08em; }
+.produto-admin-info strong { font-size: 14px; font-weight: 600; }
+.produto-admin-info span { font-size: 12px; color: #888; }
+.produto-admin-preco { font-size: 14px; font-weight: 600; color: var(--gold-dark) !important; }
+.produto-admin-badge { display: inline-block; font-size: 10px; font-weight: 700; padding: 2px 8px; border-radius: 20px; background: var(--gold); color: #fff; width: fit-content; margin-top: 2px; }
+.produto-admin-actions { display: flex; flex-direction: column; gap: 6px; }
+
 /* ===== SCROLLBAR ===== */
 ::-webkit-scrollbar { width: 6px; height: 6px; }
 ::-webkit-scrollbar-track { background: transparent; }
