@@ -652,6 +652,10 @@ function saveToken(platform) {
     return;
   }
   saveConfig({ [`token_${platform}`]: tokenEl.value.trim() });
+  tokenEl.value = '';
+  tokenEl.placeholder = '••••••••••••• (salvo)';
+  const statusId = platform === 'instagram' ? 'ig-status' : platform === 'facebook' ? 'fb-status' : 'wa-status';
+  setIntegStatus(statusId, true);
   // Recarrega dados reais com novo token
   loadRealData().then(() => {
     populateOverview();
@@ -671,6 +675,18 @@ document.getElementById('refresh-btn').addEventListener('click', () => {
 });
 
 // ===== LOAD CONFIG SAVED =====
+function setIntegStatus(id, hasToken) {
+  const el = document.getElementById(id);
+  if (!el) return;
+  if (hasToken) {
+    el.className = 'integ-status connected';
+    el.textContent = '✓ Token salvo';
+  } else {
+    el.className = 'integ-status disconnected';
+    el.textContent = '✗ Não conectado';
+  }
+}
+
 function loadSavedConfig() {
   const cfg = loadConfig();
   if (cfg.store_name) { const el = document.getElementById('store-name'); if (el) el.value = cfg.store_name; }
@@ -680,6 +696,42 @@ function loadSavedConfig() {
   if (cfg.meta_ig) { const el = document.getElementById('meta-ig'); if (el) el.value = cfg.meta_ig; }
   if (cfg.meta_fb) { const el = document.getElementById('meta-fb'); if (el) el.value = cfg.meta_fb; }
   if (cfg.meta_budget) { const el = document.getElementById('meta-budget'); if (el) el.value = cfg.meta_budget; }
+
+  // Populate token fields (masked) and status badges
+  const igEl = document.getElementById('ig-token');
+  const fbEl = document.getElementById('fb-token');
+  const waEl = document.getElementById('wa-token');
+  const igToken = cfg.token_instagram || '';
+  const fbToken = cfg.token_facebook || '';
+  const waToken = cfg.token_whatsapp || '';
+  if (igEl && igToken) igEl.placeholder = '••••••••••••• (salvo)';
+  if (fbEl && fbToken) fbEl.placeholder = '••••••••••••• (salvo)';
+  if (waEl && waToken) waEl.placeholder = '••••••••••••• (salvo)';
+  setIntegStatus('ig-status', !!igToken);
+  setIntegStatus('fb-status', !!fbToken);
+  setIntegStatus('wa-status', !!waToken);
+}
+
+// ===== TEST TOKEN =====
+async function testToken(platform) {
+  const cfg = loadConfig();
+  const token = platform === 'instagram'
+    ? (cfg.token_instagram || cfg.token_facebook)
+    : platform === 'facebook'
+    ? (cfg.token_facebook || cfg.token_instagram)
+    : cfg.token_whatsapp;
+
+  if (!token) {
+    alert('Nenhum token salvo. Insira e clique em Conectar primeiro.');
+    return;
+  }
+
+  const result = await apiFetch('/me?fields=id,name', token);
+  if (result && result.id) {
+    alert(`✅ Token válido! Conectado como: ${result.name || result.id}`);
+  } else {
+    alert('❌ Token inválido ou expirado. Gere um novo token no Meta for Developers e reconecte.');
+  }
 }
 
 // ===== INIT =====
