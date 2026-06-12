@@ -562,7 +562,7 @@ ul { list-style: none; }
 }
 .produto-material { font-size: 11px; color: var(--gray); margin-bottom: 8px; }
 .produto-code-img {
-  position: absolute; top: 10px; left: 12px; z-index: 2;
+  position: absolute; top: 10px; right: 12px; z-index: 2;
   font-size: 10px; color: rgba(0,0,0,0.35); letter-spacing: 0.06em;
   font-family: 'Montserrat', sans-serif; font-weight: 500;
   background: rgba(255,255,255,0.7); padding: 2px 6px; border-radius: 4px;
@@ -588,7 +588,11 @@ ul { list-style: none; }
 .checkout-opcao span { font-size: 12px; color: #888; margin-top: 2px; }
 .checkout-info-entrega { display: flex; flex-direction: column; gap: 16px; }
 .checkout-msg { background: #faf8f3; border: 1px solid #e8dcc8; border-radius: 12px; padding: 16px; font-size: 13px; line-height: 1.6; }
-.checkout-msg-icon { font-size: 28px; margin-bottom: 8px; }
+.checkout-msg-icon { width: 32px; height: 32px; margin-bottom: 10px; background-size: contain; background-repeat: no-repeat; }
+.checkout-msg-icon-entrega { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23c9a84c' stroke-width='1.5'%3E%3Crect x='1' y='3' width='15' height='13'/%3E%3Cpolygon points='16 8 20 8 23 11 23 16 16 16 16 8'/%3E%3Ccircle cx='5.5' cy='18.5' r='2.5'/%3E%3Ccircle cx='18.5' cy='18.5' r='2.5'/%3E%3C/svg%3E"); }
+.checkout-msg-icon-retirada { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23c9a84c' stroke-width='1.5'%3E%3Cpath d='M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z'/%3E%3Cpolyline points='9 22 9 12 15 12 15 22'/%3E%3C/svg%3E"); }
+.checkout-icon-entrega { width: 22px; height: 22px; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23555' stroke-width='1.5'%3E%3Crect x='1' y='3' width='15' height='13'/%3E%3Cpolygon points='16 8 20 8 23 11 23 16 16 16 16 8'/%3E%3Ccircle cx='5.5' cy='18.5' r='2.5'/%3E%3Ccircle cx='18.5' cy='18.5' r='2.5'/%3E%3C/svg%3E"); background-size: contain; background-repeat: no-repeat; display: inline-block; }
+.checkout-icon-retirada { width: 22px; height: 22px; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23555' stroke-width='1.5'%3E%3Cpath d='M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z'/%3E%3Cpolyline points='9 22 9 12 15 12 15 22'/%3E%3C/svg%3E"); background-size: contain; background-repeat: no-repeat; display: inline-block; }
 .checkout-msg strong { display: block; margin-bottom: 8px; font-size: 14px; }
 .checkout-msg ul { padding-left: 4px; list-style: none; display: flex; flex-direction: column; gap: 4px; margin: 8px 0; }
 .checkout-wa-btn { display: flex; align-items: center; justify-content: center; gap: 10px; background: #25D366 !important; border-color: #25D366 !important; font-size: 14px; }

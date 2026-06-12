@@ -151,21 +151,21 @@ function escolherEntrega(tipo) {
 
   if (tipo === 'entrega') {
     msgEl.innerHTML = `
-      <div class="checkout-msg-icon">🚚</div>
+      <div class="checkout-msg-icon checkout-msg-icon-entrega"></div>
       <strong>Entrega com todo cuidado que sua joia merece</strong>
       <p>Por se tratar de uma peça de alto valor, garantimos uma entrega segura e cuidadosa. Trabalhamos com:</p>
       <ul>
-        <li>📦 <strong>Correios</strong> — envio rastreado para todo o Brasil com embalagem especial</li>
-        <li>🤝 <strong>Entrega pessoal</strong> — realizamos entregas presenciais na região de Curitiba e Grande Curitiba</li>
+        <li><strong>Correios</strong> — envio rastreado para todo o Brasil com embalagem especial</li>
+        <li><strong>Entrega pessoal</strong> — realizamos entregas presenciais na região de Curitiba e Grande Curitiba</li>
       </ul>
       <p style="font-size:12px;color:#888;margin-top:8px">O frete será combinado via WhatsApp conforme seu endereço.</p>`;
-    msgWA = `Olá! Quero finalizar meu pedido com *entrega*:\n\n🏷️ *${_checkoutProduto.name}*\nCódigo: ${_checkoutProduto.code}\nPreço: ${_checkoutProduto.preco}\n\nPor favor, me informe o valor do frete e as opções de entrega. 😊`;
+    msgWA = `Olá! Quero finalizar meu pedido com entrega:\n\n*${_checkoutProduto.name}*\nCódigo: ${_checkoutProduto.code}\nPreço: ${_checkoutProduto.preco}\n\nPor favor, me informe o valor do frete e as opções de entrega.`;
   } else {
     msgEl.innerHTML = `
-      <div class="checkout-msg-icon">🏪</div>
+      <div class="checkout-msg-icon checkout-msg-icon-retirada"></div>
       <strong>Retirada na Loja — Curitiba</strong>
       <p>Você pode retirar sua joia diretamente conosco em Curitiba. Combinamos o local e horário de retirada pelo WhatsApp após a confirmação do pedido.</p>`;
-    msgWA = `Olá! Quero finalizar meu pedido com *retirada na loja*:\n\n🏷️ *${_checkoutProduto.name}*\nCódigo: ${_checkoutProduto.code}\nPreço: ${_checkoutProduto.preco}\n\nGostaria de combinar o horário de retirada. 😊`;
+    msgWA = `Olá! Quero finalizar meu pedido com retirada na loja:\n\n*${_checkoutProduto.name}*\nCódigo: ${_checkoutProduto.code}\nPreço: ${_checkoutProduto.preco}\n\nGostaria de combinar o horário de retirada.`;
   }
 
   waBtn.href = `https://wa.me/${WA_NUMBER}?text=${encodeURIComponent(msgWA)}`;
