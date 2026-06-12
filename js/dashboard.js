@@ -26,31 +26,32 @@ async function loadRealInstagramData() {
   const token = cfg.token_instagram || cfg.token_facebook;
   if (!token) return null;
 
-  const PAGE_ID = '232048553323097';
-
-  // Busca Instagram via nested fields no Page ID (funciona com pages_read_engagement)
   let igProfile = null;
-  const nestedFields = `/${PAGE_ID}?fields=instagram_business_account{username,followers_count,media_count,follows_count}`;
-  const pageWithIg = await apiFetch(nestedFields, token);
-  if (pageWithIg && !pageWithIg.__error && pageWithIg.instagram_business_account) {
-    igProfile = pageWithIg.instagram_business_account;
+
+  // Token Instagram Business (IGAAV...) — chama /me diretamente
+  if (token.startsWith('IGAAV') || token.startsWith('IGQ') || token.startsWith('EAA')) {
+    const me = await apiFetch('/me?fields=username,followers_count,media_count,follows_count,biography', token);
+    if (me && !me.__error && me.followers_count !== undefined) {
+      igProfile = me;
+    }
   }
 
-  // Fallback: tenta /me/accounts
+  // Fallback: token do Facebook — busca via Page ID com nested fields
+  const PAGE_ID = '232048553323097';
+  if (!igProfile) {
+    const pageWithIg = await apiFetch(`/${PAGE_ID}?fields=instagram_business_account{username,followers_count,media_count,follows_count}`, token);
+    if (pageWithIg && !pageWithIg.__error && pageWithIg.instagram_business_account) {
+      igProfile = pageWithIg.instagram_business_account;
+    }
+  }
+
+  // Fallback: /me/accounts
   if (!igProfile) {
     const accounts = await apiFetch('/me/accounts?fields=name,instagram_business_account{username,followers_count,media_count,follows_count}', token);
     if (accounts && !accounts.__error && accounts.data) {
       for (const pg of accounts.data) {
         if (pg.instagram_business_account) { igProfile = pg.instagram_business_account; break; }
       }
-    }
-  }
-
-  // Fallback: /me direto (Page Token)
-  if (!igProfile) {
-    const me = await apiFetch('/me?fields=instagram_business_account{username,followers_count,media_count,follows_count}', token);
-    if (me && !me.__error && me.instagram_business_account) {
-      igProfile = me.instagram_business_account;
     }
   }
 
