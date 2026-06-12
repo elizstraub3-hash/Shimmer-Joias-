@@ -15,8 +15,9 @@ const GRAPH = 'https://graph.facebook.com/v25.0';
 async function apiFetch(path, token) {
   try {
     const res = await fetch(`${GRAPH}${path}&access_token=${token}`);
-    if (!res.ok) return null;
-    return await res.json();
+    const json = await res.json();
+    if (!res.ok || json.error) return { __error: json.error || { message: 'Erro desconhecido' } };
+    return json;
   } catch { return null; }
 }
 
@@ -25,15 +26,20 @@ async function loadRealInstagramData() {
   const token = cfg.token_instagram || cfg.token_facebook;
   if (!token) return null;
 
-  // Busca páginas do usuário
-  const pages = await apiFetch('/me/accounts?fields=name,instagram_business_account', token);
-  if (!pages || !pages.data || !pages.data.length) return null;
-
+  // Tenta via User Token (lista páginas)
   let igId = null;
-  for (const page of pages.data) {
-    if (page.instagram_business_account) {
-      igId = page.instagram_business_account.id;
-      break;
+  const accounts = await apiFetch('/me/accounts?fields=name,instagram_business_account', token);
+  if (accounts && !accounts.__error && accounts.data) {
+    for (const pg of accounts.data) {
+      if (pg.instagram_business_account) { igId = pg.instagram_business_account.id; break; }
+    }
+  }
+
+  // Tenta via Page Token (instagram_business_account direto em /me)
+  if (!igId) {
+    const me = await apiFetch('/me?fields=instagram_business_account', token);
+    if (me && !me.__error && me.instagram_business_account) {
+      igId = me.instagram_business_account.id;
     }
   }
   if (!igId) return null;
@@ -77,17 +83,28 @@ async function loadRealFacebookData() {
   const token = cfg.token_facebook || cfg.token_instagram;
   if (!token) return null;
 
-  const pages = await apiFetch('/me/accounts?fields=name,fan_count,followers_count,new_like_count', token);
-  if (!pages || !pages.data || !pages.data.length) return null;
+  // Tenta primeiro como User Token (lista páginas gerenciadas)
+  const accounts = await apiFetch('/me/accounts?fields=name,fan_count,followers_count', token);
+  let page = null;
 
-  const page = pages.data[0];
+  if (accounts && !accounts.__error && accounts.data && accounts.data.length) {
+    page = accounts.data[0];
+  } else {
+    // Page Access Token: /me já retorna os dados da página diretamente
+    const me = await apiFetch('/me?fields=name,fan_count,followers_count', token);
+    if (!me) return null;
+    if (me.__error) { showTokenExpiredBanner(me.__error.message); return null; }
+    page = me;
+  }
+
+  if (!page) return null;
   const followers = page.followers_count || page.fan_count || 0;
 
   return {
     pageName: page.name || 'Shimmer Joias',
     totalFollowers: followers,
     likes: page.fan_count || followers,
-    newToday: page.new_like_count || 0,
+    newToday: 0,
     newMonth: 0,
     newYear: 0,
     reach: '—',
@@ -105,6 +122,22 @@ async function loadRealData() {
     mockData.facebook = { ...mockData.facebook, ...fbReal };
     showApiStatus('facebook', true);
   }
+  if (!igReal && !fbReal) {
+    const cfg = loadConfig();
+    if (cfg.token_facebook || cfg.token_instagram) {
+      showTokenExpiredBanner('Token expirado ou sem permissão.');
+    }
+  }
+}
+
+function showTokenExpiredBanner(msg) {
+  const existing = document.getElementById('token-expired-banner');
+  if (existing) return;
+  const banner = document.createElement('div');
+  banner.id = 'token-expired-banner';
+  banner.style.cssText = 'position:fixed;top:0;left:0;right:0;background:#c0392b;color:#fff;padding:14px 20px;text-align:center;z-index:9999;font-size:13px;font-weight:600;';
+  banner.innerHTML = `⚠️ Token da API expirado ou inválido (${msg}). <a href="https://developers.facebook.com/tools/explorer" target="_blank" style="color:#fff;text-decoration:underline;margin-left:8px;">Gerar novo token →</a> <button onclick="document.getElementById('token-expired-banner').remove()" style="background:none;border:none;color:#fff;font-size:18px;cursor:pointer;margin-left:12px;">✕</button>`;
+  document.body.prepend(banner);
 }
 
 function showApiStatus(platform, connected) {
