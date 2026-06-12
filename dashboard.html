@@ -1,0 +1,503 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Painel Administrativo — SHIMMER JOIAS</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;600&family=Montserrat:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/dashboard.css" />
+</head>
+<body>
+
+  <!-- SIDEBAR -->
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-header">
+      <div class="sidebar-logo">
+        <span class="logo-s">SHIMMER</span>
+        <span class="logo-j">JOIAS</span>
+      </div>
+      <button class="sidebar-toggle" id="sidebar-toggle">
+        <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2">
+          <line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="18" x2="21" y2="18"/>
+        </svg>
+      </button>
+    </div>
+    <nav class="sidebar-nav">
+      <button class="nav-item active" data-panel="overview">
+        <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+        <span>Visão Geral</span>
+      </button>
+      <button class="nav-item" data-panel="instagram">
+        <svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/></svg>
+        <span>Instagram</span>
+      </button>
+      <button class="nav-item" data-panel="whatsapp">
+        <svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M11.5 2C6.262 2 2 6.262 2 11.5c0 1.91.553 3.685 1.508 5.183L2 22l5.47-1.487A9.459 9.459 0 0011.5 21c5.238 0 9.5-4.262 9.5-9.5S16.738 2 11.5 2zm0 17.4c-1.703 0-3.285-.48-4.618-1.313l-.33-.196-3.424.931.931-3.371-.215-.347A7.872 7.872 0 013.6 11.5C3.6 7.14 7.14 3.6 11.5 3.6c4.36 0 7.9 3.54 7.9 7.9 0 4.36-3.54 7.9-7.9 7.9z"/></svg>
+        <span>WhatsApp</span>
+      </button>
+      <button class="nav-item" data-panel="facebook">
+        <svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor"><path d="M18 2h-3a5 5 0 00-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 011-1h3z"/></svg>
+        <span>Facebook</span>
+      </button>
+      <button class="nav-item" data-panel="trafego">
+        <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.5"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6"/></svg>
+        <span>Tráfego Pago</span>
+      </button>
+      <button class="nav-item" data-panel="config">
+        <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 010 2.83 2 2 0 01-2.83 0l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-4 0v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83-2.83l.06-.06A1.65 1.65 0 004.68 15a1.65 1.65 0 00-1.51-1H3a2 2 0 010-4h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 012.83-2.83l.06.06A1.65 1.65 0 009 4.68a1.65 1.65 0 001-1.51V3a2 2 0 014 0v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 2.83l-.06.06A1.65 1.65 0 0019.4 9a1.65 1.65 0 001.51 1H21a2 2 0 010 4h-.09a1.65 1.65 0 00-1.51 1z"/></svg>
+        <span>Configurações</span>
+      </button>
+    </nav>
+    <div class="sidebar-footer">
+      <a href="index.html" class="back-site">
+        <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 18l-6-6 6-6"/></svg>
+        Voltar ao site
+      </a>
+    </div>
+  </aside>
+
+  <!-- MAIN -->
+  <main class="main-content" id="main-content">
+
+    <!-- TOPBAR -->
+    <div class="topbar">
+      <div class="topbar-left">
+        <h1 id="page-title">Visão Geral</h1>
+        <span class="topbar-date" id="topbar-date"></span>
+      </div>
+      <div class="topbar-right">
+        <button class="refresh-btn" id="refresh-btn" title="Atualizar dados">
+          <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><path d="M23 4v6h-6"/><path d="M1 20v-6h6"/><path d="M3.51 9a9 9 0 0114.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0020.49 15"/></svg>
+          Atualizar
+        </button>
+        <div class="user-chip">
+          <div class="user-avatar">SJ</div>
+          <span>Admin</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- PANEL: OVERVIEW -->
+    <section class="panel active" id="panel-overview">
+      <div class="stats-row">
+        <div class="stat-card stat-ig">
+          <div class="stat-icon">
+            <svg viewBox="0 0 24 24" width="22" height="22" fill="currentColor"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/></svg>
+          </div>
+          <div class="stat-info">
+            <p class="stat-label">Seguidores Instagram</p>
+            <p class="stat-value" id="ig-followers">—</p>
+            <div class="stat-sub-grid">
+              <span>Hoje: <b id="ig-today">—</b></span>
+              <span>Mês: <b id="ig-month">—</b></span>
+              <span>Ano: <b id="ig-year">—</b></span>
+            </div>
+          </div>
+        </div>
+        <div class="stat-card stat-wa">
+          <div class="stat-icon">
+            <svg viewBox="0 0 24 24" width="22" height="22" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M11.5 2C6.262 2 2 6.262 2 11.5c0 1.91.553 3.685 1.508 5.183L2 22l5.47-1.487A9.459 9.459 0 0011.5 21c5.238 0 9.5-4.262 9.5-9.5S16.738 2 11.5 2zm0 17.4c-1.703 0-3.285-.48-4.618-1.313l-.33-.196-3.424.931.931-3.371-.215-.347A7.872 7.872 0 013.6 11.5C3.6 7.14 7.14 3.6 11.5 3.6c4.36 0 7.9 3.54 7.9 7.9 0 4.36-3.54 7.9-7.9 7.9z"/></svg>
+          </div>
+          <div class="stat-info">
+            <p class="stat-label">Mensagens WhatsApp</p>
+            <p class="stat-value" id="wa-msgs">—</p>
+            <div class="stat-sub-grid">
+              <span>Hoje: <b id="wa-today">—</b></span>
+              <span>Não lidas: <b id="wa-unread">—</b></span>
+              <span>Abertura: <b id="wa-rate">—</b></span>
+            </div>
+          </div>
+        </div>
+        <div class="stat-card stat-fb">
+          <div class="stat-icon">
+            <svg viewBox="0 0 24 24" width="22" height="22" fill="currentColor"><path d="M18 2h-3a5 5 0 00-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 011-1h3z"/></svg>
+          </div>
+          <div class="stat-info">
+            <p class="stat-label">Seguidores Facebook</p>
+            <p class="stat-value" id="fb-followers">—</p>
+            <div class="stat-sub-grid">
+              <span>Hoje: <b id="fb-today">—</b></span>
+              <span>Mês: <b id="fb-month">—</b></span>
+              <span>Ano: <b id="fb-year">—</b></span>
+            </div>
+          </div>
+        </div>
+        <div class="stat-card stat-ads">
+          <div class="stat-icon">
+            <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.5"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6"/></svg>
+          </div>
+          <div class="stat-info">
+            <p class="stat-label">Investimento em Tráfego</p>
+            <p class="stat-value" id="ads-total">—</p>
+            <div class="stat-sub-grid">
+              <span>Hoje: <b id="ads-today">—</b></span>
+              <span>Mês: <b id="ads-month">—</b></span>
+              <span>ROI: <b id="ads-roi">—</b></span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- FOLLOWERS CHART -->
+      <div class="dashboard-row">
+        <div class="card chart-card">
+          <div class="card-header">
+            <h3>Crescimento de Seguidores</h3>
+            <div class="chart-legend">
+              <span class="legend-ig">Instagram</span>
+              <span class="legend-fb">Facebook</span>
+            </div>
+          </div>
+          <div class="chart-area" id="followers-chart"></div>
+        </div>
+        <div class="card mini-card">
+          <div class="card-header"><h3>Resumo do Mês</h3></div>
+          <div class="resumo-list" id="resumo-list"></div>
+        </div>
+      </div>
+
+      <!-- RECENT MESSAGES PREVIEW -->
+      <div class="dashboard-row">
+        <div class="card msgs-preview">
+          <div class="card-header">
+            <h3>Últimas Mensagens</h3>
+            <button class="btn-sm" data-panel-link="instagram">Ver Instagram</button>
+          </div>
+          <div class="msgs-list" id="overview-msgs"></div>
+        </div>
+        <div class="card spend-card">
+          <div class="card-header"><h3>Tráfego por Plataforma</h3></div>
+          <div class="spend-list" id="spend-list"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- PANEL: INSTAGRAM -->
+    <section class="panel" id="panel-instagram">
+      <div class="social-header ig-header">
+        <div class="social-header-info">
+          <div class="social-avatar ig-avatar">
+            <svg viewBox="0 0 24 24" width="28" height="28" fill="white"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/></svg>
+          </div>
+          <div>
+            <h2>@shimmerjoias</h2>
+            <p id="ig-account-stats">Carregando...</p>
+          </div>
+        </div>
+        <div class="ig-quick-stats" id="ig-quick-stats"></div>
+      </div>
+
+      <div class="followers-growth-cards">
+        <div class="growth-card">
+          <p class="growth-label">Novos Seguidores Hoje</p>
+          <p class="growth-value green" id="ig-new-today">+0</p>
+        </div>
+        <div class="growth-card">
+          <p class="growth-label">Novos Seguidores no Mês</p>
+          <p class="growth-value green" id="ig-new-month">+0</p>
+        </div>
+        <div class="growth-card">
+          <p class="growth-label">Novos Seguidores no Ano</p>
+          <p class="growth-value green" id="ig-new-year">+0</p>
+        </div>
+        <div class="growth-card">
+          <p class="growth-label">Total de Seguidores</p>
+          <p class="growth-value" id="ig-total">0</p>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-header">
+          <h3>Direct Messages (DMs)</h3>
+          <div class="filter-tabs">
+            <button class="filter-tab active" data-filter="all">Todas</button>
+            <button class="filter-tab" data-filter="unread">Não lidas</button>
+            <button class="filter-tab" data-filter="unanswered">Sem resposta</button>
+          </div>
+        </div>
+        <div class="conv-layout">
+          <div class="conv-list" id="ig-conv-list"></div>
+          <div class="conv-detail" id="ig-conv-detail">
+            <div class="conv-placeholder">
+              <svg viewBox="0 0 24 24" width="48" height="48" fill="none" stroke="rgba(0,0,0,0.2)" stroke-width="1.5"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg>
+              <p>Selecione uma conversa</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="api-notice">
+        <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+        Para ver DMs reais, conecte sua conta em <b>Configurações → Integrações</b> usando o Instagram Graph API (requer conta Business/Creator verificada).
+      </div>
+    </section>
+
+    <!-- PANEL: WHATSAPP -->
+    <section class="panel" id="panel-whatsapp">
+      <div class="social-header wa-header">
+        <div class="social-header-info">
+          <div class="social-avatar wa-avatar">
+            <svg viewBox="0 0 24 24" width="28" height="28" fill="white"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M11.5 2C6.262 2 2 6.262 2 11.5c0 1.91.553 3.685 1.508 5.183L2 22l5.47-1.487A9.459 9.459 0 0011.5 21c5.238 0 9.5-4.262 9.5-9.5S16.738 2 11.5 2zm0 17.4c-1.703 0-3.285-.48-4.618-1.313l-.33-.196-3.424.931.931-3.371-.215-.347A7.872 7.872 0 013.6 11.5C3.6 7.14 7.14 3.6 11.5 3.6c4.36 0 7.9 3.54 7.9 7.9 0 4.36-3.54 7.9-7.9 7.9z"/></svg>
+          </div>
+          <div>
+            <h2>WhatsApp Business</h2>
+            <p id="wa-account-stats">Shimmer Joias — (11) 9 9999-9999</p>
+          </div>
+        </div>
+        <div class="wa-quick-stats" id="wa-quick-stats"></div>
+      </div>
+
+      <div class="followers-growth-cards">
+        <div class="growth-card">
+          <p class="growth-label">Conversas Hoje</p>
+          <p class="growth-value" id="wa-conv-today">0</p>
+        </div>
+        <div class="growth-card">
+          <p class="growth-label">Mensagens Não Lidas</p>
+          <p class="growth-value orange" id="wa-unread-total">0</p>
+        </div>
+        <div class="growth-card">
+          <p class="growth-label">Taxa de Resposta</p>
+          <p class="growth-value green" id="wa-resp-rate">0%</p>
+        </div>
+        <div class="growth-card">
+          <p class="growth-label">Tempo Médio de Resposta</p>
+          <p class="growth-value" id="wa-avg-time">0 min</p>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-header">
+          <h3>Conversas WhatsApp</h3>
+          <div class="filter-tabs">
+            <button class="filter-tab active" data-filter="all">Todas</button>
+            <button class="filter-tab" data-filter="unread">Não lidas</button>
+            <button class="filter-tab" data-filter="unanswered">Aguardando</button>
+          </div>
+        </div>
+        <div class="conv-layout">
+          <div class="conv-list" id="wa-conv-list"></div>
+          <div class="conv-detail" id="wa-conv-detail">
+            <div class="conv-placeholder">
+              <svg viewBox="0 0 24 24" width="48" height="48" fill="none" stroke="rgba(0,0,0,0.2)" stroke-width="1.5"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg>
+              <p>Selecione uma conversa</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="api-notice">
+        <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+        Para integrar conversas reais, configure o <b>WhatsApp Business API</b> (Meta for Developers) em <b>Configurações → Integrações</b>.
+      </div>
+    </section>
+
+    <!-- PANEL: FACEBOOK -->
+    <section class="panel" id="panel-facebook">
+      <div class="social-header fb-header">
+        <div class="social-header-info">
+          <div class="social-avatar fb-avatar">
+            <svg viewBox="0 0 24 24" width="28" height="28" fill="white"><path d="M18 2h-3a5 5 0 00-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 011-1h3z"/></svg>
+          </div>
+          <div>
+            <h2>Shimmer Joias</h2>
+            <p id="fb-account-stats">Página do Facebook</p>
+          </div>
+        </div>
+        <div class="fb-quick-stats" id="fb-quick-stats"></div>
+      </div>
+
+      <div class="followers-growth-cards">
+        <div class="growth-card">
+          <p class="growth-label">Novos Seguidores Hoje</p>
+          <p class="growth-value green" id="fb-new-today">+0</p>
+        </div>
+        <div class="growth-card">
+          <p class="growth-label">Novos Seguidores no Mês</p>
+          <p class="growth-value green" id="fb-new-month">+0</p>
+        </div>
+        <div class="growth-card">
+          <p class="growth-label">Novos Seguidores no Ano</p>
+          <p class="growth-value green" id="fb-new-year">+0</p>
+        </div>
+        <div class="growth-card">
+          <p class="growth-label">Total de Seguidores</p>
+          <p class="growth-value" id="fb-total">0</p>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-header">
+          <h3>Mensagens da Página (Messenger)</h3>
+          <div class="filter-tabs">
+            <button class="filter-tab active" data-filter="all">Todas</button>
+            <button class="filter-tab" data-filter="unread">Não lidas</button>
+          </div>
+        </div>
+        <div class="conv-layout">
+          <div class="conv-list" id="fb-conv-list"></div>
+          <div class="conv-detail" id="fb-conv-detail">
+            <div class="conv-placeholder">
+              <svg viewBox="0 0 24 24" width="48" height="48" fill="none" stroke="rgba(0,0,0,0.2)" stroke-width="1.5"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg>
+              <p>Selecione uma conversa</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="api-notice">
+        <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+        Para ver mensagens reais do Messenger, conecte sua Página em <b>Configurações → Integrações</b> com o <b>Meta Graph API</b>.
+      </div>
+    </section>
+
+    <!-- PANEL: TRAFEGO -->
+    <section class="panel" id="panel-trafego">
+      <div class="dashboard-row">
+        <div class="card" style="flex:1">
+          <div class="card-header"><h3>Investimento Total em Tráfego</h3></div>
+          <div class="trafego-total">
+            <p class="trafego-big" id="trafego-big">R$ 0,00</p>
+            <p class="trafego-period">Período: <span id="trafego-period">Junho 2026</span></p>
+          </div>
+          <div class="trafego-platforms" id="trafego-platforms"></div>
+        </div>
+        <div class="card" style="flex:1">
+          <div class="card-header"><h3>Métricas de Desempenho</h3></div>
+          <div class="metricas-list" id="metricas-list"></div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-header">
+          <h3>Histórico de Investimento (Últimos 30 dias)</h3>
+        </div>
+        <div class="chart-area" id="trafego-chart"></div>
+      </div>
+
+      <div class="card">
+        <div class="card-header">
+          <h3>Campanhas Ativas</h3>
+          <button class="btn-sm">Nova Campanha</button>
+        </div>
+        <div class="campanhas-table" id="campanhas-table"></div>
+      </div>
+
+      <div class="api-notice">
+        <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+        Conecte sua conta de anúncios em <b>Configurações → Integrações</b> para importar dados reais do <b>Meta Ads Manager</b> e <b>Google Ads</b>.
+      </div>
+    </section>
+
+    <!-- PANEL: CONFIG -->
+    <section class="panel" id="panel-config">
+      <div class="config-grid">
+        <div class="card">
+          <div class="card-header"><h3>Alterar Senha do Painel</h3></div>
+          <form id="form-change-password" class="config-form">
+            <div class="form-group">
+              <label>Senha Atual</label>
+              <input type="password" id="old-pass" placeholder="••••••••" />
+            </div>
+            <div class="form-group">
+              <label>Nova Senha</label>
+              <input type="password" id="new-pass" placeholder="••••••••" />
+            </div>
+            <div class="form-group">
+              <label>Confirmar Nova Senha</label>
+              <input type="password" id="conf-pass" placeholder="••••••••" />
+            </div>
+            <p id="pass-msg" class="pass-msg"></p>
+            <button type="submit" class="btn-gold">Salvar Senha</button>
+          </form>
+        </div>
+
+        <div class="card">
+          <div class="card-header"><h3>Integrações de API</h3></div>
+          <div class="integracoes-list">
+            <div class="integracao-item">
+              <div class="integ-icon ig">
+                <svg viewBox="0 0 24 24" width="20" height="20" fill="white"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/></svg>
+              </div>
+              <div class="integ-info">
+                <strong>Instagram Graph API</strong>
+                <p>DMs, seguidores, insights</p>
+                <input type="text" placeholder="Access Token do Instagram Business" id="ig-token" />
+              </div>
+              <button class="btn-sm" onclick="saveToken('instagram')">Conectar</button>
+            </div>
+            <div class="integracao-item">
+              <div class="integ-icon wa">
+                <svg viewBox="0 0 24 24" width="20" height="20" fill="white"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M11.5 2C6.262 2 2 6.262 2 11.5c0 1.91.553 3.685 1.508 5.183L2 22l5.47-1.487A9.459 9.459 0 0011.5 21c5.238 0 9.5-4.262 9.5-9.5S16.738 2 11.5 2zm0 17.4c-1.703 0-3.285-.48-4.618-1.313l-.33-.196-3.424.931.931-3.371-.215-.347A7.872 7.872 0 013.6 11.5C3.6 7.14 7.14 3.6 11.5 3.6c4.36 0 7.9 3.54 7.9 7.9 0 4.36-3.54 7.9-7.9 7.9z"/></svg>
+              </div>
+              <div class="integ-info">
+                <strong>WhatsApp Business API</strong>
+                <p>Mensagens, conversas, templates</p>
+                <input type="text" placeholder="Phone Number ID + Token" id="wa-token" />
+              </div>
+              <button class="btn-sm" onclick="saveToken('whatsapp')">Conectar</button>
+            </div>
+            <div class="integracao-item">
+              <div class="integ-icon fb">
+                <svg viewBox="0 0 24 24" width="20" height="20" fill="white"><path d="M18 2h-3a5 5 0 00-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 011-1h3z"/></svg>
+              </div>
+              <div class="integ-info">
+                <strong>Meta Graph API</strong>
+                <p>Seguidores, Messenger, anúncios</p>
+                <input type="text" placeholder="Page Access Token" id="fb-token" />
+              </div>
+              <button class="btn-sm" onclick="saveToken('facebook')">Conectar</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-header"><h3>Metas de Crescimento</h3></div>
+          <form id="form-metas" class="config-form">
+            <div class="form-group">
+              <label>Meta de Seguidores Instagram (mês)</label>
+              <input type="number" id="meta-ig" placeholder="Ex: 500" />
+            </div>
+            <div class="form-group">
+              <label>Meta de Seguidores Facebook (mês)</label>
+              <input type="number" id="meta-fb" placeholder="Ex: 200" />
+            </div>
+            <div class="form-group">
+              <label>Orçamento Mensal de Tráfego (R$)</label>
+              <input type="number" id="meta-budget" placeholder="Ex: 2000" />
+            </div>
+            <button type="submit" class="btn-gold">Salvar Metas</button>
+          </form>
+        </div>
+
+        <div class="card">
+          <div class="card-header"><h3>Informações da Loja</h3></div>
+          <form id="form-info" class="config-form">
+            <div class="form-group">
+              <label>Nome da Loja</label>
+              <input type="text" value="SHIMMER JOIAS" id="store-name" />
+            </div>
+            <div class="form-group">
+              <label>WhatsApp de Contato</label>
+              <input type="tel" placeholder="(11) 99999-9999" id="store-wa" />
+            </div>
+            <div class="form-group">
+              <label>E-mail</label>
+              <input type="email" placeholder="contato@shimmerjoias.com.br" id="store-email" />
+            </div>
+            <div class="form-group">
+              <label>Instagram (@)</label>
+              <input type="text" placeholder="shimmerjoias" id="store-ig" />
+            </div>
+            <button type="submit" class="btn-gold">Salvar Informações</button>
+          </form>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <script src="js/dashboard.js"></script>
+</body>
+</html>

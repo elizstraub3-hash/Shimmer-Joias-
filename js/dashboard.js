@@ -1,0 +1,574 @@
+// ===== DASHBOARD CONFIG =====
+// Senha padrão — sincronizada com main.js
+// Para alterar, use o painel de Configurações
+const CONFIG_KEY = 'shimmer_dashboard_config';
+
+function loadConfig() {
+  try { return JSON.parse(localStorage.getItem(CONFIG_KEY) || '{}'); } catch { return {}; }
+}
+function saveConfig(data) {
+  const existing = loadConfig();
+  localStorage.setItem(CONFIG_KEY, JSON.stringify({ ...existing, ...data }));
+}
+
+// ===== DATE =====
+const dateEl = document.getElementById('topbar-date');
+if (dateEl) {
+  const now = new Date();
+  dateEl.textContent = now.toLocaleDateString('pt-BR', { weekday: 'long', day: '2-digit', month: 'long', year: 'numeric' });
+}
+
+// ===== MOCK DATA — substitua por chamadas reais às APIs =====
+const mockData = {
+  instagram: {
+    username: '@shimmerjoias',
+    totalFollowers: 12847,
+    newToday: 23,
+    newMonth: 387,
+    newYear: 2140,
+    posts: 248,
+    following: 312,
+    engagement: '4.2%',
+  },
+  facebook: {
+    pageName: 'Shimmer Joias',
+    totalFollowers: 8432,
+    newToday: 8,
+    newMonth: 147,
+    newYear: 890,
+    likes: 8150,
+    reach: '12.4K',
+  },
+  whatsapp: {
+    totalConversations: 156,
+    newToday: 12,
+    unread: 7,
+    responseRate: '94%',
+    avgResponseTime: '8 min',
+  },
+  ads: {
+    totalThisMonth: 'R$ 2.480,00',
+    today: 'R$ 82,00',
+    roi: '3.2x',
+    meta: 1800,
+    google: 480,
+    tiktok: 200,
+    impressions: '48.2K',
+    clicks: '1.840',
+    cpc: 'R$ 1,35',
+    conversions: 38,
+    costPerConversion: 'R$ 65,26',
+  }
+};
+
+const mockConversations = {
+  instagram: [
+    { id: 1, name: 'Ana Carolina S.', initials: 'AC', preview: 'Olá! Vocês têm o anel solitário em ouro rosa?', time: '10:32', unread: 2, msgs: [
+      { text: 'Olá! Vocês têm o anel solitário em ouro rosa?', from: 'received', time: '10:30' },
+      { text: 'Vi no perfil de vocês e fiquei apaixonada!', from: 'received', time: '10:31' },
+    ]},
+    { id: 2, name: 'Patricia Lima', initials: 'PL', preview: 'Qual o prazo de entrega para BH?', time: '09:15', unread: 0, msgs: [
+      { text: 'Boa tarde! Qual o prazo de entrega para BH?', from: 'received', time: '09:14' },
+      { text: 'Olá Patricia! Para Belo Horizonte o prazo é de 3 a 5 dias úteis com frete expresso. 😊', from: 'sent', time: '09:16' },
+      { text: 'Perfeito! Obrigada!', from: 'received', time: '09:18' },
+    ]},
+    { id: 3, name: 'Mariana Ramos', initials: 'MR', preview: 'Vocês fazem personalização de alianças?', time: 'Ontem', unread: 1, msgs: [
+      { text: 'Oi! Vocês fazem personalização de alianças?', from: 'received', time: 'Ontem 16:45' },
+    ]},
+    { id: 4, name: 'Juliana Costa', initials: 'JC', preview: 'Que linda essa pulseira tennis! Tem parcelas?', time: 'Ontem', unread: 0, msgs: [
+      { text: 'Que linda essa pulseira tennis! Tem parcelamento?', from: 'received', time: 'Ontem 14:20' },
+      { text: 'Oi Juliana! Sim, parcelamos em até 12x sem juros no cartão de crédito! 💛', from: 'sent', time: 'Ontem 14:35' },
+    ]},
+    { id: 5, name: 'Fernanda Alves', initials: 'FA', preview: 'Boa tarde! Gostaria de saber sobre...', time: 'Seg', unread: 0, msgs: [
+      { text: 'Boa tarde! Gostaria de informações sobre a coleção Aurora', from: 'received', time: 'Seg 11:00' },
+      { text: 'Olá! A coleção Aurora é nossa mais recente e está disponível em ouro 18k com diamantes. Posso te enviar o catálogo completo?', from: 'sent', time: 'Seg 11:10' },
+    ]},
+  ],
+  whatsapp: [
+    { id: 1, name: 'Carlos Rodrigues', initials: 'CR', preview: 'Quero comprar o anel de noivado', time: '11:02', unread: 3, phone: '(11) 98765-4321', msgs: [
+      { text: 'Olá! Vi vocês no Instagram', from: 'received', time: '10:58' },
+      { text: 'Quero comprar um anel de noivado especial', from: 'received', time: '10:59' },
+      { text: 'Orçamento de quanto?', from: 'received', time: '11:02' },
+    ]},
+    { id: 2, name: 'Roberta Mendes', initials: 'RM', preview: 'Meu pedido chegou! Amei muito 😍', time: '10:45', unread: 0, phone: '(21) 99234-5678', msgs: [
+      { text: 'Meu pedido chegou! Amei muito 😍', from: 'received', time: '10:43' },
+      { text: 'Que alegria Roberta! Fico muito feliz que gostou! 💛✨', from: 'sent', time: '10:45' },
+    ]},
+    { id: 3, name: 'Thiago Santos', initials: 'TS', preview: 'Tem colar de diamante entre 1500 e 2000?', time: '09:30', unread: 1, phone: '(31) 97654-3210', msgs: [
+      { text: 'Bom dia! Tem colar de diamante entre R$ 1.500 e R$ 2.000?', from: 'received', time: '09:30' },
+    ]},
+    { id: 4, name: 'Luciana Ferreira', initials: 'LF', preview: 'Posso retirar na loja?', time: 'Ontem', unread: 0, phone: '(11) 96543-2109', msgs: [
+      { text: 'Olá! Posso retirar na loja física?', from: 'received', time: 'Ontem 15:00' },
+      { text: 'Olá Luciana! Sim, trabalhamos com retirada em loja também. Nosso endereço é Rua das Joias, 123 - São Paulo. Horário: seg-sex 10h-18h, sáb 10h-14h', from: 'sent', time: 'Ontem 15:12' },
+    ]},
+  ],
+  facebook: [
+    { id: 1, name: 'Sandra Oliveira', initials: 'SO', preview: 'Olá! Vocês entregam em todo o Brasil?', time: '14:22', unread: 1, msgs: [
+      { text: 'Olá! Vocês entregam em todo o Brasil?', from: 'received', time: '14:22' },
+    ]},
+    { id: 2, name: 'Ricardo Nunes', initials: 'RN', preview: 'Qual a diferença entre ouro 18k e 14k?', time: '12:55', unread: 0, msgs: [
+      { text: 'Boa tarde! Qual a diferença entre ouro 18k e 14k?', from: 'received', time: '12:52' },
+      { text: 'Boa tarde Ricardo! O ouro 18k tem 75% de ouro puro, sendo mais durável e brilhante. O 14k tem 58,5% e é ligeiramente mais acessível. Para joias finas, recomendamos sempre o 18k! ✨', from: 'sent', time: '12:58' },
+    ]},
+    { id: 3, name: 'Camila Duarte', initials: 'CD', preview: 'Tienen alianzas para boda?', time: 'Ontem', unread: 0, msgs: [
+      { text: 'Bom dia! Vocês têm alianças de casamento?', from: 'received', time: 'Ontem 10:10' },
+      { text: 'Oi Camila! Temos uma linha completa de alianças em ouro 18k, com vários modelos e possibilidade de personalização! Posso te enviar o catálogo?', from: 'sent', time: 'Ontem 10:25' },
+    ]},
+  ],
+};
+
+// ===== POPULATE OVERVIEW =====
+function populateOverview() {
+  // Instagram stats
+  document.getElementById('ig-followers').textContent = mockData.instagram.totalFollowers.toLocaleString('pt-BR');
+  document.getElementById('ig-today').textContent = `+${mockData.instagram.newToday}`;
+  document.getElementById('ig-month').textContent = `+${mockData.instagram.newMonth}`;
+  document.getElementById('ig-year').textContent = `+${mockData.instagram.newYear}`;
+
+  // WhatsApp stats
+  document.getElementById('wa-msgs').textContent = mockData.whatsapp.totalConversations;
+  document.getElementById('wa-today').textContent = mockData.whatsapp.newToday;
+  document.getElementById('wa-unread').textContent = mockData.whatsapp.unread;
+  document.getElementById('wa-rate').textContent = mockData.whatsapp.responseRate;
+
+  // Facebook stats
+  document.getElementById('fb-followers').textContent = mockData.facebook.totalFollowers.toLocaleString('pt-BR');
+  document.getElementById('fb-today').textContent = `+${mockData.facebook.newToday}`;
+  document.getElementById('fb-month').textContent = `+${mockData.facebook.newMonth}`;
+  document.getElementById('fb-year').textContent = `+${mockData.facebook.newYear}`;
+
+  // Ads stats
+  document.getElementById('ads-total').textContent = mockData.ads.totalThisMonth;
+  document.getElementById('ads-today').textContent = mockData.ads.today;
+  document.getElementById('ads-month').textContent = mockData.ads.totalThisMonth;
+  document.getElementById('ads-roi').textContent = mockData.ads.roi;
+
+  // Chart
+  buildFollowersChart();
+
+  // Resumo
+  const resumo = document.getElementById('resumo-list');
+  const resumoItems = [
+    { label: 'Novos seguidores (mês)', value: `+${mockData.instagram.newMonth + mockData.facebook.newMonth}`, cls: 'green' },
+    { label: 'Conversas abertas', value: mockData.whatsapp.totalConversations, cls: '' },
+    { label: 'Msgs não respondidas', value: mockData.whatsapp.unread, cls: mockData.whatsapp.unread > 5 ? 'orange' : '' },
+    { label: 'Investimento (mês)', value: mockData.ads.totalThisMonth, cls: '' },
+    { label: 'ROI estimado', value: mockData.ads.roi, cls: 'green' },
+  ];
+  resumo.innerHTML = resumoItems.map(i =>
+    `<div class="resumo-item"><span class="ri-label">${i.label}</span><span class="ri-value ${i.cls}">${i.value}</span></div>`
+  ).join('');
+
+  // Recent messages
+  const msgsEl = document.getElementById('overview-msgs');
+  const allMsgs = [
+    ...mockConversations.instagram.slice(0, 2).map(c => ({ ...c, type: 'ig' })),
+    ...mockConversations.whatsapp.slice(0, 2).map(c => ({ ...c, type: 'wa' })),
+    ...mockConversations.facebook.slice(0, 1).map(c => ({ ...c, type: 'fb' })),
+  ].slice(0, 5);
+  msgsEl.innerHTML = allMsgs.map(m => `
+    <div class="msg-preview-item">
+      <div class="msg-avatar ${m.type}">${m.initials}</div>
+      <div class="msg-body">
+        <div class="msg-name">${m.name}</div>
+        <div class="msg-text">${m.preview}</div>
+      </div>
+      <div class="msg-meta">
+        <div class="msg-time">${m.time}</div>
+        ${m.unread ? `<div class="unread-badge ${m.type}">${m.unread}</div>` : ''}
+      </div>
+    </div>
+  `).join('');
+
+  // Spend
+  const spendEl = document.getElementById('spend-list');
+  const metaPct = Math.round((mockData.ads.meta / (mockData.ads.meta + mockData.ads.google + mockData.ads.tiktok)) * 100);
+  const googlePct = Math.round((mockData.ads.google / (mockData.ads.meta + mockData.ads.google + mockData.ads.tiktok)) * 100);
+  const tiktokPct = 100 - metaPct - googlePct;
+  spendEl.innerHTML = `
+    <div class="spend-item">
+      <div class="spend-name"><span>Meta Ads (IG + FB)</span><span>R$ ${mockData.ads.meta.toLocaleString('pt-BR')}</span></div>
+      <div class="spend-bar-wrap"><div class="spend-bar meta" style="width:${metaPct}%"></div></div>
+    </div>
+    <div class="spend-item">
+      <div class="spend-name"><span>Google Ads</span><span>R$ ${mockData.ads.google.toLocaleString('pt-BR')}</span></div>
+      <div class="spend-bar-wrap"><div class="spend-bar google" style="width:${googlePct}%"></div></div>
+    </div>
+    <div class="spend-item">
+      <div class="spend-name"><span>TikTok Ads</span><span>R$ ${mockData.ads.tiktok.toLocaleString('pt-BR')}</span></div>
+      <div class="spend-bar-wrap"><div class="spend-bar tiktok" style="width:${tiktokPct}%"></div></div>
+    </div>
+  `;
+}
+
+function buildFollowersChart() {
+  const chartEl = document.getElementById('followers-chart');
+  if (!chartEl) return;
+  const days = ['01', '05', '10', '15', '20', '25', '30'];
+  const igData = [28, 45, 22, 60, 38, 52, 41];
+  const fbData = [8, 12, 6, 18, 11, 15, 14];
+  const maxVal = Math.max(...igData, ...fbData);
+  chartEl.innerHTML = days.map((day, i) => `
+    <div style="display:flex;flex-direction:column;align-items:center;flex:1;gap:2px">
+      <div class="chart-bar" style="height:${(igData[i]/maxVal)*140}px" data-val="+${igData[i]} IG" title="${day}/06 +${igData[i]} IG"></div>
+      <div class="chart-bar fb" style="height:${(fbData[i]/maxVal)*140}px" data-val="+${fbData[i]} FB" title="${day}/06 +${fbData[i]} FB"></div>
+      <span style="font-size:9px;color:#bbb;margin-top:4px">${day}</span>
+    </div>
+  `).join('');
+}
+
+// ===== POPULATE INSTAGRAM =====
+function populateInstagram() {
+  document.getElementById('ig-account-stats').textContent = `${mockData.instagram.totalFollowers.toLocaleString('pt-BR')} seguidores · ${mockData.instagram.posts} publicações`;
+  document.getElementById('ig-new-today').textContent = `+${mockData.instagram.newToday}`;
+  document.getElementById('ig-new-month').textContent = `+${mockData.instagram.newMonth}`;
+  document.getElementById('ig-new-year').textContent = `+${mockData.instagram.newYear}`;
+  document.getElementById('ig-total').textContent = mockData.instagram.totalFollowers.toLocaleString('pt-BR');
+
+  const quickStats = document.getElementById('ig-quick-stats');
+  quickStats.innerHTML = `
+    <div class="quick-stat"><span class="quick-stat-val">${mockData.instagram.posts}</span><span class="quick-stat-label">Posts</span></div>
+    <div class="quick-stat"><span class="quick-stat-val">${mockData.instagram.engagement}</span><span class="quick-stat-label">Engajamento</span></div>
+    <div class="quick-stat"><span class="quick-stat-val">${mockData.instagram.following}</span><span class="quick-stat-label">Seguindo</span></div>
+  `;
+
+  buildConvList('ig', mockConversations.instagram, 'ig-conv-list', 'ig-conv-detail');
+}
+
+// ===== POPULATE WHATSAPP =====
+function populateWhatsApp() {
+  document.getElementById('wa-conv-today').textContent = mockData.whatsapp.newToday;
+  document.getElementById('wa-unread-total').textContent = mockData.whatsapp.unread;
+  document.getElementById('wa-resp-rate').textContent = mockData.whatsapp.responseRate;
+  document.getElementById('wa-avg-time').textContent = mockData.whatsapp.avgResponseTime;
+
+  const quickStats = document.getElementById('wa-quick-stats');
+  quickStats.innerHTML = `
+    <div class="quick-stat"><span class="quick-stat-val">${mockData.whatsapp.totalConversations}</span><span class="quick-stat-label">Total Convs</span></div>
+    <div class="quick-stat"><span class="quick-stat-val">${mockData.whatsapp.unread}</span><span class="quick-stat-label">Não lidas</span></div>
+    <div class="quick-stat"><span class="quick-stat-val">${mockData.whatsapp.responseRate}</span><span class="quick-stat-label">Taxa resp.</span></div>
+  `;
+
+  buildConvList('wa', mockConversations.whatsapp, 'wa-conv-list', 'wa-conv-detail');
+}
+
+// ===== POPULATE FACEBOOK =====
+function populateFacebook() {
+  document.getElementById('fb-account-stats').textContent = `${mockData.facebook.totalFollowers.toLocaleString('pt-BR')} seguidores · ${mockData.facebook.likes.toLocaleString('pt-BR')} curtidas`;
+  document.getElementById('fb-new-today').textContent = `+${mockData.facebook.newToday}`;
+  document.getElementById('fb-new-month').textContent = `+${mockData.facebook.newMonth}`;
+  document.getElementById('fb-new-year').textContent = `+${mockData.facebook.newYear}`;
+  document.getElementById('fb-total').textContent = mockData.facebook.totalFollowers.toLocaleString('pt-BR');
+
+  const quickStats = document.getElementById('fb-quick-stats');
+  quickStats.innerHTML = `
+    <div class="quick-stat"><span class="quick-stat-val">${mockData.facebook.likes.toLocaleString('pt-BR')}</span><span class="quick-stat-label">Curtidas</span></div>
+    <div class="quick-stat"><span class="quick-stat-val">${mockData.facebook.reach}</span><span class="quick-stat-label">Alcance</span></div>
+  `;
+
+  buildConvList('fb', mockConversations.facebook, 'fb-conv-list', 'fb-conv-detail');
+}
+
+// ===== BUILD CONVERSATION LIST =====
+function buildConvList(type, convs, listId, detailId) {
+  const listEl = document.getElementById(listId);
+  const detailEl = document.getElementById(detailId);
+  listEl.innerHTML = convs.map(c => `
+    <div class="conv-item ${c.unread > 0 ? 'unread' : ''}" data-id="${c.id}" data-type="${type}">
+      <div class="conv-av" style="${avatarColor(c.name)}">${c.initials}</div>
+      <div class="conv-info">
+        <div class="conv-name">${c.name}</div>
+        <div class="conv-preview">${c.preview}</div>
+      </div>
+      <div class="conv-right">
+        <div class="conv-time">${c.time}</div>
+        ${c.unread > 0 ? `<div class="conv-badge ${type}">${c.unread}</div>` : ''}
+      </div>
+    </div>
+  `).join('');
+
+  listEl.querySelectorAll('.conv-item').forEach(item => {
+    item.addEventListener('click', () => {
+      listEl.querySelectorAll('.conv-item').forEach(i => i.classList.remove('active'));
+      item.classList.add('active');
+      item.classList.remove('unread');
+      const badge = item.querySelector('.conv-badge');
+      if (badge) badge.remove();
+      const conv = convs.find(c => c.id === parseInt(item.dataset.id));
+      openConversation(conv, type, detailEl);
+    });
+  });
+}
+
+function avatarColor(name) {
+  const colors = [
+    'background:linear-gradient(135deg,#667eea,#764ba2)',
+    'background:linear-gradient(135deg,#f093fb,#f5576c)',
+    'background:linear-gradient(135deg,#4facfe,#00f2fe)',
+    'background:linear-gradient(135deg,#43e97b,#38f9d7)',
+    'background:linear-gradient(135deg,#fa709a,#fee140)',
+  ];
+  const idx = name.charCodeAt(0) % colors.length;
+  return colors[idx];
+}
+
+function openConversation(conv, type, detailEl) {
+  detailEl.innerHTML = `
+    <div class="conv-detail-header">
+      <div class="cdh-av" style="${avatarColor(conv.name)}">${conv.initials}</div>
+      <div>
+        <div class="cdh-name">${conv.name}</div>
+        <div class="cdh-status">${conv.phone || 'Mensagem direta'}</div>
+      </div>
+    </div>
+    <div class="conv-messages" id="conv-msgs-${conv.id}">
+      ${conv.msgs.map(m => `
+        <div>
+          <div class="bubble ${m.from}">${m.text}</div>
+          <div class="bubble-time" style="${m.from === 'sent' ? 'text-align:right' : ''}">${m.time}</div>
+        </div>
+      `).join('')}
+    </div>
+    <div class="conv-input-area">
+      <input type="text" placeholder="Digite uma mensagem..." id="msg-input-${conv.id}" />
+      <button class="conv-send-btn" onclick="sendMsg(${conv.id}, '${type}')">Enviar</button>
+    </div>
+  `;
+  const msgs = detailEl.querySelector(`#conv-msgs-${conv.id}`);
+  if (msgs) msgs.scrollTop = msgs.scrollHeight;
+
+  const input = detailEl.querySelector(`#msg-input-${conv.id}`);
+  if (input) {
+    input.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter') sendMsg(conv.id, type);
+    });
+  }
+}
+
+function sendMsg(convId, type) {
+  const input = document.getElementById(`msg-input-${convId}`);
+  if (!input || !input.value.trim()) return;
+  const text = input.value.trim();
+  input.value = '';
+  const msgs = document.getElementById(`conv-msgs-${convId}`);
+  if (!msgs) return;
+  const now = new Date();
+  const time = `${now.getHours().toString().padStart(2,'0')}:${now.getMinutes().toString().padStart(2,'0')}`;
+  const bubble = document.createElement('div');
+  bubble.innerHTML = `<div class="bubble sent">${escapeHtml(text)}</div><div class="bubble-time" style="text-align:right">${time}</div>`;
+  msgs.appendChild(bubble);
+  msgs.scrollTop = msgs.scrollHeight;
+}
+
+function escapeHtml(str) {
+  return str.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+}
+
+// ===== POPULATE TRAFEGO =====
+function populateTrafego() {
+  document.getElementById('trafego-big').textContent = mockData.ads.totalThisMonth;
+  document.getElementById('trafego-period').textContent = 'Junho 2026';
+
+  const total = mockData.ads.meta + mockData.ads.google + mockData.ads.tiktok;
+  const platforms = [
+    { name: 'Meta Ads', value: mockData.ads.meta, pct: Math.round(mockData.ads.meta/total*100), color: 'linear-gradient(to right,#f09433,#bc1888)' },
+    { name: 'Google Ads', value: mockData.ads.google, pct: Math.round(mockData.ads.google/total*100), color: 'linear-gradient(to right,#fbbc04,#ea4335)' },
+    { name: 'TikTok Ads', value: mockData.ads.tiktok, pct: Math.round(mockData.ads.tiktok/total*100), color: 'linear-gradient(to right,#010101,#69C9D0)' },
+  ];
+  document.getElementById('trafego-platforms').innerHTML = platforms.map(p => `
+    <div class="trafego-plat">
+      <span class="tp-name">${p.name}</span>
+      <div class="tp-bar-wrap"><div class="tp-bar" style="width:${p.pct}%;background:${p.color}"></div></div>
+      <span class="tp-value">R$ ${p.value.toLocaleString('pt-BR')}</span>
+    </div>
+  `).join('');
+
+  const metricas = [
+    { label: 'Impressões', value: mockData.ads.impressions },
+    { label: 'Cliques', value: mockData.ads.clicks },
+    { label: 'CPC Médio', value: mockData.ads.cpc },
+    { label: 'Conversões', value: mockData.ads.conversions, cls: 'green' },
+    { label: 'Custo por Conversão', value: mockData.ads.costPerConversion },
+    { label: 'ROI Estimado', value: mockData.ads.roi, cls: 'green' },
+  ];
+  document.getElementById('metricas-list').innerHTML = metricas.map(m => `
+    <div class="metrica-item">
+      <span class="m-label">${m.label}</span>
+      <span class="m-value ${m.cls || ''}">${m.value}</span>
+    </div>
+  `).join('');
+
+  // Trafego chart
+  const chartEl = document.getElementById('trafego-chart');
+  if (chartEl) {
+    const data = [68, 72, 85, 90, 78, 82, 95, 88, 76, 84, 92, 80, 75, 88, 94, 78, 82, 90, 86, 74, 80, 92, 88, 76, 82, 86, 90, 94, 80, 82];
+    const maxVal = Math.max(...data);
+    chartEl.innerHTML = data.map((v, i) => `
+      <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:2px">
+        <div class="chart-bar" style="height:${(v/maxVal)*140}px;background:linear-gradient(to top,var(--gold),rgba(201,168,76,0.3))" data-val="R$${v}" title="Dia ${i+1}: R$ ${v}"></div>
+      </div>
+    `).join('');
+  }
+
+  // Campanhas
+  const campanhas = [
+    { name: 'Coleção Aurora - Remarketing', plat: 'Meta Ads', budget: 'R$ 800', spent: 'R$ 612', result: '18 vendas', status: 'active' },
+    { name: 'Anéis de Noivado - Prospecção', plat: 'Meta Ads', budget: 'R$ 600', spent: 'R$ 488', result: '12 vendas', status: 'active' },
+    { name: 'Shimmer Joias - Pesquisa', plat: 'Google Ads', budget: 'R$ 480', spent: 'R$ 380', result: '8 vendas', status: 'active' },
+    { name: 'Black Friday Preview', plat: 'TikTok Ads', budget: 'R$ 200', spent: 'R$ 200', result: 'Encerrada', status: 'ended' },
+  ];
+  const table = document.getElementById('campanhas-table');
+  table.innerHTML = `
+    <div class="table-header"><span>Campanha</span><span>Plataforma</span><span>Orçamento</span><span>Gasto</span><span>Resultado</span><span>Status</span></div>
+    ${campanhas.map(c => `
+      <div class="table-row">
+        <span style="font-weight:500">${c.name}</span>
+        <span style="color:#666;font-size:12px">${c.plat}</span>
+        <span>${c.budget}</span>
+        <span>${c.spent}</span>
+        <span>${c.result}</span>
+        <span><span class="status-badge ${c.status}">${c.status === 'active' ? 'Ativa' : c.status === 'paused' ? 'Pausada' : 'Encerrada'}</span></span>
+      </div>
+    `).join('')}
+  `;
+}
+
+// ===== NAVIGATION =====
+const navItems = document.querySelectorAll('.nav-item');
+const panels = document.querySelectorAll('.panel');
+const pageTitle = document.getElementById('page-title');
+const titles = { overview: 'Visão Geral', instagram: 'Instagram', whatsapp: 'WhatsApp', facebook: 'Facebook', trafego: 'Tráfego Pago', config: 'Configurações' };
+
+function switchPanel(panelName) {
+  navItems.forEach(n => n.classList.remove('active'));
+  panels.forEach(p => p.classList.remove('active'));
+  const nav = document.querySelector(`[data-panel="${panelName}"]`);
+  const panel = document.getElementById(`panel-${panelName}`);
+  if (nav) nav.classList.add('active');
+  if (panel) panel.classList.add('active');
+  if (pageTitle) pageTitle.textContent = titles[panelName] || panelName;
+
+  if (panelName === 'overview') populateOverview();
+  if (panelName === 'instagram') populateInstagram();
+  if (panelName === 'whatsapp') populateWhatsApp();
+  if (panelName === 'facebook') populateFacebook();
+  if (panelName === 'trafego') populateTrafego();
+}
+
+navItems.forEach(item => {
+  item.addEventListener('click', () => switchPanel(item.dataset.panel));
+});
+
+// Panel link buttons
+document.querySelectorAll('[data-panel-link]').forEach(btn => {
+  btn.addEventListener('click', () => switchPanel(btn.dataset.panelLink));
+});
+
+// ===== FILTER TABS =====
+document.querySelectorAll('.filter-tabs').forEach(tabs => {
+  tabs.querySelectorAll('.filter-tab').forEach(tab => {
+    tab.addEventListener('click', () => {
+      tabs.querySelectorAll('.filter-tab').forEach(t => t.classList.remove('active'));
+      tab.classList.add('active');
+    });
+  });
+});
+
+// ===== CHANGE PASSWORD =====
+const formChangePass = document.getElementById('form-change-password');
+if (formChangePass) {
+  formChangePass.addEventListener('submit', (e) => {
+    e.preventDefault();
+    const old = document.getElementById('old-pass').value;
+    const newP = document.getElementById('new-pass').value;
+    const conf = document.getElementById('conf-pass').value;
+    const msgEl = document.getElementById('pass-msg');
+    const config = loadConfig();
+    const currentPass = config.senha || 'shimmer2026';
+
+    if (old !== currentPass) {
+      msgEl.className = 'pass-msg error';
+      msgEl.textContent = 'Senha atual incorreta.';
+      return;
+    }
+    if (newP.length < 6) {
+      msgEl.className = 'pass-msg error';
+      msgEl.textContent = 'A nova senha deve ter pelo menos 6 caracteres.';
+      return;
+    }
+    if (newP !== conf) {
+      msgEl.className = 'pass-msg error';
+      msgEl.textContent = 'As senhas não coincidem.';
+      return;
+    }
+    saveConfig({ senha: newP });
+    msgEl.className = 'pass-msg success';
+    msgEl.textContent = 'Senha alterada com sucesso!';
+    formChangePass.reset();
+  });
+}
+
+// ===== SAVE METAS =====
+const formMetas = document.getElementById('form-metas');
+if (formMetas) {
+  formMetas.addEventListener('submit', (e) => {
+    e.preventDefault();
+    saveConfig({
+      meta_ig: document.getElementById('meta-ig').value,
+      meta_fb: document.getElementById('meta-fb').value,
+      meta_budget: document.getElementById('meta-budget').value,
+    });
+    alert('Metas salvas com sucesso!');
+  });
+}
+
+// ===== SAVE INFO =====
+const formInfo = document.getElementById('form-info');
+if (formInfo) {
+  formInfo.addEventListener('submit', (e) => {
+    e.preventDefault();
+    saveConfig({
+      store_name: document.getElementById('store-name').value,
+      store_wa: document.getElementById('store-wa').value,
+      store_email: document.getElementById('store-email').value,
+      store_ig: document.getElementById('store-ig').value,
+    });
+    alert('Informações salvas com sucesso!');
+  });
+}
+
+// ===== SAVE TOKEN =====
+function saveToken(platform) {
+  const tokenEl = document.getElementById(`${platform === 'instagram' ? 'ig' : platform === 'whatsapp' ? 'wa' : 'fb'}-token`);
+  if (!tokenEl || !tokenEl.value.trim()) {
+    alert('Por favor, insira o token antes de conectar.');
+    return;
+  }
+  saveConfig({ [`token_${platform}`]: tokenEl.value.trim() });
+  alert(`Token do ${platform} salvo! Para ativar a integração real, configure o servidor backend com as credenciais da API.`);
+}
+
+// ===== REFRESH =====
+document.getElementById('refresh-btn').addEventListener('click', () => {
+  const active = document.querySelector('.panel.active');
+  if (active) {
+    const id = active.id.replace('panel-', '');
+    switchPanel(id);
+  }
+});
+
+// ===== LOAD CONFIG SAVED =====
+function loadSavedConfig() {
+  const cfg = loadConfig();
+  if (cfg.store_name) { const el = document.getElementById('store-name'); if (el) el.value = cfg.store_name; }
+  if (cfg.store_wa) { const el = document.getElementById('store-wa'); if (el) el.value = cfg.store_wa; }
+  if (cfg.store_email) { const el = document.getElementById('store-email'); if (el) el.value = cfg.store_email; }
+  if (cfg.store_ig) { const el = document.getElementById('store-ig'); if (el) el.value = cfg.store_ig; }
+  if (cfg.meta_ig) { const el = document.getElementById('meta-ig'); if (el) el.value = cfg.meta_ig; }
+  if (cfg.meta_fb) { const el = document.getElementById('meta-fb'); if (el) el.value = cfg.meta_fb; }
+  if (cfg.meta_budget) { const el = document.getElementById('meta-budget'); if (el) el.value = cfg.meta_budget; }
+}
+
+// ===== INIT =====
+populateOverview();
+loadSavedConfig();
