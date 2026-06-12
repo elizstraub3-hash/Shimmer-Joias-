@@ -166,7 +166,7 @@ ul { list-style: none; }
   position: absolute; inset: 0;
   background-image: url('../images/hero-anel.jpg');
   background-size: cover;
-  background-position: center 30%;
+  background-position: center 60%;
   background-repeat: no-repeat;
   display: flex;
   align-items: center;
