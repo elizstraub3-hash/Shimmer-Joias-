@@ -976,39 +976,46 @@ ul { list-style: none; }
 .sobre-texto .btn-primary { margin-top: 16px; }
 
 /* ===== DEPOIMENTOS ===== */
-.depoimentos { padding: 100px 0; }
+.depoimentos { padding: 100px 0; background: var(--cream); }
+.google-rating-geral {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  margin-top: 12px;
+}
+.google-stars-geral { color: #fbbc04; font-size: 20px; letter-spacing: 2px; }
+.google-rating-geral span { font-size: 13px; color: var(--gray); font-weight: 500; }
 .depoimentos-grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: 24px;
 }
 .depoimento-card {
-  padding: 36px;
+  padding: 32px;
   border: 1px solid rgba(0,0,0,0.08);
-  position: relative;
   background: var(--white);
   transition: all var(--transition);
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
 }
-.depoimento-card:hover { border-color: rgba(201,168,76,0.4); box-shadow: var(--shadow); }
+.depoimento-card:hover { border-color: rgba(201,168,76,0.35); box-shadow: var(--shadow); }
 .depoimento-card.featured {
   background: var(--dark);
   color: var(--white);
   border-color: transparent;
 }
-.depoimento-card.featured .depoimento-autor strong { color: var(--white); }
-.depoimento-card.featured .depoimento-autor span { color: rgba(255,255,255,0.5); }
-.depoimento-stars { color: var(--gold); font-size: 16px; letter-spacing: 2px; margin-bottom: 16px; }
-.depoimento-card p {
-  font-size: 14px;
-  line-height: 1.7;
-  font-style: italic;
-  color: inherit;
-  margin-bottom: 24px;
+.depoimento-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
 }
-.depoimento-card.featured p { color: rgba(255,255,255,0.8); }
-.depoimento-autor { display: flex; align-items: center; gap: 14px; }
+.depoimento-header > div { flex: 1; }
+.depoimento-header strong { display: block; font-size: 14px; font-weight: 600; margin-bottom: 3px; }
+.depoimento-card.featured .depoimento-header strong { color: var(--white); }
 .autor-avatar {
-  width: 44px; height: 44px;
+  width: 42px; height: 42px;
   border-radius: 50%;
   background: var(--gold);
   color: var(--white);
@@ -1019,8 +1026,16 @@ ul { list-style: none; }
   font-weight: 600;
   flex-shrink: 0;
 }
-.depoimento-autor strong { display: block; font-size: 14px; font-weight: 600; margin-bottom: 2px; }
-.depoimento-autor span { font-size: 12px; color: var(--gray); }
+.depoimento-stars { color: #fbbc04; font-size: 14px; letter-spacing: 1px; }
+.google-badge { margin-left: auto; flex-shrink: 0; opacity: 0.8; }
+.depoimento-card p {
+  font-size: 14px;
+  line-height: 1.75;
+  font-style: italic;
+  color: var(--gray);
+  margin: 0;
+}
+.depoimento-card.featured p { color: rgba(255,255,255,0.75); }
 
 /* ===== CONTATO ===== */
 .contato { padding: 100px 0; background: var(--cream); }
