@@ -21,6 +21,7 @@
   <!-- HEADER -->
   <header id="header">
     <div class="header-inner">
+      <!-- DESKTOP NAV -->
       <nav class="nav-left">
         <div class="nav-dropdown">
           <a href="#joias" class="nav-dropdown-trigger">Joias <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg></a>
@@ -37,20 +38,41 @@
         <a href="#novidades">Novidades</a>
         <a href="#sobre">Sobre</a>
       </nav>
+
+      <!-- LOGO -->
       <a href="#" class="logo">
         <img src="images/logo.png" alt="SHIMMER JOIAS" class="logo-img" />
       </a>
+
       <nav class="nav-right">
-        <a href="#contato">Contato</a>
-        <a href="#" class="nav-icon" aria-label="Buscar">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
-        </a>
+        <a href="#contato" class="nav-hide-mobile">Contato</a>
         <a href="#" class="nav-icon" aria-label="Sacola">
           <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 01-8 0"/></svg>
         </a>
+        <!-- HAMBÚRGUER MOBILE -->
+        <button class="hamburger" id="hamburger" aria-label="Menu">
+          <span></span><span></span><span></span>
+        </button>
       </nav>
     </div>
   </header>
+
+  <!-- MENU MOBILE -->
+  <div class="mobile-menu" id="mobile-menu">
+    <div class="mobile-menu-inner">
+      <p class="mobile-menu-label">Joias</p>
+      <a href="categoria.html?cat=aneis">Anéis Solitários</a>
+      <a href="categoria.html?cat=aparadores">Aparadores</a>
+      <a href="categoria.html?cat=aneis-masculinos">Anéis Masculinos</a>
+      <a href="categoria.html?cat=pulseiras">Pulseiras</a>
+      <a href="categoria.html?cat=brincos">Brincos</a>
+      <a href="#colecoes" class="mobile-destaque">Coleções Especiais — Alianças</a>
+      <div class="mobile-divider"></div>
+      <a href="#novidades">Novidades</a>
+      <a href="#sobre">Sobre</a>
+      <a href="#contato">Contato</a>
+    </div>
+  </div>
 
   <!-- HERO -->
   <section class="hero" id="inicio">

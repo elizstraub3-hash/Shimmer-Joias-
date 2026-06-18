@@ -1,12 +1,25 @@
 // ===== HEADER SCROLL =====
 const header = document.getElementById('header');
 window.addEventListener('scroll', () => {
-  if (window.scrollY > 60) {
-    header.style.boxShadow = '0 2px 20px rgba(0,0,0,0.08)';
-  } else {
-    header.style.boxShadow = 'none';
-  }
+  header.style.boxShadow = window.scrollY > 60 ? '0 2px 20px rgba(0,0,0,0.08)' : 'none';
 });
+
+// ===== MENU MOBILE =====
+const hamburger = document.getElementById('hamburger');
+const mobileMenu = document.getElementById('mobile-menu');
+if (hamburger && mobileMenu) {
+  hamburger.addEventListener('click', () => {
+    hamburger.classList.toggle('open');
+    mobileMenu.classList.toggle('open');
+  });
+  // Fecha ao clicar em qualquer link do menu
+  mobileMenu.querySelectorAll('a').forEach(a => {
+    a.addEventListener('click', () => {
+      hamburger.classList.remove('open');
+      mobileMenu.classList.remove('open');
+    });
+  });
+}
 
 // ===== SCROLL REVEAL =====
 const revealEls = document.querySelectorAll(
