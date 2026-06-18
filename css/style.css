@@ -1048,6 +1048,35 @@ ul { list-style: none; }
   line-height: 1.7;
   margin-bottom: 36px;
 }
+.contato-endereco {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  margin-bottom: 24px;
+  padding: 16px 20px;
+  background: var(--white);
+  border: 1px solid rgba(201,168,76,0.2);
+  max-width: 380px;
+  margin-left: auto;
+  margin-right: auto;
+  width: 100%;
+}
+.contato-endereco svg { flex-shrink: 0; margin-top: 2px; }
+.contato-endereco div { display: flex; flex-direction: column; gap: 2px; }
+.contato-endereco strong { font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--gold); font-weight: 600; }
+.contato-endereco span { font-size: 13px; color: var(--dark); line-height: 1.5; }
+.ver-mapa { font-size: 11px; color: var(--gold); font-weight: 600; letter-spacing: 0.05em; margin-top: 4px; }
+.ver-mapa:hover { text-decoration: underline; }
+.footer-endereco {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  margin-top: 20px;
+  padding-top: 20px;
+  border-top: 1px solid rgba(255,255,255,0.08);
+}
+.footer-endereco svg { flex-shrink: 0; margin-top: 2px; }
+.footer-endereco span { font-size: 12px; color: rgba(255,255,255,0.45); line-height: 1.6; }
 .contato-canais { display: flex; flex-direction: column; gap: 12px; }
 .canal {
   display: flex;
