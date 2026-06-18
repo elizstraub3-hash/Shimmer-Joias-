@@ -22,15 +22,25 @@
   <header id="header">
     <div class="header-inner">
       <nav class="nav-left">
-        <a href="#colecoes">Coleções</a>
-        <a href="#joias">Joias</a>
+        <div class="nav-dropdown">
+          <a href="#joias" class="nav-dropdown-trigger">Joias <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg></a>
+          <div class="nav-dropdown-menu">
+            <a href="categoria.html?cat=aneis">Anéis Solitários</a>
+            <a href="categoria.html?cat=aparadores">Aparadores</a>
+            <a href="categoria.html?cat=aneis-masculinos">Anéis Masculinos</a>
+            <a href="categoria.html?cat=pulseiras">Pulseiras</a>
+            <a href="categoria.html?cat=brincos">Brincos</a>
+            <div class="dropdown-divider"></div>
+            <a href="#colecoes" class="dropdown-destaque">Coleções Especiais — Alianças</a>
+          </div>
+        </div>
         <a href="#novidades">Novidades</a>
+        <a href="#sobre">Sobre</a>
       </nav>
       <a href="#" class="logo">
         <img src="images/logo.png" alt="SHIMMER JOIAS" class="logo-img" />
       </a>
       <nav class="nav-right">
-        <a href="#sobre">Sobre</a>
         <a href="#contato">Contato</a>
         <a href="#" class="nav-icon" aria-label="Buscar">
           <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
@@ -45,6 +55,11 @@
   <!-- HERO -->
   <section class="hero" id="inicio">
     <img src="images/hero-anel.jpg" alt="Shimmer Joias" class="hero-img" />
+    <div class="hero-text">
+      <p class="hero-tag">Nova Coleção 2026</p>
+      <h1>O Brilho de um<br /><em>Momento Inesquecível</em></h1>
+      <a href="#joias" class="hero-cta">Explorar joias</a>
+    </div>
   </section>
 
   <!-- CATEGORIAS -->
@@ -308,27 +323,6 @@
       </div>
       <div class="ver-mais">
         <a href="categoria.html?cat=aneis" class="btn-outline">Ver todos os anéis</a>
-      </div>
-    </div>
-  </section>
-
-  <!-- PERSONALIZAÇÃO -->
-  <section class="personalizacao" id="personalizacao">
-    <div class="personalizacao-inner">
-      <div class="personalizacao-img">
-        <img src="images/personalizacao.jpg" alt="Guia de personalização de joias Shimmer" />
-      </div>
-      <div class="personalizacao-texto">
-        <p class="section-label">Sob Medida</p>
-        <h2>Crie a joia<br /><em>dos seus sonhos</em></h2>
-        <p class="personalizacao-desc">Cada detalhe é pensado para você. Escolha o formato, a largura, o acabamento e o conforto interno da sua aliança ou joia personalizada — e nós transformamos em realidade.</p>
-        <ul class="personalizacao-lista">
-          <li><span class="lista-dot"></span>Formato externo: boleada, reta, chanfrada ou côncava</li>
-          <li><span class="lista-dot"></span>Largura: de 3mm a 7mm</li>
-          <li><span class="lista-dot"></span>Acabamento: lisa, com pedras, fosca ou diamantada</li>
-          <li><span class="lista-dot"></span>Formato interno: reto ou anatômico</li>
-        </ul>
-        <a href="https://wa.me/554199441433?text=Olá!%20Quero%20criar%20uma%20joia%20personalizada%20na%20Shimmer%20Joias." target="_blank" class="btn-primary personalizacao-btn">Quero personalizar pelo WhatsApp</a>
       </div>
     </div>
   </section>
