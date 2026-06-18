@@ -815,10 +815,10 @@ async function testToken(platform) {
 const PRODUTOS_KEY = 'shimmer_produtos';
 
 const PRODUTOS_DEFAULT = [
-  { code: 'SH-1001', name: 'Anel Solitário Brilhante', colecao: 'Coleção Aurora', material: 'Ouro 18k · Diamante 0,5ct', preco: 'R$ 4.850,00', precoOld: '', badge: 'Novo', foto: '' },
-  { code: 'SH-1002', name: 'Colar Lágrima de Diamante', colecao: 'Coleção Aurora', material: 'Ouro 18k · Diamante 0,3ct', preco: 'R$ 3.200,00', precoOld: '', badge: '', foto: '' },
-  { code: 'SH-1003', name: 'Brincos Argola Cravejada', colecao: 'Botânica', material: 'Ouro 18k · Brilhantes', preco: 'R$ 1.785,00', precoOld: 'R$ 2.100,00', badge: '-15%', foto: '' },
-  { code: 'SH-1004', name: 'Pulseira Tennis Diamantes', colecao: 'Eternidade', material: 'Ouro 18k · Diamantes 2,0ct', preco: 'R$ 12.500,00', precoOld: '', badge: '', foto: '' },
+  { code: 'SH-1001', name: 'Anel Solitário Brilhante', colecao: 'Coleção Aurora', material: 'Ouro 18k · Diamante 0,5ct', preco: 'R$ 4.850,00', precoOld: '', badge: 'Novo', foto: '', categoria: 'aneis' },
+  { code: 'SH-1002', name: 'Colar Lágrima de Diamante', colecao: 'Coleção Aurora', material: 'Ouro 18k · Diamante 0,3ct', preco: 'R$ 3.200,00', precoOld: '', badge: '', foto: '', categoria: 'colares' },
+  { code: 'SH-1003', name: 'Brincos Argola Cravejada', colecao: 'Botânica', material: 'Ouro 18k · Brilhantes', preco: 'R$ 1.785,00', precoOld: 'R$ 2.100,00', badge: '-15%', foto: '', categoria: 'brincos' },
+  { code: 'SH-1004', name: 'Pulseira Tennis Diamantes', colecao: 'Eternidade', material: 'Ouro 18k · Diamantes 2,0ct', preco: 'R$ 12.500,00', precoOld: '', badge: '', foto: '', categoria: 'pulseiras' },
 ];
 
 function getProdutos() {
@@ -869,9 +869,11 @@ function abrirModalProduto(code = null) {
     document.getElementById('edit-preco-old').value = p.precoOld || '';
     document.getElementById('edit-badge').value = p.badge || '';
     document.getElementById('edit-foto').value = p.foto || '';
+    document.getElementById('edit-categoria').value = p.categoria || 'aneis';
   } else {
     titulo.textContent = 'Novo Produto';
-    ['edit-code','edit-name','edit-colecao','edit-material','edit-preco','edit-preco-old','edit-badge','edit-foto'].forEach(id => { document.getElementById(id).value = ''; });
+    ['edit-code','edit-name','edit-colecao','edit-material','edit-preco','edit-preco-old','edit-badge','edit-foto','edit-categoria'].forEach(id => { document.getElementById(id).value = ''; });
+    document.getElementById('edit-categoria').value = 'aneis';
   }
   modal.style.display = 'flex';
 }
@@ -899,6 +901,7 @@ function salvarProduto() {
     precoOld: document.getElementById('edit-preco-old').value.trim(),
     badge: document.getElementById('edit-badge').value.trim(),
     foto: document.getElementById('edit-foto').value.trim(),
+    categoria: document.getElementById('edit-categoria').value,
   };
   if (!novo.code || !novo.name || !novo.preco) { alert('Preencha código, nome e preço.'); return; }
   let produtos = getProdutos();
