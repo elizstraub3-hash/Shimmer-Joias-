@@ -815,7 +815,7 @@ async function testToken(platform) {
 const PRODUTOS_KEY = 'shimmer_produtos';
 
 const PRODUTOS_DEFAULT = [
-  { code: 'SH-1001', name: 'Anel Solitário Brilhante', colecao: 'Coleção Aurora', material: 'Ouro 18k · Diamante 0,5ct', preco: 'R$ 4.850,00', precoOld: '', badge: 'Novo', foto: '', categoria: 'aneis' },
+  { code: 'SH-1001', name: 'Anel Solitário', colecao: 'Shimmer Joias', material: 'Pedra central 6,0mm · 12 laterais 1,25mm · Todas moissanites', preco: 'R$ 2.260,00', precoOld: 'R$ 2.909,00', badge: '-22%', foto: 'images/SH-1001.jpg', categoria: 'aneis' },
   { code: 'SH-1002', name: 'Colar Lágrima de Diamante', colecao: 'Coleção Aurora', material: 'Ouro 18k · Diamante 0,3ct', preco: 'R$ 3.200,00', precoOld: '', badge: '', foto: '', categoria: 'colares' },
   { code: 'SH-1003', name: 'Brincos Argola Cravejada', colecao: 'Botânica', material: 'Ouro 18k · Brilhantes', preco: 'R$ 1.785,00', precoOld: 'R$ 2.100,00', badge: '-15%', foto: '', categoria: 'brincos' },
   { code: 'SH-1004', name: 'Pulseira Tennis Diamantes', colecao: 'Eternidade', material: 'Ouro 18k · Diamantes 2,0ct', preco: 'R$ 12.500,00', precoOld: '', badge: '', foto: '', categoria: 'pulseiras' },
