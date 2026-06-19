@@ -822,6 +822,8 @@ const PRODUTOS_DEFAULT = [
   { code: 'SH-1005', name: 'Anel Esmeralda', colecao: 'Shimmer Joias', material: 'Pedra esmeralda natural de 5,5mm', preco: 'R$ 2.100,00', precoOld: '', badge: 'Novo', foto: 'images/SH-1005.jpg', categoria: 'aneis' },
   { code: 'SH-1006', name: 'Anel Topo Redondo', colecao: 'Shimmer Joias', material: '14mm · 6 gramas · Pode ser personalizado', preco: 'R$ 6.000,00', precoOld: '', badge: '', foto: 'images/SH-1006.jpg', categoria: 'aneis' },
   { code: 'SH-1007', name: 'Par de Alianças', colecao: 'Coleção Casamento', material: 'Feminina 5,5mm · 3 pedras moissanite 1,25mm · Masculina 3mm', preco: 'R$ 6.400,00', precoOld: '', badge: 'Destaque', foto: 'images/SH-1007.jpg', categoria: 'casamento' },
+  { code: 'SH-1009', name: 'Aparador com Brilhantes', colecao: 'Coleção Casamento', material: 'Meia aliança · Ouro 18k · Moissanites cravejadas', preco: 'A consultar', precoOld: '', badge: '', foto: 'images/SH-1009.jpg', categoria: 'casamento' },
+  { code: 'SH-1010', name: 'Par de Alianças Clássico', colecao: 'Coleção Casamento', material: 'Ouro amarelo 18k polido · Design atemporal', preco: 'A consultar', precoOld: '', badge: '', foto: 'images/SH-1010.jpg', categoria: 'casamento' },
 ];
 
 function getProdutos() {
