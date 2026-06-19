@@ -1,0 +1,596 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Avaliações — SHIMMER JOIAS</title>
+  <link rel="icon" href="images/logo.png" />
+  <link rel="preload" href="images/logo.png" as="image" />
+  <link rel="stylesheet" href="css/style.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Montserrat:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <style>
+    /* ===== PAGE-SPECIFIC STYLES ===== */
+
+    /* Announcement bar */
+    .announcement-bar {
+      background: var(--dark);
+      color: var(--gold-light);
+      padding: 10px 0;
+      font-size: 12px;
+      letter-spacing: 0.08em;
+      overflow: hidden;
+    }
+    .announcement-track {
+      display: flex;
+      width: max-content;
+      animation: marqueeScroll 30s linear infinite;
+    }
+    .announcement-track span { white-space: nowrap; padding-right: 80px; }
+    @keyframes marqueeScroll {
+      from { transform: translateX(0); }
+      to { transform: translateX(-50%); }
+    }
+
+    /* Back link bar */
+    .back-bar {
+      background: var(--cream);
+      border-bottom: 1px solid rgba(201,168,76,0.15);
+      padding: 10px 40px;
+    }
+    .back-bar a {
+      font-size: 12px;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--gray);
+      font-weight: 500;
+      transition: color 0.3s;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .back-bar a:hover { color: var(--gold); }
+
+    /* Hero section */
+    .aval-hero {
+      background: var(--cream);
+      border-bottom: 1px solid rgba(201,168,76,0.15);
+      padding: 80px 40px 72px;
+      text-align: center;
+    }
+    .aval-hero .section-label {
+      font-family: 'Montserrat', sans-serif;
+      font-size: 10px;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 20px;
+      display: block;
+    }
+    .aval-hero h1 {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(2.4rem, 5vw, 3.8rem);
+      font-weight: 300;
+      color: #654321;
+      line-height: 1.1;
+      margin-bottom: 28px;
+    }
+    .aval-hero-rating {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      justify-content: center;
+      margin-bottom: 16px;
+    }
+    .aval-hero-stars {
+      font-size: 22px;
+      color: #fbbc04;
+      letter-spacing: 2px;
+      line-height: 1;
+    }
+    .aval-hero-score {
+      font-family: 'Montserrat', sans-serif;
+      font-size: 22px;
+      font-weight: 600;
+      color: #654321;
+      line-height: 1;
+    }
+    .aval-hero-subtitle {
+      font-family: 'Montserrat', sans-serif;
+      font-size: 12px;
+      letter-spacing: 0.08em;
+      color: var(--gray);
+      margin-top: 14px;
+    }
+
+    /* Reviews section */
+    .aval-reviews-section {
+      background: #e6e0d6;
+      background-image: url('images/bg-pattern.jpg');
+      background-size: 300px;
+      background-repeat: repeat;
+      padding: 72px 40px 80px;
+    }
+
+    /* 2-column grid, max 760px, centered */
+    .dep-grid-page {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 24px;
+      max-width: 760px;
+      margin: 0 auto;
+    }
+
+    /* Override carousel-specific styles for page grid usage */
+    .dep-grid-page .depoimento-card {
+      min-width: 0;
+      flex-shrink: unset;
+      scroll-snap-align: unset;
+      padding: 28px;
+      border-radius: 0;
+    }
+
+    /* Review date */
+    .depoimento-date {
+      font-family: 'Montserrat', sans-serif;
+      font-size: 11px;
+      color: #aaa;
+      margin-top: 4px;
+    }
+    .depoimento-card.featured .depoimento-date {
+      color: rgba(255,255,255,0.35);
+    }
+
+    /* CTA section */
+    .aval-cta {
+      background: #1a1a1a;
+      padding: 60px 40px;
+      text-align: center;
+    }
+    .aval-cta h3 {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(1.6rem, 3vw, 2.2rem);
+      font-weight: 300;
+      color: #fff;
+      margin-bottom: 14px;
+    }
+    .aval-cta p {
+      font-family: 'Montserrat', sans-serif;
+      font-size: 0.85rem;
+      color: rgba(255,255,255,0.55);
+      margin-bottom: 32px;
+      line-height: 1.65;
+    }
+    .aval-cta-btns {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 16px;
+      flex-wrap: wrap;
+    }
+    .btn-gold-cta {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: var(--gold);
+      color: #1a1a1a;
+      font-family: 'Montserrat', sans-serif;
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      padding: 15px 32px;
+      border: none;
+      cursor: pointer;
+      text-decoration: none;
+      transition: background 0.3s, transform 0.2s;
+    }
+    .btn-gold-cta:hover {
+      background: var(--gold-dark);
+      transform: translateY(-1px);
+    }
+    .btn-outline-cta {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: transparent;
+      color: rgba(255,255,255,0.75);
+      font-family: 'Montserrat', sans-serif;
+      font-size: 11px;
+      font-weight: 500;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      padding: 14px 28px;
+      border: 1px solid rgba(255,255,255,0.3);
+      cursor: pointer;
+      text-decoration: none;
+      transition: border-color 0.3s, color 0.3s;
+    }
+    .btn-outline-cta:hover {
+      border-color: rgba(255,255,255,0.7);
+      color: #fff;
+    }
+
+    /* Responsive */
+    @media (max-width: 640px) {
+      .back-bar { padding: 10px 20px; }
+      .aval-hero { padding: 64px 20px 56px; }
+      .aval-reviews-section { padding: 48px 20px 56px; }
+      .dep-grid-page { grid-template-columns: 1fr; }
+      .aval-cta { padding: 48px 20px; }
+      .aval-cta-btns { flex-direction: column; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ANNOUNCEMENT BAR -->
+  <div class="announcement-bar">
+    <div class="announcement-track">
+      <span>Garantia vitalícia em qualquer peça &nbsp;✦&nbsp; Temos peças a pronta entrega &nbsp;✦&nbsp; Garantia vitalícia em qualquer peça &nbsp;✦&nbsp; Temos peças a pronta entrega &nbsp;✦&nbsp; </span>
+      <span>Garantia vitalícia em qualquer peça &nbsp;✦&nbsp; Temos peças a pronta entrega &nbsp;✦&nbsp; Garantia vitalícia em qualquer peça &nbsp;✦&nbsp; Temos peças a pronta entrega &nbsp;✦&nbsp; </span>
+    </div>
+  </div>
+
+  <!-- HEADER -->
+  <header id="header">
+    <div class="header-inner">
+      <nav class="nav-left">
+        <a href="index.html#colecoes">Coleções</a>
+        <a href="categoria.html?cat=aneis">Anéis</a>
+        <a href="index.html#novidades">Novidades</a>
+      </nav>
+      <a href="index.html" class="logo">
+        <img src="images/logo.png" alt="SHIMMER JOIAS" class="logo-img" />
+      </a>
+      <nav class="nav-right">
+        <a href="index.html#sobre" class="nav-hide-mobile">Sobre</a>
+        <a href="index.html#contato" class="nav-hide-mobile">Contato</a>
+        <a href="#" class="nav-icon nav-hide-mobile" aria-label="Buscar">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+        </a>
+        <a href="#" class="nav-icon" aria-label="Sacola">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 01-8 0"/></svg>
+        </a>
+        <button class="hamburger" id="hamburger" aria-label="Menu">
+          <span></span><span></span><span></span>
+        </button>
+      </nav>
+    </div>
+  </header>
+
+  <!-- MENU MOBILE -->
+  <div class="mobile-menu" id="mobile-menu">
+    <div class="mobile-menu-inner">
+      <p class="mobile-menu-label">Joias</p>
+      <a href="categoria.html?cat=aneis">Anéis Solitários</a>
+      <a href="categoria.html?cat=aparadores">Aparadores</a>
+      <a href="categoria.html?cat=aneis-masculinos">Anéis Masculinos</a>
+      <a href="categoria.html?cat=pulseiras">Pulseiras</a>
+      <a href="categoria.html?cat=brincos">Brincos</a>
+      <a href="categoria.html?cat=colares">Colares</a>
+      <div class="mobile-divider"></div>
+      <p class="mobile-menu-label">Coleções</p>
+      <a href="categoria.html?cat=casamento" class="mobile-destaque">Alianças &amp; Casamento</a>
+      <div class="mobile-divider"></div>
+      <a href="index.html">Início</a>
+      <a href="index.html#sobre">Sobre</a>
+      <a href="index.html#contato">Contato</a>
+    </div>
+  </div>
+
+  <!-- BACK BAR -->
+  <div class="back-bar">
+    <a href="index.html">← Voltar</a>
+  </div>
+
+  <!-- HERO -->
+  <section class="aval-hero">
+    <span class="section-label">Avaliações Google</span>
+    <h1>O que nossos clientes dizem</h1>
+    <div class="aval-hero-rating">
+      <span class="aval-hero-stars">★★★★★</span>
+      <span class="aval-hero-score">5,0</span>
+      <!-- Google G badge SVG -->
+      <svg width="22" height="22" viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg" aria-label="Google">
+        <path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/>
+        <path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/>
+        <path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/>
+        <path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.18 1.48-4.97 2.29-8.16 2.29-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/>
+        <path fill="none" d="M0 0h48v48H0z"/>
+      </svg>
+    </div>
+    <p class="aval-hero-subtitle">Mais de 50 clientes satisfeitos</p>
+  </section>
+
+  <!-- REVIEWS GRID -->
+  <section class="aval-reviews-section">
+    <div class="dep-grid-page">
+
+      <!-- Card 1 — Allan Leandro -->
+      <div class="depoimento-card">
+        <div class="depoimento-header">
+          <div class="autor-avatar">AL</div>
+          <div>
+            <strong>Allan Leandro</strong>
+            <div class="depoimento-stars">★★★★★</div>
+          </div>
+          <!-- Google badge -->
+          <svg class="google-badge" width="16" height="16" viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg" aria-label="Google">
+            <path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/>
+            <path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/>
+            <path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/>
+            <path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.18 1.48-4.97 2.29-8.16 2.29-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/>
+            <path fill="none" d="M0 0h48v48H0z"/>
+          </svg>
+        </div>
+        <p>"Excelente, desde o ótimo atendimento da atendente Ketelyn, que responde com rapidez e esclarece até as mínimas dúvidas possíveis, como também a ótima qualidade do produto."</p>
+        <span class="depoimento-date">Novembro 2024</span>
+      </div>
+
+      <!-- Card 2 — Paola Barchik (featured) -->
+      <div class="depoimento-card featured">
+        <div class="depoimento-header">
+          <div class="autor-avatar">PB</div>
+          <div>
+            <strong>Paola Barchik</strong>
+            <div class="depoimento-stars">★★★★★</div>
+          </div>
+          <!-- Google badge -->
+          <svg class="google-badge" width="16" height="16" viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg" aria-label="Google">
+            <path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/>
+            <path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/>
+            <path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/>
+            <path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.18 1.48-4.97 2.29-8.16 2.29-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/>
+            <path fill="none" d="M0 0h48v48H0z"/>
+          </svg>
+        </div>
+        <p>"Experiência incrível, parabéns para os profissionais pelo trabalho incrível. Ganhei do meu marido alianças de casamento PERFEITAS. Super indico para todos!"</p>
+        <span class="depoimento-date">Janeiro 2025</span>
+      </div>
+
+      <!-- Card 3 — Stephany Tomaz -->
+      <div class="depoimento-card">
+        <div class="depoimento-header">
+          <div class="autor-avatar">ST</div>
+          <div>
+            <strong>Stephany Tomaz</strong>
+            <div class="depoimento-stars">★★★★★</div>
+          </div>
+          <!-- Google badge -->
+          <svg class="google-badge" width="16" height="16" viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg" aria-label="Google">
+            <path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/>
+            <path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/>
+            <path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/>
+            <path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.18 1.48-4.97 2.29-8.16 2.29-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/>
+            <path fill="none" d="M0 0h48v48H0z"/>
+          </svg>
+        </div>
+        <p>"Sou de Garopaba-SC, recebi indicação dessa loja por uma amiga e amei!! Super atenciosos e pacientes, chegou tudo certinho. Amei!"</p>
+        <span class="depoimento-date">Março 2025</span>
+      </div>
+
+      <!-- Card 4 — Fernanda Souza -->
+      <div class="depoimento-card">
+        <div class="depoimento-header">
+          <div class="autor-avatar">FS</div>
+          <div>
+            <strong>Fernanda Souza</strong>
+            <div class="depoimento-stars">★★★★★</div>
+          </div>
+          <!-- Google badge -->
+          <svg class="google-badge" width="16" height="16" viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg" aria-label="Google">
+            <path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/>
+            <path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/>
+            <path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/>
+            <path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.18 1.48-4.97 2.29-8.16 2.29-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/>
+            <path fill="none" d="M0 0h48v48H0z"/>
+          </svg>
+        </div>
+        <p>"Comprei meu anel de noivado na Shimmer e ficou perfeito! A qualidade das pedras moissanite é impressionante, parece diamante de verdade. Atendimento personalizado e entrega rápida."</p>
+        <span class="depoimento-date">Fevereiro 2025</span>
+      </div>
+
+      <!-- Card 5 — Juliana Martins -->
+      <div class="depoimento-card">
+        <div class="depoimento-header">
+          <div class="autor-avatar">JM</div>
+          <div>
+            <strong>Juliana Martins</strong>
+            <div class="depoimento-stars">★★★★★</div>
+          </div>
+          <!-- Google badge -->
+          <svg class="google-badge" width="16" height="16" viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg" aria-label="Google">
+            <path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/>
+            <path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/>
+            <path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/>
+            <path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.18 1.48-4.97 2.29-8.16 2.29-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/>
+            <path fill="none" d="M0 0h48v48H0z"/>
+          </svg>
+        </div>
+        <p>"As alianças ficaram lindas demais! Feitas com muito carinho e perfeição. Ketelyn foi super prestativa em todo o processo. Produto chegou bem embalado e no prazo."</p>
+        <span class="depoimento-date">Abril 2025</span>
+      </div>
+
+      <!-- Card 6 — Ricardo Alves -->
+      <div class="depoimento-card">
+        <div class="depoimento-header">
+          <div class="autor-avatar">RA</div>
+          <div>
+            <strong>Ricardo Alves</strong>
+            <div class="depoimento-stars">★★★★★</div>
+          </div>
+          <!-- Google badge -->
+          <svg class="google-badge" width="16" height="16" viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg" aria-label="Google">
+            <path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/>
+            <path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/>
+            <path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/>
+            <path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.18 1.48-4.97 2.29-8.16 2.29-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/>
+            <path fill="none" d="M0 0h48v48H0z"/>
+          </svg>
+        </div>
+        <p>"Presenteei minha noiva com um anel solitário da Shimmer. Ela amou! A qualidade é excepcional e o preço é justo para o que oferece. Recomendo de olhos fechados!"</p>
+        <span class="depoimento-date">Maio 2025</span>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- CTA SECTION -->
+  <section class="aval-cta">
+    <h3>Sua experiência com a Shimmer merece ser compartilhada</h3>
+    <p>Deixe sua avaliação no Google e ajude outras pessoas a encontrar joias únicas</p>
+    <div class="aval-cta-btns">
+      <a href="https://www.google.com/maps/search/Shimmer+Joias+Curitiba" target="_blank" class="btn-gold-cta">
+        ★ Deixar Avaliação no Google
+      </a>
+      <a href="index.html" class="btn-outline-cta">
+        ← Voltar ao Site
+      </a>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer id="footer">
+    <div class="footer-top">
+      <div class="container footer-grid">
+        <div class="footer-brand">
+          <div class="footer-logo">
+            <img src="images/logo.png" alt="SHIMMER JOIAS" class="footer-logo-img" />
+          </div>
+          <p>Joias que traduzem emoções e celebram os momentos mais importantes da sua vida.</p>
+          <div class="footer-social">
+            <a href="https://www.instagram.com/shimmer_joias/" target="_blank" aria-label="Instagram">
+              <svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/></svg>
+            </a>
+            <a href="https://wa.me/554199441433" target="_blank" aria-label="WhatsApp">
+              <svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M11.5 2C6.262 2 2 6.262 2 11.5c0 1.91.553 3.685 1.508 5.183L2 22l5.47-1.487A9.459 9.459 0 0011.5 21c5.238 0 9.5-4.262 9.5-9.5S16.738 2 11.5 2zm0 17.4c-1.703 0-3.285-.48-4.618-1.313l-.33-.196-3.424.931.931-3.371-.215-.347A7.872 7.872 0 013.6 11.5C3.6 7.14 7.14 3.6 11.5 3.6c4.36 0 7.9 3.54 7.9 7.9 0 4.36-3.54 7.9-7.9 7.9z"/></svg>
+            </a>
+          </div>
+        </div>
+        <div class="footer-links">
+          <h5>Joias</h5>
+          <ul>
+            <li><a href="categoria.html?cat=aneis">Anéis</a></li>
+            <li><a href="categoria.html?cat=colares">Colares &amp; Pingentes</a></li>
+            <li><a href="categoria.html?cat=brincos">Brincos</a></li>
+            <li><a href="categoria.html?cat=pulseiras">Pulseiras</a></li>
+          </ul>
+        </div>
+        <div class="footer-links">
+          <h5>Atendimento</h5>
+          <ul>
+            <li><a href="index.html#sobre">Sobre a Shimmer</a></li>
+            <li><a href="index.html#contato">Contato</a></li>
+            <li><a href="https://wa.me/554199441433" target="_blank">WhatsApp</a></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <div class="container footer-bottom-inner">
+        <p>© 2026 Shimmer Joias. Todos os direitos reservados.</p>
+        <div class="footer-bottom-links">
+          <a href="#">Privacidade</a>
+          <a href="#">Termos de Uso</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- TOAST -->
+  <div id="toast-container"></div>
+
+  <!-- MODAL CHECKOUT -->
+  <div id="modal-checkout" class="modal-overlay" style="display:none">
+    <div class="modal-box checkout-box">
+      <button class="modal-close-btn" id="checkout-close">✕</button>
+      <p class="checkout-label">Seu pedido</p>
+      <h3 id="checkout-nome-produto"></h3>
+      <p id="checkout-preco-produto" class="checkout-preco"></p>
+      <p id="checkout-code-produto" class="checkout-code"></p>
+
+      <div class="checkout-opcoes" id="checkout-step1">
+        <p class="checkout-pergunta">Como deseja receber sua joia?</p>
+        <button class="checkout-opcao" id="opc-entrega" onclick="escolherEntrega('entrega')">
+          <span class="checkout-opcao-icon checkout-icon-entrega"></span>
+          <div>
+            <strong>Entrega</strong>
+            <span>Correios ou pessoal em Curitiba</span>
+          </div>
+        </button>
+        <button class="checkout-opcao" id="opc-retirada" onclick="escolherEntrega('retirada')">
+          <span class="checkout-opcao-icon checkout-icon-retirada"></span>
+          <div>
+            <strong>Retirada na Loja</strong>
+            <span>Retire pessoalmente em Curitiba</span>
+          </div>
+        </button>
+      </div>
+
+      <div class="checkout-info-entrega" id="checkout-info" style="display:none">
+        <div class="checkout-msg" id="checkout-msg-entrega"></div>
+        <a id="checkout-wa-btn" href="#" target="_blank" class="btn-primary checkout-wa-btn">
+          <svg viewBox="0 0 24 24" width="18" height="18" fill="white"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M11.5 2C6.262 2 2 6.262 2 11.5c0 1.91.553 3.685 1.508 5.183L2 22l5.47-1.487A9.459 9.459 0 0011.5 21c5.238 0 9.5-4.262 9.5-9.5S16.738 2 11.5 2zm0 17.4c-1.703 0-3.285-.48-4.618-1.313l-.33-.196-3.424.931.931-3.371-.215-.347A7.872 7.872 0 013.6 11.5C3.6 7.14 7.14 3.6 11.5 3.6c4.36 0 7.9 3.54 7.9 7.9 0 4.36-3.54 7.9-7.9 7.9z"/></svg>
+          Finalizar meu pedido pelo WhatsApp
+        </a>
+        <button onclick="voltarCheckout()" class="checkout-voltar">← Voltar</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // ===== HEADER SCROLL =====
+    const headerEl = document.getElementById('header');
+    window.addEventListener('scroll', () => {
+      headerEl.style.boxShadow = window.scrollY > 60 ? '0 2px 20px rgba(0,0,0,0.08)' : 'none';
+    });
+
+    // ===== MENU MOBILE =====
+    const hamburger = document.getElementById('hamburger');
+    const mobileMenu = document.getElementById('mobile-menu');
+    if (hamburger && mobileMenu) {
+      hamburger.addEventListener('click', () => {
+        hamburger.classList.toggle('open');
+        mobileMenu.classList.toggle('open');
+      });
+      mobileMenu.querySelectorAll('a').forEach(a => {
+        a.addEventListener('click', () => {
+          hamburger.classList.remove('open');
+          mobileMenu.classList.remove('open');
+        });
+      });
+    }
+
+    // ===== CHECKOUT (kept for modal completeness) =====
+    const WA_NUMBER = '554199441433';
+    let _checkoutProduto = {};
+    const modalCheckout = document.getElementById('modal-checkout');
+    document.getElementById('checkout-close').addEventListener('click', () => { modalCheckout.style.display = 'none'; });
+    modalCheckout.addEventListener('click', (e) => { if (e.target === modalCheckout) modalCheckout.style.display = 'none'; });
+
+    function escolherEntrega(tipo) {
+      document.getElementById('checkout-step1').style.display = 'none';
+      document.getElementById('checkout-info').style.display = 'flex';
+      const msgEl = document.getElementById('checkout-msg-entrega');
+      const waBtn = document.getElementById('checkout-wa-btn');
+      let msgWA = '';
+      if (tipo === 'entrega') {
+        msgEl.innerHTML = `<strong>Entrega segura para todo o Brasil</strong><p>Enviamos pelos Correios com rastreamento e embalagem especial, ou pessoalmente na região de Curitiba.</p><p style="font-size:11px;color:#aaa;margin-top:6px">Frete combinado via WhatsApp.</p>`;
+        msgWA = `Olá! Quero finalizar meu pedido com entrega:\n\n*${_checkoutProduto.name}*\nCódigo: ${_checkoutProduto.code}\nPreço: ${_checkoutProduto.preco}\n\nPode me informar as opções de frete?`;
+      } else {
+        msgEl.innerHTML = `<strong>Retirada em Curitiba</strong><p>Combinamos dia e horário de retirada pelo WhatsApp após a confirmação do pedido.</p>`;
+        msgWA = `Olá! Quero finalizar meu pedido com retirada:\n\n*${_checkoutProduto.name}*\nCódigo: ${_checkoutProduto.code}\nPreço: ${_checkoutProduto.preco}\n\nQuando posso retirar?`;
+      }
+      waBtn.href = `https://wa.me/${WA_NUMBER}?text=${encodeURIComponent(msgWA)}`;
+    }
+
+    function voltarCheckout() {
+      document.getElementById('checkout-step1').style.display = 'flex';
+      document.getElementById('checkout-info').style.display = 'none';
+    }
+  </script>
+
+</body>
+</html>
