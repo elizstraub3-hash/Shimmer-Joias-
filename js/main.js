@@ -128,6 +128,22 @@ formSenha.addEventListener('submit', (e) => {
   }
 });
 
+// ===== PROMO CHECKOUT TRIGGER =====
+function abrirCheckoutPromo(btn) {
+  _checkoutProduto = {
+    code: btn.dataset.code,
+    name: btn.dataset.name,
+    preco: btn.dataset.preco,
+  };
+  document.getElementById('checkout-nome-produto').textContent = _checkoutProduto.name;
+  document.getElementById('checkout-preco-produto').textContent = _checkoutProduto.preco;
+  document.getElementById('checkout-code-produto').textContent = _checkoutProduto.code;
+  document.getElementById('checkout-step1').style.display = 'flex';
+  document.getElementById('checkout-info').style.display = 'none';
+  document.querySelectorAll('.checkout-opcao').forEach(o => o.classList.remove('selected'));
+  document.getElementById('modal-checkout').style.display = 'flex';
+}
+
 // ===== MODAL CHECKOUT =====
 const WA_NUMBER = '554199441433';
 let _checkoutProduto = {};

@@ -1801,3 +1801,110 @@ ul { list-style: none; }
   .lb-prev { left: 8px; }
   .lb-next { right: 8px; }
 }
+
+/* ===== SEÇÃO PROMOÇÃO ===== */
+.secao-promo {
+  padding: 80px 0;
+  background: rgba(230,224,214,0.88);
+}
+.promo-inner {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 60px;
+  align-items: center;
+}
+.promo-visual { position: relative; }
+.promo-img-wrap {
+  position: relative;
+  width: 100%;
+  max-width: 440px;
+  margin: 0 auto;
+}
+.promo-img {
+  width: 100%;
+  aspect-ratio: 1;
+  object-fit: cover;
+  display: block;
+  border: 1px solid rgba(201,168,76,0.2);
+}
+.promo-badge-float {
+  position: absolute;
+  top: 20px; left: 20px;
+  background: var(--gold-dark);
+  color: var(--white);
+  font-size: 10px;
+  letter-spacing: 0.2em;
+  font-weight: 700;
+  text-transform: uppercase;
+  padding: 6px 14px;
+}
+.promo-titulo {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(32px, 4vw, 48px);
+  font-weight: 300;
+  color: #654321;
+  line-height: 1.15;
+  margin: 10px 0 16px;
+}
+.promo-titulo em { font-style: italic; color: var(--gold-dark); }
+.promo-material {
+  font-size: 13px;
+  color: var(--gray);
+  line-height: 1.7;
+  margin-bottom: 24px;
+}
+.promo-preco-wrap {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  flex-wrap: wrap;
+  margin-bottom: 6px;
+}
+.promo-de {
+  font-size: 14px;
+  color: var(--gray);
+  text-decoration: line-through;
+  letter-spacing: 0.02em;
+}
+.promo-por {
+  font-size: 28px;
+  font-weight: 700;
+  color: var(--gold-dark);
+  letter-spacing: 0.02em;
+}
+.promo-pix {
+  font-size: 12px;
+  color: #7a5c2e;
+  font-weight: 600;
+  margin-bottom: 24px;
+}
+.promo-btns {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+  flex-wrap: wrap;
+}
+.promo-link {
+  font-size: 12px;
+  color: var(--gold-dark);
+  letter-spacing: 0.08em;
+  font-weight: 500;
+  border-bottom: 1px solid rgba(160,125,48,0.4);
+  padding-bottom: 2px;
+  transition: color 0.2s;
+}
+.promo-link:hover { color: var(--gold); }
+/* Novidades / Mais Pedidos — usa .produtos base + override de fundo alternado */
+.secao-novidades { background: var(--white); }
+.secao-mais-pedidos { background: rgba(230,224,214,0.88); }
+.mais-pedidos-grid { grid-template-columns: repeat(3, 1fr); }
+/* Mobile */
+@media (max-width: 768px) {
+  .promo-inner { grid-template-columns: 1fr; gap: 32px; }
+  .promo-img-wrap { max-width: 100%; }
+  .promo-por { font-size: 22px; }
+  .mais-pedidos-grid { grid-template-columns: repeat(2, 1fr); }
+}
+@media (max-width: 480px) {
+  .mais-pedidos-grid { grid-template-columns: repeat(2, 1fr); gap: 12px; }
+}
