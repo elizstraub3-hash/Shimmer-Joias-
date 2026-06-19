@@ -1260,7 +1260,7 @@ ul { list-style: none; }
   justify-content: center;
   font-size: 13px;
   font-weight: 600;
-  flex-shrink: 0;
+  flex: none;
 }
 .depoimento-stars { color: #fbbc04; font-size: 14px; letter-spacing: 1px; }
 .google-badge { margin-left: auto; flex-shrink: 0; opacity: 0.8; }
@@ -1695,8 +1695,14 @@ ul { list-style: none; }
   .produtos-grid { grid-template-columns: 1fr 1fr; gap: 20px; }
   .dep-carousel-wrapper { gap: 0; }
   .dep-btn { display: none; }
-  .depoimentos-carousel { gap: 14px; padding: 0 4px; }
-  .depoimento-card { min-width: min(300px, calc(100vw - 56px)); }
+  .depoimentos-carousel { gap: 12px; padding: 0 4px; }
+  .depoimento-card {
+    min-width: min(260px, calc(100vw - 48px));
+    padding: 20px;
+    gap: 12px;
+  }
+  .depoimento-header strong { font-size: 13px; }
+  .depoimento-card p { font-size: 13px; line-height: 1.6; }
   .banner-luxo { flex-direction: column; }
   .banner-content { padding: 60px 20px; max-width: 100%; }
   .banner-visual { display: none; }
