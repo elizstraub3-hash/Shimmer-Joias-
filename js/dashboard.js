@@ -825,6 +825,12 @@ const PRODUTOS_DEFAULT = [
   { code: 'SH-1009', name: 'Aparador com Brilhantes', colecao: 'Coleção Casamento', material: 'Meia aliança · Ouro 18k · Moissanites cravejadas', preco: 'A consultar', precoOld: '', badge: '', foto: 'images/SH-1009.jpg', categoria: 'casamento' },
   { code: 'SH-1010', name: 'Par de Alianças Clássico', colecao: 'Coleção Casamento', material: 'Ouro amarelo 18k polido · Design atemporal', preco: 'A consultar', precoOld: '', badge: '', foto: 'images/SH-1010.jpg', categoria: 'casamento' },
   { code: 'SH-1011', name: 'Anel Sob Encomenda', colecao: 'Sob Encomenda', material: 'Ouro 18k · Design exclusivo personalizado', preco: 'A consultar', precoOld: '', badge: 'Exclusivo', foto: 'images/SH-1011.jpg', categoria: 'aneis-masculinos' },
+  { code: 'SH-1012', name: 'Aparador Marquise', colecao: 'Shimmer Joias', material: 'Pedras marquise · Ouro 18k', preco: 'A consultar', precoOld: '', badge: '', foto: 'images/SH-1012.jpg', categoria: 'aparadores' },
+  { code: 'SH-1013', name: 'Aparador Esmeralda', colecao: 'Shimmer Joias', material: 'Esmeraldas e moissanites · Ouro 18k', preco: 'A consultar', precoOld: '', badge: '', foto: 'images/SH-1013.jpg', categoria: 'aparadores' },
+  { code: 'SH-1014', name: 'Anel Solitário Clássico', colecao: 'Shimmer Joias', material: 'Pedra central 6 garras · Ouro 18k', preco: 'A consultar', precoOld: '', badge: '', foto: 'images/SH-1014.jpg', categoria: 'aneis' },
+  { code: 'SH-1015', name: 'Par de Alianças Lisas', colecao: 'Coleção Casamento', material: 'Ouro amarelo 18k polido · Design clássico', preco: 'A consultar', precoOld: '', badge: '', foto: 'images/SH-1015.jpg', categoria: 'casamento' },
+  { code: 'SH-1016', name: 'Colar Grumet', colecao: 'Shimmer Joias', material: 'Ouro 18k · Elo grumet', preco: 'A consultar', precoOld: '', badge: '', foto: 'images/SH-1016.jpg', categoria: 'colares' },
+  { code: 'SH-1017', name: 'Pulseira Grumet', colecao: 'Shimmer Joias', material: 'Ouro 18k · Elo grumet · Fecho caixa', preco: 'A consultar', precoOld: '', badge: '', foto: 'images/SH-1017a.jpg', fotos: ['images/SH-1017a.jpg', 'images/SH-1017b.jpg'], categoria: 'pulseiras' },
 ];
 
 function getProdutos() {

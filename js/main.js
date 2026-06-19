@@ -223,3 +223,71 @@ document.querySelectorAll('a[href^="#"]').forEach(a => {
     }
   });
 });
+
+// ===== LIGHTBOX =====
+(function () {
+  const lb = document.getElementById('lightbox');
+  const lbImg = document.getElementById('lb-img');
+  const lbCounter = document.getElementById('lb-counter');
+  const lbPrev = document.getElementById('lb-prev');
+  const lbNext = document.getElementById('lb-next');
+  if (!lb) return;
+
+  let gallery = [];
+  let current = 0;
+
+  function openLightbox(imgs, index) {
+    gallery = imgs;
+    current = index;
+    showFrame();
+    lb.classList.add('active');
+    document.body.style.overflow = 'hidden';
+  }
+
+  function closeLightbox() {
+    lb.classList.remove('active');
+    document.body.style.overflow = '';
+  }
+
+  function showFrame() {
+    lbImg.src = gallery[current];
+    lbImg.alt = '';
+    if (gallery.length > 1) {
+      lbCounter.textContent = `${current + 1} / ${gallery.length}`;
+      lbPrev.style.display = 'flex';
+      lbNext.style.display = 'flex';
+    } else {
+      lbCounter.textContent = '';
+      lbPrev.style.display = 'none';
+      lbNext.style.display = 'none';
+    }
+  }
+
+  function prev() { current = (current - 1 + gallery.length) % gallery.length; showFrame(); }
+  function next() { current = (current + 1) % gallery.length; showFrame(); }
+
+  document.getElementById('lb-close').addEventListener('click', closeLightbox);
+  document.getElementById('lb-overlay').addEventListener('click', closeLightbox);
+  lbPrev.addEventListener('click', prev);
+  lbNext.addEventListener('click', next);
+  document.addEventListener('keydown', (e) => {
+    if (!lb.classList.contains('active')) return;
+    if (e.key === 'Escape') closeLightbox();
+    if (e.key === 'ArrowLeft') prev();
+    if (e.key === 'ArrowRight') next();
+  });
+
+  function bindCards(scope) {
+    (scope || document).querySelectorAll('.produto-img-foto').forEach(imgDiv => {
+      imgDiv.addEventListener('click', (e) => {
+        if (e.target.closest('.produto-hover-btn')) return;
+        const gallery = imgDiv.dataset.gallery
+          ? imgDiv.dataset.gallery.split(',')
+          : [imgDiv.querySelector('img').src];
+        openLightbox(gallery, 0);
+      });
+    });
+  }
+  bindCards();
+  window._bindLightboxCards = bindCards;
+})();

@@ -151,6 +151,16 @@
   <!-- TOAST -->
   <div id="toast-container"></div>
 
+  <!-- LIGHTBOX -->
+  <div class="lightbox" id="lightbox" role="dialog" aria-modal="true" aria-label="Ampliar imagem">
+    <div class="lb-overlay" id="lb-overlay"></div>
+    <button class="lb-close" id="lb-close" aria-label="Fechar">×</button>
+    <button class="lb-nav lb-prev" id="lb-prev" aria-label="Anterior">‹</button>
+    <img class="lb-img" id="lb-img" src="" alt="" />
+    <button class="lb-nav lb-next" id="lb-next" aria-label="Próxima">›</button>
+    <div class="lb-counter" id="lb-counter"></div>
+  </div>
+
   <!-- MODAL CHECKOUT -->
   <div id="modal-checkout" class="modal-overlay" style="display:none">
     <div class="modal-box checkout-box">
@@ -219,6 +229,12 @@
       { code: 'SH-1009', name: 'Aparador com Brilhantes', colecao: 'Coleção Casamento', material: 'Meia aliança · Ouro 18k · Moissanites cravejadas', preco: 'A consultar', precoOld: '', badge: '', foto: 'images/SH-1009.jpg', categoria: 'casamento' },
       { code: 'SH-1010', name: 'Par de Alianças Clássico', colecao: 'Coleção Casamento', material: 'Ouro amarelo 18k polido · Design atemporal', preco: 'A consultar', precoOld: '', badge: '', foto: 'images/SH-1010.jpg', categoria: 'casamento' },
       { code: 'SH-1011', name: 'Anel Sob Encomenda', colecao: 'Sob Encomenda', material: 'Ouro 18k · Design exclusivo personalizado', preco: 'A consultar', precoOld: '', badge: 'Exclusivo', foto: 'images/SH-1011.jpg', categoria: 'aneis-masculinos' },
+      { code: 'SH-1012', name: 'Aparador Marquise', colecao: 'Shimmer Joias', material: 'Pedras marquise · Ouro 18k', preco: 'A consultar', precoOld: '', badge: '', foto: 'images/SH-1012.jpg', categoria: 'aparadores' },
+      { code: 'SH-1013', name: 'Aparador Esmeralda', colecao: 'Shimmer Joias', material: 'Esmeraldas e moissanites · Ouro 18k', preco: 'A consultar', precoOld: '', badge: '', foto: 'images/SH-1013.jpg', categoria: 'aparadores' },
+      { code: 'SH-1014', name: 'Anel Solitário Clássico', colecao: 'Shimmer Joias', material: 'Pedra central 6 garras · Ouro 18k', preco: 'A consultar', precoOld: '', badge: '', foto: 'images/SH-1014.jpg', categoria: 'aneis' },
+      { code: 'SH-1015', name: 'Par de Alianças Lisas', colecao: 'Coleção Casamento', material: 'Ouro amarelo 18k polido · Design clássico', preco: 'A consultar', precoOld: '', badge: '', foto: 'images/SH-1015.jpg', categoria: 'casamento' },
+      { code: 'SH-1016', name: 'Colar Grumet', colecao: 'Shimmer Joias', material: 'Ouro 18k · Elo grumet', preco: 'A consultar', precoOld: '', badge: '', foto: 'images/SH-1016.jpg', categoria: 'colares' },
+      { code: 'SH-1017', name: 'Pulseira Grumet', colecao: 'Shimmer Joias', material: 'Ouro 18k · Elo grumet · Fecho caixa', preco: 'A consultar', precoOld: '', badge: '', foto: 'images/SH-1017a.jpg', fotos: ['images/SH-1017a.jpg', 'images/SH-1017b.jpg'], categoria: 'pulseiras' },
     ];
 
     function getProdutos() {
@@ -251,7 +267,7 @@
     } else {
       grid.innerHTML = produtos.map(p => `
         <div class="produto-card" data-code="${p.code}" data-name="${p.name}" data-preco="${p.preco}">
-          <div class="produto-img${p.foto ? ' produto-img-foto' : ''}">
+          <div class="produto-img${p.foto ? ' produto-img-foto' : ''}"${p.fotos ? ` data-gallery="${p.fotos.join(',')}"` : (p.foto ? ` data-gallery="${p.foto}"` : '')}>
             <span class="produto-code-img">#${p.code}</span>
             ${p.foto
               ? `<img src="${p.foto}" alt="${p.name}" loading="lazy" />`
@@ -342,6 +358,43 @@
       entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); obs.unobserve(e.target); } });
     }, { threshold: 0.1 });
     revealEls.forEach(el => obs.observe(el));
+
+    // ===== LIGHTBOX =====
+    (function () {
+      const lb = document.getElementById('lightbox');
+      const lbImg = document.getElementById('lb-img');
+      const lbCounter = document.getElementById('lb-counter');
+      const lbPrev = document.getElementById('lb-prev');
+      const lbNext = document.getElementById('lb-next');
+      if (!lb) return;
+      let gallery = [], current = 0;
+      function openLightbox(imgs, idx) { gallery = imgs; current = idx; showFrame(); lb.classList.add('active'); document.body.style.overflow = 'hidden'; }
+      function closeLightbox() { lb.classList.remove('active'); document.body.style.overflow = ''; }
+      function showFrame() {
+        lbImg.src = gallery[current];
+        if (gallery.length > 1) { lbCounter.textContent = `${current + 1} / ${gallery.length}`; lbPrev.style.display = 'flex'; lbNext.style.display = 'flex'; }
+        else { lbCounter.textContent = ''; lbPrev.style.display = 'none'; lbNext.style.display = 'none'; }
+      }
+      function prev() { current = (current - 1 + gallery.length) % gallery.length; showFrame(); }
+      function next() { current = (current + 1) % gallery.length; showFrame(); }
+      document.getElementById('lb-close').addEventListener('click', closeLightbox);
+      document.getElementById('lb-overlay').addEventListener('click', closeLightbox);
+      lbPrev.addEventListener('click', prev);
+      lbNext.addEventListener('click', next);
+      document.addEventListener('keydown', (e) => {
+        if (!lb.classList.contains('active')) return;
+        if (e.key === 'Escape') closeLightbox();
+        if (e.key === 'ArrowLeft') prev();
+        if (e.key === 'ArrowRight') next();
+      });
+      document.querySelectorAll('.produto-img-foto').forEach(imgDiv => {
+        imgDiv.addEventListener('click', (e) => {
+          if (e.target.closest('.produto-hover-btn')) return;
+          const imgs = imgDiv.dataset.gallery ? imgDiv.dataset.gallery.split(',') : [imgDiv.querySelector('img').src];
+          openLightbox(imgs, 0);
+        });
+      });
+    })();
   </script>
 </body>
 </html>
