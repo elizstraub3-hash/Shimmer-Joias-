@@ -819,8 +819,9 @@ const PRODUTOS_DEFAULT = [
   { code: 'SH-1002', name: 'Colar Lágrima de Diamante', colecao: 'Coleção Aurora', material: 'Ouro 18k · Diamante 0,3ct', preco: 'R$ 3.200,00', precoOld: '', badge: '', foto: '', categoria: 'colares' },
   { code: 'SH-1003', name: 'Brincos Argola Cravejada', colecao: 'Botânica', material: 'Ouro 18k · Brilhantes', preco: 'R$ 1.785,00', precoOld: 'R$ 2.100,00', badge: '-15%', foto: '', categoria: 'brincos' },
   { code: 'SH-1004', name: 'Pulseira Tennis Diamantes', colecao: 'Eternidade', material: 'Ouro 18k · Diamantes 2,0ct', preco: 'R$ 12.500,00', precoOld: '', badge: '', foto: '', categoria: 'pulseiras' },
-  { code: 'SH-1005', name: 'Anel Esmeralda', colecao: 'Shimmer Joias', material: 'Pedra esmeralda natural de 5,5mm', preco: 'Consulte via WhatsApp', precoOld: '', badge: 'Novo', foto: 'images/SH-1005.jpg', categoria: 'aneis' },
-  { code: 'SH-1006', name: 'Anel Solitário 5,5mm', colecao: 'Shimmer Joias', material: '1 pedra central 5,5mm · 12 pedras 1,25mm · Todas moissanites', preco: 'Consulte via WhatsApp', precoOld: '', badge: '', foto: 'images/SH-1006.jpg', categoria: 'aneis' },
+  { code: 'SH-1005', name: 'Anel Esmeralda', colecao: 'Shimmer Joias', material: 'Pedra esmeralda natural de 5,5mm', preco: 'R$ 2.100,00', precoOld: '', badge: 'Novo', foto: 'images/SH-1005.jpg', categoria: 'aneis' },
+  { code: 'SH-1006', name: 'Anel Topo Redondo', colecao: 'Shimmer Joias', material: '14mm · 6 gramas · Pode ser personalizado', preco: 'R$ 6.000,00', precoOld: '', badge: '', foto: 'images/SH-1006.jpg', categoria: 'aneis' },
+  { code: 'SH-1007', name: 'Par de Alianças', colecao: 'Coleção Casamento', material: 'Feminina 5,5mm · 3 pedras moissanite 1,25mm · Masculina 3mm', preco: 'R$ 6.400,00', precoOld: '', badge: 'Destaque', foto: 'images/SH-1007.jpg', categoria: 'casamento' },
 ];
 
 function getProdutos() {
