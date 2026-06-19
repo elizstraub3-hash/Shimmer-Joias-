@@ -1628,10 +1628,14 @@ ul { list-style: none; }
   .colecao-casamento { padding: 60px 0 52px; }
 }
 @media (max-width: 480px) {
-  .categorias-grid { grid-template-columns: 1fr; }
-  .produtos-grid { grid-template-columns: 1fr; }
+  .categorias-grid { grid-template-columns: 1fr 1fr; }
+  .produtos-grid { grid-template-columns: 1fr 1fr; gap: 12px; }
+  .container { padding: 0 14px; }
   .form-row { grid-template-columns: 1fr; }
   .footer-grid { grid-template-columns: 1fr; }
   .personalizacao-inner { grid-template-columns: 1fr; gap: 40px; }
   .personalizacao-img::before { display: none; }
+  .produto-info h4 { font-size: 13px; }
+  .produto-material { font-size: 10px; }
+  .preco-atual { font-size: 14px; }
 }
