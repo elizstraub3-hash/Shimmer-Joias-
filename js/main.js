@@ -183,6 +183,19 @@ function voltarCheckout() {
   document.getElementById('checkout-info').style.display = 'none';
 }
 
+// ===== CAROUSEL DEPOIMENTOS =====
+const depCarousel = document.getElementById('depoimentos-carousel');
+const depPrev = document.getElementById('dep-prev');
+const depNext = document.getElementById('dep-next');
+if (depCarousel && depPrev && depNext) {
+  const cardWidth = () => {
+    const c = depCarousel.querySelector('.depoimento-card');
+    return c ? c.offsetWidth + 20 : 340;
+  };
+  depPrev.addEventListener('click', () => depCarousel.scrollBy({ left: -cardWidth(), behavior: 'smooth' }));
+  depNext.addEventListener('click', () => depCarousel.scrollBy({ left: cardWidth(), behavior: 'smooth' }));
+}
+
 // ===== PARCELAMENTO NOS CARDS =====
 document.querySelectorAll('.produto-card').forEach(card => {
   const preco = card.dataset.preco;
@@ -194,7 +207,7 @@ document.querySelectorAll('.produto-card').forEach(card => {
   if (!info) return;
   const p = document.createElement('p');
   p.className = 'produto-parcela';
-  p.textContent = `ou 10x de R$ ${parcela}`;
+  p.textContent = `ou 10x sem juros de R$ ${parcela}`;
   info.appendChild(p);
 });
 

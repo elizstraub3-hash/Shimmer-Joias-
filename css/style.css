@@ -1154,12 +1154,56 @@ ul { list-style: none; }
 }
 .google-stars-geral { color: #fbbc04; font-size: 20px; letter-spacing: 2px; }
 .google-rating-geral span { font-size: 13px; color: var(--gray); font-weight: 500; }
-.depoimentos-grid {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 24px;
+/* --- carousel wrapper --- */
+.dep-carousel-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 12px;
 }
+.depoimentos-carousel {
+  display: flex;
+  gap: 20px;
+  overflow: hidden;
+  scroll-snap-type: x mandatory;
+  scroll-behavior: smooth;
+  flex: 1;
+}
+.dep-btn {
+  width: 44px; height: 44px;
+  border-radius: 50%;
+  background: var(--dark);
+  color: var(--gold);
+  font-size: 24px;
+  border: 1px solid rgba(201,168,76,0.3);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  transition: all 0.25s;
+  line-height: 1;
+  padding-bottom: 2px;
+}
+.dep-btn:hover { background: var(--gold); color: var(--dark); }
+.dep-footer {
+  text-align: center;
+  margin-top: 36px;
+}
+.dep-cta {
+  display: inline-block;
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--gold-dark);
+  letter-spacing: 0.05em;
+  border-bottom: 1px solid rgba(160,125,48,0.4);
+  padding-bottom: 2px;
+  transition: color 0.2s, border-color 0.2s;
+}
+.dep-cta:hover { color: var(--gold); border-color: var(--gold); }
 .depoimento-card {
+  min-width: 320px;
+  flex-shrink: 0;
+  scroll-snap-align: start;
   padding: 32px;
   border: 1px solid rgba(0,0,0,0.08);
   background: var(--white);
@@ -1625,7 +1669,8 @@ ul { list-style: none; }
   .hero-content { padding: 0 20px; }
   .categorias-grid { grid-template-columns: 1fr 1fr; gap: 16px; }
   .produtos-grid { grid-template-columns: 1fr 1fr; gap: 20px; }
-  .depoimentos-grid { grid-template-columns: 1fr; }
+  .depoimento-card { min-width: calc(100vw - 120px); }
+  .dep-btn { width: 36px; height: 36px; font-size: 20px; }
   .banner-luxo { flex-direction: column; }
   .banner-content { padding: 60px 20px; max-width: 100%; }
   .banner-visual { display: none; }

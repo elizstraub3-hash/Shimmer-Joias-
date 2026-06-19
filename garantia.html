@@ -1,0 +1,569 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Garantia Vitalícia — SHIMMER JOIAS</title>
+  <link rel="preload" href="images/logo.png" as="image" />
+  <link rel="stylesheet" href="css/style.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Montserrat:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <style>
+    /* ===== PAGE-SPECIFIC STYLES ===== */
+
+    /* Announcement bar */
+    .announcement-bar {
+      background: var(--dark);
+      color: var(--gold-light);
+      text-align: center;
+      padding: 10px 20px;
+      font-size: 12px;
+      letter-spacing: 0.08em;
+    }
+
+    /* Back link bar */
+    .back-bar {
+      background: var(--cream);
+      border-bottom: 1px solid rgba(201,168,76,0.15);
+      padding: 10px 40px;
+    }
+    .back-bar a {
+      font-size: 12px;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--gray);
+      font-weight: 500;
+      transition: color 0.3s;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .back-bar a:hover { color: var(--gold); }
+
+    /* Hero */
+    .policy-hero {
+      background: var(--dark);
+      background-image: url('images/bg-pattern.jpg');
+      background-size: 300px;
+      background-repeat: repeat;
+      padding: 100px 40px 90px;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+    .policy-hero::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(135deg, rgba(26,26,26,0.92) 0%, rgba(26,26,26,0.85) 100%);
+    }
+    .policy-hero-content {
+      position: relative;
+      z-index: 1;
+      max-width: 700px;
+      margin: 0 auto;
+    }
+    .policy-hero-label {
+      font-family: 'Montserrat', sans-serif;
+      font-size: 11px;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 20px;
+      display: block;
+    }
+    .policy-hero h1 {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(2.8rem, 6vw, 4.5rem);
+      font-weight: 300;
+      color: #fff;
+      line-height: 1.1;
+      margin-bottom: 20px;
+    }
+    .policy-hero h1 em {
+      font-style: italic;
+      color: var(--gold-light);
+    }
+    .policy-hero-subtitle {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.25rem;
+      font-weight: 300;
+      font-style: italic;
+      color: rgba(255,255,255,0.7);
+      letter-spacing: 0.03em;
+    }
+    .policy-hero-ornament {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 16px;
+      margin-top: 32px;
+    }
+    .policy-hero-ornament span {
+      display: block;
+      width: 60px;
+      height: 1px;
+      background: linear-gradient(to right, transparent, var(--gold));
+    }
+    .policy-hero-ornament span:last-child {
+      background: linear-gradient(to left, transparent, var(--gold));
+    }
+    .policy-hero-ornament svg { color: var(--gold); }
+
+    /* Content layout */
+    .policy-content {
+      max-width: 860px;
+      margin: 0 auto;
+      padding: 72px 40px 80px;
+    }
+
+    /* Section blocks */
+    .policy-section {
+      margin-bottom: 56px;
+    }
+    .policy-section-label {
+      font-family: 'Montserrat', sans-serif;
+      font-size: 10px;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 10px;
+      display: block;
+    }
+    .policy-section h2 {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(1.7rem, 3vw, 2.2rem);
+      font-weight: 400;
+      color: var(--dark);
+      margin-bottom: 20px;
+      line-height: 1.2;
+    }
+    .policy-section p {
+      font-family: 'Montserrat', sans-serif;
+      font-size: 0.92rem;
+      line-height: 1.85;
+      color: #444;
+      margin-bottom: 14px;
+    }
+    .policy-divider {
+      width: 48px;
+      height: 1px;
+      background: var(--gold);
+      margin-bottom: 24px;
+    }
+
+    /* Lists */
+    .policy-list {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+    .policy-list li {
+      display: flex;
+      align-items: flex-start;
+      gap: 14px;
+      padding: 14px 0;
+      border-bottom: 1px solid rgba(201,168,76,0.12);
+      font-family: 'Montserrat', sans-serif;
+      font-size: 0.9rem;
+      line-height: 1.6;
+      color: #444;
+    }
+    .policy-list li:last-child { border-bottom: none; }
+    .policy-list li .list-icon {
+      flex-shrink: 0;
+      width: 22px;
+      height: 22px;
+      background: rgba(201,168,76,0.12);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-top: 1px;
+    }
+    .policy-list.covered .list-icon { background: rgba(201,168,76,0.15); }
+    .policy-list.not-covered .list-icon { background: rgba(90,90,90,0.1); }
+    .policy-list.not-covered .list-icon svg { stroke: #888; }
+
+    /* Steps */
+    .policy-steps {
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+    }
+    .policy-step {
+      display: flex;
+      align-items: flex-start;
+      gap: 24px;
+      padding: 24px 0;
+      border-bottom: 1px solid rgba(201,168,76,0.12);
+      position: relative;
+    }
+    .policy-step:last-child { border-bottom: none; }
+    .step-num {
+      flex-shrink: 0;
+      width: 44px;
+      height: 44px;
+      border: 1px solid var(--gold);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.2rem;
+      font-weight: 400;
+      color: var(--gold);
+      background: rgba(201,168,76,0.06);
+    }
+    .step-body strong {
+      display: block;
+      font-family: 'Montserrat', sans-serif;
+      font-size: 0.88rem;
+      font-weight: 600;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: var(--dark);
+      margin-bottom: 6px;
+    }
+    .step-body p {
+      font-family: 'Montserrat', sans-serif;
+      font-size: 0.88rem;
+      line-height: 1.7;
+      color: #555;
+      margin: 0;
+    }
+
+    /* Certificate card */
+    .certificate-card {
+      background: linear-gradient(135deg, rgba(201,168,76,0.08) 0%, rgba(201,168,76,0.04) 100%);
+      border: 1px solid rgba(201,168,76,0.25);
+      border-radius: 2px;
+      padding: 36px 40px;
+      display: flex;
+      align-items: center;
+      gap: 28px;
+    }
+    .certificate-icon {
+      flex-shrink: 0;
+      width: 64px;
+      height: 64px;
+      background: rgba(201,168,76,0.12);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .certificate-text h3 {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.4rem;
+      font-weight: 400;
+      color: var(--dark);
+      margin-bottom: 8px;
+    }
+    .certificate-text p {
+      font-family: 'Montserrat', sans-serif;
+      font-size: 0.87rem;
+      line-height: 1.7;
+      color: #555;
+      margin: 0;
+    }
+
+    /* CTA banner */
+    .policy-cta {
+      background: var(--dark);
+      padding: 56px 40px;
+      text-align: center;
+    }
+    .policy-cta h3 {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 2rem;
+      font-weight: 300;
+      color: #fff;
+      margin-bottom: 12px;
+    }
+    .policy-cta p {
+      font-family: 'Montserrat', sans-serif;
+      font-size: 0.88rem;
+      color: rgba(255,255,255,0.6);
+      margin-bottom: 28px;
+    }
+    .btn-gold {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      background: var(--gold);
+      color: var(--dark);
+      font-family: 'Montserrat', sans-serif;
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      padding: 16px 36px;
+      border: none;
+      cursor: pointer;
+      text-decoration: none;
+      transition: background 0.3s, transform 0.2s;
+    }
+    .btn-gold:hover {
+      background: var(--gold-dark);
+      transform: translateY(-1px);
+    }
+
+    /* Simple footer */
+    .policy-footer {
+      background: var(--dark);
+      border-top: 1px solid rgba(201,168,76,0.15);
+      padding: 28px 40px;
+      text-align: center;
+    }
+    .policy-footer p {
+      font-family: 'Montserrat', sans-serif;
+      font-size: 11px;
+      letter-spacing: 0.08em;
+      color: rgba(255,255,255,0.4);
+      margin-bottom: 10px;
+    }
+    .policy-footer a {
+      font-family: 'Montserrat', sans-serif;
+      font-size: 11px;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--gold);
+      text-decoration: none;
+      transition: color 0.3s;
+    }
+    .policy-footer a:hover { color: var(--gold-light); }
+
+    /* Responsive */
+    @media (max-width: 640px) {
+      .policy-hero { padding: 72px 20px 64px; }
+      .policy-content { padding: 48px 20px 56px; }
+      .back-bar { padding: 10px 20px; }
+      .certificate-card { flex-direction: column; text-align: center; }
+      .policy-cta { padding: 48px 20px; }
+      .policy-footer { padding: 24px 20px; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ANNOUNCEMENT BAR -->
+  <div class="announcement-bar">
+    <p>Frete grátis para todo o Brasil em compras acima de R$ 500 &nbsp;|&nbsp; Parcele em até 12x sem juros</p>
+  </div>
+
+  <!-- HEADER -->
+  <header id="header">
+    <div class="header-inner">
+      <nav class="nav-left">
+        <a href="index.html">Início</a>
+        <a href="index.html#joias">Joias</a>
+      </nav>
+
+      <a href="index.html" class="logo">
+        <img src="images/logo.png" alt="SHIMMER JOIAS" class="logo-img" />
+      </a>
+
+      <nav class="nav-right">
+        <a href="index.html#contato" class="nav-hide-mobile">Contato</a>
+        <a href="https://wa.me/554199441433" class="nav-icon" aria-label="WhatsApp" target="_blank">
+          <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M11.5 2C6.262 2 2 6.262 2 11.5c0 1.91.553 3.685 1.508 5.183L2 22l5.47-1.487A9.459 9.459 0 0011.5 21c5.238 0 9.5-4.262 9.5-9.5S16.738 2 11.5 2z"/></svg>
+        </a>
+      </nav>
+    </div>
+  </header>
+
+  <!-- BACK LINK BAR -->
+  <div class="back-bar">
+    <a href="index.html">← Voltar para a loja</a>
+  </div>
+
+  <!-- HERO -->
+  <section class="policy-hero">
+    <div class="policy-hero-content">
+      <span class="policy-hero-label">Shimmer Joias — Compromisso</span>
+      <h1>Garantia<br /><em>Vitalícia</em></h1>
+      <p class="policy-hero-subtitle">Nosso compromisso com você para sempre</p>
+      <div class="policy-hero-ornament">
+        <span></span>
+        <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.5">
+          <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+        </svg>
+        <span></span>
+      </div>
+    </div>
+  </section>
+
+  <!-- CONTENT -->
+  <main class="policy-content">
+
+    <!-- O que é -->
+    <section class="policy-section">
+      <span class="policy-section-label">Sobre a garantia</span>
+      <h2>O que é a Garantia Vitalícia Shimmer?</h2>
+      <div class="policy-divider"></div>
+      <p>A Garantia Vitalícia Shimmer é o nosso compromisso permanente com a qualidade de cada joia que sai de nossas mãos. Acreditamos que uma joia de verdade deve durar para sempre — e, por isso, assumimos a responsabilidade junto com você.</p>
+      <p>Nossa garantia cobre defeitos de fabricação, manchas de banho, problemas de folheação e falhas de solda em condições normais de uso. Independentemente de quando você comprou sua peça, estamos aqui para cuidar dela.</p>
+      <p>Esta garantia é pessoal e intransferível, válida para a pessoa que adquiriu a joia diretamente na Shimmer Joias.</p>
+    </section>
+
+    <!-- O que está coberto -->
+    <section class="policy-section">
+      <span class="policy-section-label">Cobertura</span>
+      <h2>O que está coberto?</h2>
+      <div class="policy-divider"></div>
+      <ul class="policy-list covered">
+        <li>
+          <div class="list-icon">
+            <svg viewBox="0 0 16 16" width="12" height="12" fill="none" stroke="#c9a84c" stroke-width="2"><polyline points="3 8 6.5 11.5 13 5"/></svg>
+          </div>
+          <span>Falhas na estrutura da peça — emendas, soldas ou uniões que apresentem defeito de fabricação</span>
+        </li>
+        <li>
+          <div class="list-icon">
+            <svg viewBox="0 0 16 16" width="12" height="12" fill="none" stroke="#c9a84c" stroke-width="2"><polyline points="3 8 6.5 11.5 13 5"/></svg>
+          </div>
+          <span>Desgaste prematuro do banho em condições normais de uso, sem exposição a agentes químicos</span>
+        </li>
+        <li>
+          <div class="list-icon">
+            <svg viewBox="0 0 16 16" width="12" height="12" fill="none" stroke="#c9a84c" stroke-width="2"><polyline points="3 8 6.5 11.5 13 5"/></svg>
+          </div>
+          <span>Pedras que se soltem por defeito de cravação — quando a falha for de origem no processo de fabricação</span>
+        </li>
+        <li>
+          <div class="list-icon">
+            <svg viewBox="0 0 16 16" width="12" height="12" fill="none" stroke="#c9a84c" stroke-width="2"><polyline points="3 8 6.5 11.5 13 5"/></svg>
+          </div>
+          <span>Reformas e polimentos com custo especial para clientes com garantia ativa — manutenção periódica com condições exclusivas</span>
+        </li>
+        <li>
+          <div class="list-icon">
+            <svg viewBox="0 0 16 16" width="12" height="12" fill="none" stroke="#c9a84c" stroke-width="2"><polyline points="3 8 6.5 11.5 13 5"/></svg>
+          </div>
+          <span>Avaliação gratuita da peça — sempre que desejar, envie sua joia para inspeção sem custo de diagnóstico</span>
+        </li>
+      </ul>
+    </section>
+
+    <!-- O que não está coberto -->
+    <section class="policy-section">
+      <span class="policy-section-label">Exclusões</span>
+      <h2>O que não está coberto?</h2>
+      <div class="policy-divider"></div>
+      <ul class="policy-list not-covered">
+        <li>
+          <div class="list-icon">
+            <svg viewBox="0 0 16 16" width="12" height="12" fill="none" stroke="#888" stroke-width="2"><line x1="4" y1="4" x2="12" y2="12"/><line x1="12" y1="4" x2="4" y2="12"/></svg>
+          </div>
+          <span>Danos causados por acidentes, quedas ou impactos físicos que resultem em amassados ou deformações</span>
+        </li>
+        <li>
+          <div class="list-icon">
+            <svg viewBox="0 0 16 16" width="12" height="12" fill="none" stroke="#888" stroke-width="2"><line x1="4" y1="4" x2="12" y2="12"/><line x1="12" y1="4" x2="4" y2="12"/></svg>
+          </div>
+          <span>Arranhões ou marcas superficiais decorrentes de mau uso ou armazenamento inadequado</span>
+        </li>
+        <li>
+          <div class="list-icon">
+            <svg viewBox="0 0 16 16" width="12" height="12" fill="none" stroke="#888" stroke-width="2"><line x1="4" y1="4" x2="12" y2="12"/><line x1="12" y1="4" x2="4" y2="12"/></svg>
+          </div>
+          <span>Perdas, extravios ou roubos da peça</span>
+        </li>
+        <li>
+          <div class="list-icon">
+            <svg viewBox="0 0 16 16" width="12" height="12" fill="none" stroke="#888" stroke-width="2"><line x1="4" y1="4" x2="12" y2="12"/><line x1="12" y1="4" x2="4" y2="12"/></svg>
+          </div>
+          <span>Reações com produtos químicos — perfumes, cremes, cloro, água sanitária e similares que acelerem o desgaste</span>
+        </li>
+        <li>
+          <div class="list-icon">
+            <svg viewBox="0 0 16 16" width="12" height="12" fill="none" stroke="#888" stroke-width="2"><line x1="4" y1="4" x2="12" y2="12"/><line x1="12" y1="4" x2="4" y2="12"/></svg>
+          </div>
+          <span>Redimensionamento de tamanho (alargamento ou diminuição de aro) — este serviço pode ser realizado com custo adicional</span>
+        </li>
+        <li>
+          <div class="list-icon">
+            <svg viewBox="0 0 16 16" width="12" height="12" fill="none" stroke="#888" stroke-width="2"><line x1="4" y1="4" x2="12" y2="12"/><line x1="12" y1="4" x2="4" y2="12"/></svg>
+          </div>
+          <span>Peças que tenham sido submetidas a reparos ou modificações fora das oficinas Shimmer Joias</span>
+        </li>
+      </ul>
+    </section>
+
+    <!-- Como acionar -->
+    <section class="policy-section">
+      <span class="policy-section-label">Processo</span>
+      <h2>Como acionar a garantia?</h2>
+      <div class="policy-divider"></div>
+      <p>Acionamos a garantia de forma simples e sem burocracia. Siga os três passos abaixo:</p>
+      <div class="policy-steps">
+        <div class="policy-step">
+          <div class="step-num">1</div>
+          <div class="step-body">
+            <strong>Entre em contato pelo WhatsApp</strong>
+            <p>Envie uma foto clara da peça e descreva o problema. Nossa equipe irá analisar e confirmar se o defeito está coberto pela garantia. Resposta em até 24 horas úteis.</p>
+          </div>
+        </div>
+        <div class="policy-step">
+          <div class="step-num">2</div>
+          <div class="step-body">
+            <strong>Envie a peça via Correios</strong>
+            <p>Após a aprovação, envie sua joia embalada com cuidado para o nosso endereço em Curitiba (Al. Dr. Muricy, 650 — 8º Andar). O frete de envio é por conta do cliente; o retorno da peça reparada é por conta da Shimmer.</p>
+          </div>
+        </div>
+        <div class="policy-step">
+          <div class="step-num">3</div>
+          <div class="step-body">
+            <strong>Avaliação e devolução</strong>
+            <p>Nossos joalheiros avaliam a peça e realizam o reparo ou a substituição necessária. Devolvemos sua joia em perfeitas condições em até 15 dias úteis após o recebimento, com rastreamento enviado pelo WhatsApp.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Certificado -->
+    <section class="policy-section">
+      <span class="policy-section-label">Documentação</span>
+      <h2>Certificado de Garantia</h2>
+      <div class="policy-divider"></div>
+      <div class="certificate-card">
+        <div class="certificate-icon">
+          <svg viewBox="0 0 48 48" width="36" height="36" fill="none" stroke="#c9a84c" stroke-width="1.5">
+            <rect x="8" y="6" width="32" height="36" rx="2"/>
+            <path d="M16 16h16M16 22h16M16 28h10"/>
+            <circle cx="34" cy="34" r="8" fill="rgba(201,168,76,0.15)" stroke="#c9a84c"/>
+            <polyline points="31 34 33.5 36.5 37 32" stroke="#c9a84c" stroke-width="1.5"/>
+          </svg>
+        </div>
+        <div class="certificate-text">
+          <h3>Certificado físico incluso em todas as peças</h3>
+          <p>Cada joia Shimmer acompanha um Certificado de Garantia Vitalícia impresso, com o código da peça, data da compra e assinatura da nossa equipe. Guarde este documento — ele é sua prova de garantia. Em caso de perda do certificado, o número do pedido também comprova a garantia em nosso sistema.</p>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- CTA SECTION -->
+  <section class="policy-cta">
+    <h3>Precisa acionar a garantia?</h3>
+    <p>Nossa equipe está pronta para atender você pelo WhatsApp</p>
+    <a href="https://wa.me/554199441433?text=Olá!%20Gostaria%20de%20acionar%20a%20garantia%20de%20uma%20peça%20Shimmer." target="_blank" class="btn-gold">
+      <svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor">
+        <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/>
+        <path d="M11.5 2C6.262 2 2 6.262 2 11.5c0 1.91.553 3.685 1.508 5.183L2 22l5.47-1.487A9.459 9.459 0 0011.5 21c5.238 0 9.5-4.262 9.5-9.5S16.738 2 11.5 2zm0 17.4c-1.703 0-3.285-.48-4.618-1.313l-.33-.196-3.424.931.931-3.371-.215-.347A7.872 7.872 0 013.6 11.5C3.6 7.14 7.14 3.6 11.5 3.6c4.36 0 7.9 3.54 7.9 7.9 0 4.36-3.54 7.9-7.9 7.9z"/>
+      </svg>
+      Falar pelo WhatsApp — (41) 9944-1433
+    </a>
+  </section>
+
+  <!-- FOOTER -->
+  <footer class="policy-footer">
+    <p>© 2026 Shimmer Joias. Todos os direitos reservados.</p>
+    <a href="index.html">← Voltar para a loja</a>
+  </footer>
+
+</body>
+</html>
