@@ -1417,7 +1417,15 @@ ul { list-style: none; }
   color: var(--gold);
   font-weight: 500;
 }
-.footer-logo-img { height: 36px; width: auto; filter: brightness(0) invert(1); }
+.footer-logo-img {
+  height: auto;
+  max-height: 56px;
+  width: auto;
+  max-width: 210px;
+  object-fit: contain;
+  display: block;
+  filter: brightness(0) invert(1);
+}
 .footer-brand p { font-size: 13px; line-height: 1.7; margin-bottom: 24px; }
 .footer-social { display: flex; gap: 16px; }
 .footer-social a {
@@ -1949,6 +1957,28 @@ ul { list-style: none; }
   .dep-footer { flex-direction: column; gap: 12px; }
 }
 
+/* ===== CONTATO MOBILE ===== */
+@media (max-width: 640px) {
+  .contato { padding: 64px 0; }
+  .contato-simples .contato-info-center { padding: 0 4px; }
+  .contato-simples .canal {
+    max-width: 100%;
+    padding: 14px 16px;
+    justify-content: flex-start;
+    gap: 12px;
+    text-align: left;
+  }
+  .contato-simples .contato-canais { width: 100%; }
+  .contato-endereco { max-width: 100%; padding: 14px 16px; }
+  .contato-info h2 { font-size: 32px; }
+}
+
+/* ===== FOOTER LOGO MOBILE ===== */
+@media (max-width: 768px) {
+  .footer-logo-img { max-height: 48px; }
+  .footer-grid { grid-template-columns: 1fr; gap: 32px; }
+}
+
 /* ===== CART DRAWER ===== */
 .cart-overlay {
   position: fixed; inset: 0; background: rgba(0,0,0,0.45);
@@ -2072,3 +2102,17 @@ ul { list-style: none; }
   text-decoration: none; transition: border-color 0.3s, background 0.3s;
 }
 .btn-white-outline:hover { border-color: #fff; background: rgba(255,255,255,0.08); }
+
+/* nav guia button */
+.nav-guia-btn {
+  font-size: 10px !important;
+  letter-spacing: 0.12em;
+  padding: 6px 12px !important;
+  border: 1px solid rgba(201,168,76,0.55) !important;
+  color: var(--gold) !important;
+  font-weight: 600 !important;
+  text-transform: uppercase;
+  white-space: nowrap;
+  transition: background 0.2s, color 0.2s;
+}
+.nav-guia-btn:hover { background: var(--gold) !important; color: #fff !important; }
