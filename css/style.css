@@ -3,7 +3,7 @@
 html { scroll-behavior: smooth; font-size: 16px; }
 body {
   font-family: 'Montserrat', sans-serif;
-  color: #1a1a1a;
+  color: #654321;
   background-color: #e6e0d6;
   background-image: url('../images/bg-pattern.jpg');
   background-size: 300px;
@@ -82,7 +82,7 @@ ul { list-style: none; }
   font-size: 12px;
   letter-spacing: 0.12em;
   text-transform: uppercase;
-  color: var(--dark);
+  color: #654321;
   font-weight: 500;
   position: relative;
 }
@@ -155,7 +155,7 @@ ul { list-style: none; }
   display: inline-block;
   padding: 14px 36px;
   background: var(--white);
-  color: var(--dark);
+  color: #654321;
   font-size: 11px;
   letter-spacing: 0.18em;
   text-transform: uppercase;
@@ -182,7 +182,7 @@ ul { list-style: none; }
   font-family: 'Cormorant Garamond', serif;
   font-size: 42px;
   font-weight: 300;
-  color: var(--dark);
+  color: #654321;
   line-height: 1.2;
 }
 .section-header h2 em { font-style: italic; color: var(--gold-dark); }
@@ -224,7 +224,7 @@ ul { list-style: none; }
   font-family: 'Cormorant Garamond', serif;
   font-size: clamp(28px, 5vw, 64px);
   font-weight: 300;
-  color: var(--dark);
+  color: #654321;
   line-height: 1.1;
   margin-bottom: 20px;
 }
@@ -278,7 +278,7 @@ ul { list-style: none; }
   padding: 10px 20px;
   font-size: 12px;
   letter-spacing: 0.08em;
-  color: var(--dark);
+  color: #654321;
   transition: background 0.15s, color 0.15s;
   text-transform: none;
   font-weight: 400;
@@ -327,7 +327,7 @@ ul { list-style: none; }
   font-family: 'Cormorant Garamond', serif;
   font-size: clamp(32px, 4vw, 52px);
   font-weight: 300;
-  color: var(--dark);
+  color: #654321;
   line-height: 1.15;
   margin-bottom: 16px;
   margin-top: 10px;
@@ -379,7 +379,7 @@ ul { list-style: none; }
   font-family: 'Cormorant Garamond', serif;
   font-size: 18px;
   font-weight: 400;
-  color: var(--dark);
+  color: #654321;
   margin-bottom: 4px;
 }
 .casamento-card.featured .casamento-card-info h4 { color: var(--gold-dark); }
@@ -734,7 +734,7 @@ ul { list-style: none; }
 .checkout-box { max-width: 440px; width: 100%; }
 .checkout-label { font-size: 11px; letter-spacing: 0.1em; color: var(--gold); font-weight: 600; text-transform: uppercase; margin-bottom: 4px; }
 .checkout-box h3 { font-family: 'Cormorant Garamond', serif; font-size: 22px; margin-bottom: 4px; }
-.checkout-preco { font-size: 18px; font-weight: 600; color: var(--dark); margin-bottom: 2px; }
+.checkout-preco { font-size: 18px; font-weight: 600; color: #654321; margin-bottom: 2px; }
 .checkout-code { font-size: 11px; color: #bbb; margin-bottom: 20px; }
 .checkout-pergunta { font-size: 13px; font-weight: 600; margin-bottom: 12px; color: #444; }
 .checkout-opcoes { display: flex; flex-direction: column; gap: 10px; }
@@ -762,7 +762,7 @@ ul { list-style: none; }
 .produto-preco {
   font-size: 16px;
   font-weight: 600;
-  color: var(--dark);
+  color: #654321;
   letter-spacing: 0.02em;
 }
 .preco-grupo { display: flex; gap: 10px; align-items: center; }
@@ -786,8 +786,8 @@ ul { list-style: none; }
 }
 .ver-mais { text-align: center; margin-top: 50px; }
 .ver-mais .btn-outline {
-  color: var(--dark);
-  border-color: var(--dark);
+  color: #654321;
+  border-color: #654321;
 }
 .ver-mais .btn-outline:hover { background: var(--dark); color: var(--white); }
 
@@ -898,7 +898,7 @@ ul { list-style: none; }
   font-family: 'Cormorant Garamond', serif;
   font-size: clamp(34px, 4vw, 50px);
   font-weight: 300;
-  color: var(--dark);
+  color: #654321;
   line-height: 1.15;
   margin-bottom: 20px;
 }
@@ -921,7 +921,7 @@ ul { list-style: none; }
   align-items: center;
   gap: 12px;
   font-size: 13px;
-  color: var(--dark);
+  color: #654321;
   line-height: 1.5;
 }
 .lista-dot {
@@ -1208,7 +1208,7 @@ ul { list-style: none; }
   line-height: 1;
   padding-bottom: 2px;
 }
-.dep-btn:hover { background: var(--gold); color: var(--dark); }
+.dep-btn:hover { background: var(--gold); color: #654321; }
 .dep-footer {
   text-align: center;
   margin-top: 36px;
@@ -1315,7 +1315,7 @@ ul { list-style: none; }
 .contato-endereco svg { flex-shrink: 0; margin-top: 2px; }
 .contato-endereco div { display: flex; flex-direction: column; gap: 2px; }
 .contato-endereco strong { font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--gold); font-weight: 600; }
-.contato-endereco span { font-size: 13px; color: var(--dark); line-height: 1.5; }
+.contato-endereco span { font-size: 13px; color: #654321; line-height: 1.5; }
 .ver-mapa { font-size: 11px; color: var(--gold); font-weight: 600; letter-spacing: 0.05em; margin-top: 4px; }
 .ver-mapa:hover { text-decoration: underline; }
 .footer-endereco {
@@ -1352,7 +1352,7 @@ ul { list-style: none; }
   text-transform: uppercase;
   font-weight: 600;
   margin-bottom: 8px;
-  color: var(--dark);
+  color: #654321;
 }
 .form-group input,
 .form-group select,
@@ -1363,7 +1363,7 @@ ul { list-style: none; }
   background: var(--white);
   font-family: 'Montserrat', sans-serif;
   font-size: 14px;
-  color: var(--dark);
+  color: #654321;
   outline: none;
   transition: border-color var(--transition);
   appearance: none;
@@ -1498,7 +1498,7 @@ ul { list-style: none; }
   line-height: 1;
   padding: 4px;
 }
-.modal-close:hover { color: var(--dark); }
+.modal-close:hover { color: #654321; }
 .modal-icon { margin-bottom: 16px; display: flex; justify-content: center; }
 .modal-box h3 {
   font-family: 'Cormorant Garamond', serif;
@@ -1672,7 +1672,7 @@ ul { list-style: none; }
   display: block;
   padding: 12px 24px;
   font-size: 14px;
-  color: var(--dark);
+  color: #654321;
   font-weight: 400;
   letter-spacing: 0.03em;
   border-bottom: none;
