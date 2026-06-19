@@ -1163,11 +1163,14 @@ ul { list-style: none; }
 .depoimentos-carousel {
   display: flex;
   gap: 20px;
-  overflow: hidden;
+  overflow-x: auto;
   scroll-snap-type: x mandatory;
   scroll-behavior: smooth;
   flex: 1;
+  scrollbar-width: none;
+  -webkit-overflow-scrolling: touch;
 }
+.depoimentos-carousel::-webkit-scrollbar { display: none; }
 .dep-btn {
   width: 44px; height: 44px;
   border-radius: 50%;
@@ -1669,8 +1672,10 @@ ul { list-style: none; }
   .hero-content { padding: 0 20px; }
   .categorias-grid { grid-template-columns: 1fr 1fr; gap: 16px; }
   .produtos-grid { grid-template-columns: 1fr 1fr; gap: 20px; }
-  .depoimento-card { min-width: calc(100vw - 120px); }
-  .dep-btn { width: 36px; height: 36px; font-size: 20px; }
+  .dep-carousel-wrapper { gap: 0; }
+  .dep-btn { display: none; }
+  .depoimentos-carousel { gap: 14px; padding: 0 4px; }
+  .depoimento-card { min-width: min(300px, calc(100vw - 56px)); }
   .banner-luxo { flex-direction: column; }
   .banner-content { padding: 60px 20px; max-width: 100%; }
   .banner-visual { display: none; }
