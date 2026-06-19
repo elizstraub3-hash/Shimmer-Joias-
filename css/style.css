@@ -1926,7 +1926,9 @@ ul { list-style: none; }
 }
 .promo-badge-hot {
   background: #7a2020;
-  letter-spacing: 0.15em;
+  letter-spacing: 0.12em;
+  font-size: 9px;
+  padding: 7px 16px;
 }
 .promo-titulo {
   font-family: 'Cormorant Garamond', serif;
