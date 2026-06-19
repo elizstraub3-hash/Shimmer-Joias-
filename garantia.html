@@ -16,10 +16,20 @@
     .announcement-bar {
       background: var(--dark);
       color: var(--gold-light);
-      text-align: center;
-      padding: 10px 20px;
+      padding: 10px 0;
       font-size: 12px;
       letter-spacing: 0.08em;
+      overflow: hidden;
+    }
+    .announcement-track {
+      display: flex;
+      width: max-content;
+      animation: marqueeScroll 30s linear infinite;
+    }
+    .announcement-track span { white-space: nowrap; padding-right: 80px; }
+    @keyframes marqueeScroll {
+      from { transform: translateX(0); }
+      to { transform: translateX(-50%); }
     }
 
     /* Back link bar */
@@ -350,7 +360,10 @@
 
   <!-- ANNOUNCEMENT BAR -->
   <div class="announcement-bar">
-    <p>Frete grátis para todo o Brasil em compras acima de R$ 500 &nbsp;|&nbsp; Parcele em até 12x sem juros</p>
+    <div class="announcement-track">
+      <span>Garantia vitalícia em qualquer peça &nbsp;✦&nbsp; Temos peças a pronta entrega &nbsp;✦&nbsp; Garantia vitalícia em qualquer peça &nbsp;✦&nbsp; Temos peças a pronta entrega &nbsp;✦&nbsp; </span>
+      <span>Garantia vitalícia em qualquer peça &nbsp;✦&nbsp; Temos peças a pronta entrega &nbsp;✦&nbsp; Garantia vitalícia em qualquer peça &nbsp;✦&nbsp; Temos peças a pronta entrega &nbsp;✦&nbsp; </span>
+    </div>
   </div>
 
   <!-- HEADER -->
