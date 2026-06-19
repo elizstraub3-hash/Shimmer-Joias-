@@ -4,7 +4,7 @@ html { scroll-behavior: smooth; font-size: 16px; }
 body {
   font-family: 'Montserrat', sans-serif;
   color: #1a1a1a;
-  background-color: #faf8f3;
+  background-color: #e6e0d6;
   background-image: url('../images/bg-pattern.jpg');
   background-size: 300px;
   background-repeat: repeat;
@@ -19,7 +19,7 @@ ul { list-style: none; }
   --gold: #c9a84c;
   --gold-light: #e8d5a3;
   --gold-dark: #a07d30;
-  --cream: #faf8f3;
+  --cream: #e6e0d6;
   --dark: #1a1a1a;
   --gray: #6b6b6b;
   --light-gray: #f5f5f5;
@@ -45,7 +45,7 @@ ul { list-style: none; }
   position: sticky;
   top: 0;
   z-index: 1000;
-  background: rgba(255,255,255,0.97);
+  background: rgba(230,224,214,0.97);
   backdrop-filter: blur(10px);
   border-bottom: 1px solid rgba(201,168,76,0.15);
   transition: all var(--transition);
@@ -58,6 +58,7 @@ ul { list-style: none; }
   margin: 0 auto;
   padding: 0 40px;
   height: 72px;
+  position: relative;
 }
 .nav-left, .nav-right {
   display: flex;
@@ -88,15 +89,17 @@ ul { list-style: none; }
 
 /* LOGO */
 .logo {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
   display: flex;
   align-items: center;
   justify-content: center;
-  flex-shrink: 0;
 }
 .logo-img {
-  height: 44px;
+  height: 42px;
   width: auto;
-  max-width: 180px;
+  max-width: 200px;
   display: block;
   object-fit: contain;
 }
@@ -381,7 +384,7 @@ ul { list-style: none; }
 }
 
 /* ===== CATEGORIAS ===== */
-.categorias { padding: 100px 0; background: rgba(250,248,243,0.82); }
+.categorias { padding: 100px 0; background: rgba(230,224,214,0.88); }
 .categorias-grid {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
@@ -631,7 +634,7 @@ ul { list-style: none; }
 }
 
 /* ===== PRODUTOS ===== */
-.produtos { padding: 100px 0; background: rgba(250,248,243,0.82); }
+.produtos { padding: 100px 0; background: rgba(230,224,214,0.88); }
 .produtos-grid {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
@@ -1135,7 +1138,7 @@ ul { list-style: none; }
 .sobre-texto .btn-primary { margin-top: 16px; }
 
 /* ===== DEPOIMENTOS ===== */
-.depoimentos { padding: 100px 0; background: rgba(250,248,243,0.82); }
+.depoimentos { padding: 100px 0; background: rgba(230,224,214,0.88); }
 .google-rating-geral {
   display: flex;
   align-items: center;
@@ -1197,7 +1200,7 @@ ul { list-style: none; }
 .depoimento-card.featured p { color: rgba(255,255,255,0.75); }
 
 /* ===== CONTATO ===== */
-.contato { padding: 100px 0; background: rgba(250,248,243,0.82); }
+.contato { padding: 100px 0; background: rgba(230,224,214,0.88); }
 .contato-simples { display: flex; justify-content: center; align-items: center; }
 .contato-simples .contato-info-center { text-align: center; max-width: 560px; width: 100%; margin: 0 auto; }
 .contato-simples .contato-canais { justify-content: center; align-items: center; }

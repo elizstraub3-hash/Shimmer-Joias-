@@ -824,6 +824,7 @@ const PRODUTOS_DEFAULT = [
   { code: 'SH-1007', name: 'Par de Alianças', colecao: 'Coleção Casamento', material: 'Feminina 5,5mm · 3 pedras moissanite 1,25mm · Masculina 3mm', preco: 'R$ 6.400,00', precoOld: '', badge: 'Destaque', foto: 'images/SH-1007.jpg', categoria: 'casamento' },
   { code: 'SH-1009', name: 'Aparador com Brilhantes', colecao: 'Coleção Casamento', material: 'Meia aliança · Ouro 18k · Moissanites cravejadas', preco: 'A consultar', precoOld: '', badge: '', foto: 'images/SH-1009.jpg', categoria: 'casamento' },
   { code: 'SH-1010', name: 'Par de Alianças Clássico', colecao: 'Coleção Casamento', material: 'Ouro amarelo 18k polido · Design atemporal', preco: 'A consultar', precoOld: '', badge: '', foto: 'images/SH-1010.jpg', categoria: 'casamento' },
+  { code: 'SH-1011', name: 'Anel Sob Encomenda', colecao: 'Sob Encomenda', material: 'Ouro 18k · Design exclusivo personalizado', preco: 'A consultar', precoOld: '', badge: 'Exclusivo', foto: 'images/SH-1011.jpg', categoria: 'aneis-masculinos' },
 ];
 
 function getProdutos() {
