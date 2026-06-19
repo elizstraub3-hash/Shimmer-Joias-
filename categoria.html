@@ -78,8 +78,9 @@
         <a href="#" class="nav-icon nav-hide-mobile" aria-label="Buscar">
           <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
         </a>
-        <a href="#" class="nav-icon" aria-label="Sacola">
+        <a href="#" class="nav-icon" id="cart-btn" aria-label="Sacola">
           <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 01-8 0"/></svg>
+          <span class="cart-badge" id="cart-badge" style="display:none">0</span>
         </a>
         <button class="hamburger" id="hamburger" aria-label="Menu">
           <span></span><span></span><span></span>
@@ -262,6 +263,7 @@
       { code: 'SH-1016', name: 'Colar Grumet', colecao: 'Shimmer Joias', material: 'Ouro 18k · Elo grumet', preco: 'A consultar', precoOld: '', badge: '', foto: 'images/SH-1016.jpg', categoria: 'colares' },
       { code: 'SH-1017', name: 'Pulseira Grumet', colecao: 'Shimmer Joias', material: 'Ouro 18k · Elo grumet · Fecho caixa', preco: 'A consultar', precoOld: '', badge: '', foto: 'images/SH-1017a.jpg', fotos: ['images/SH-1017a.jpg', 'images/SH-1017b.jpg'], categoria: 'pulseiras' },
       { code: 'SH-1018', name: 'Anel Solitário 7 Pedras', colecao: 'Shimmer Joias', material: '7 moissanites 1,25mm · Pedra central 4mm · Ouro 18k', preco: 'R$ 1.550,00', precoOld: 'R$ 1.700,00', badge: '-9%', foto: 'images/SH-1018.jpg', categoria: 'aneis' },
+      { code: 'SH-1019', name: 'Anel com Turmalina Rosa', colecao: 'Shimmer Joias', material: '7 pedras laterais 2,25mm · Pedra central 2,50mm turmalina rosa · Ouro 18k', preco: 'A consultar', precoOld: '', badge: 'Novo', foto: 'images/SH-1019.jpg', fotos: [], categoria: 'aneis' },
     ];
 
     function getProdutos() {
@@ -444,6 +446,112 @@
         });
       });
     })();
+    // ===== CARRINHO (categoria) =====
+    (function() {
+      let shimmerCart = JSON.parse(localStorage.getItem('shimmer_cart') || '[]');
+      function cartParsePreco(p) { if (!p || p === 'A consultar') return null; return parseFloat(p.replace(/[R$\s.]/g, '').replace(',', '.')); }
+      function cartFmt(v) { return 'R$ ' + v.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 }); }
+      function cartSave() { localStorage.setItem('shimmer_cart', JSON.stringify(shimmerCart)); }
+      function cartUpdateBadge() {
+        const total = shimmerCart.reduce((s, i) => s + i.qty, 0);
+        document.querySelectorAll('.cart-badge').forEach(b => { b.textContent = total; b.style.display = total > 0 ? 'flex' : 'none'; });
+      }
+      function cartOpen() { document.getElementById('cart-overlay')?.classList.add('open'); document.getElementById('cart-drawer')?.classList.add('open'); document.body.style.overflow = 'hidden'; }
+      function cartClose() { document.getElementById('cart-overlay')?.classList.remove('open'); document.getElementById('cart-drawer')?.classList.remove('open'); document.body.style.overflow = ''; }
+      function cartRender() {
+        const itemsEl = document.getElementById('cart-items');
+        const emptyEl = document.getElementById('cart-empty');
+        const footerEl = document.getElementById('cart-footer');
+        const countEl = document.getElementById('cart-count-label');
+        const subtotalEl = document.getElementById('cart-subtotal-value');
+        if (!itemsEl) return;
+        const totalItems = shimmerCart.reduce((s, i) => s + i.qty, 0);
+        if (countEl) countEl.textContent = totalItems === 1 ? '1 item' : `${totalItems} itens`;
+        if (shimmerCart.length === 0) { itemsEl.innerHTML = ''; if (emptyEl) emptyEl.style.display = 'flex'; if (footerEl) footerEl.style.display = 'none'; return; }
+        if (emptyEl) emptyEl.style.display = 'none';
+        if (footerEl) footerEl.style.display = 'block';
+        itemsEl.innerHTML = shimmerCart.map(item => `
+          <div class="cart-item">
+            ${item.img ? `<img src="${item.img}" alt="${item.name}" class="cart-item-img" />` : '<div class="cart-item-img"></div>'}
+            <div class="cart-item-body">
+              <div class="cart-item-name">${item.name}</div>
+              <div class="cart-item-code">#${item.code}</div>
+              <div class="cart-item-preco">${item.preco}</div>
+              <div class="cart-item-controls">
+                <button class="cart-qty-btn" onclick="_cartChgQty('${item.code}',-1)">−</button>
+                <span class="cart-qty-num">${item.qty}</span>
+                <button class="cart-qty-btn" onclick="_cartChgQty('${item.code}',1)">+</button>
+                <button class="cart-item-remove" onclick="_cartRem('${item.code}')" title="Remover">×</button>
+              </div>
+            </div>
+          </div>`).join('');
+        let total = 0; let hasC = false;
+        shimmerCart.forEach(i => { const v = cartParsePreco(i.preco); if (v) total += v * i.qty; else hasC = true; });
+        if (subtotalEl) subtotalEl.textContent = total > 0 ? cartFmt(total) + (hasC ? ' + consultar' : '') : 'A consultar';
+      }
+      function cartAdd(code, name, preco, img) {
+        const ex = shimmerCart.find(i => i.code === code);
+        if (ex) ex.qty++; else shimmerCart.push({ code, name, preco, img: img || '', qty: 1 });
+        cartSave(); cartUpdateBadge(); cartRender(); cartOpen();
+        const t = document.createElement('div'); t.className = 'toast success';
+        t.textContent = `${name} adicionada à sacola!`;
+        document.getElementById('toast-container')?.appendChild(t);
+        setTimeout(() => { t.style.opacity='0'; t.style.transition='opacity 0.4s'; setTimeout(()=>t.remove(),400); }, 3000);
+      }
+      window._cartRem = function(code) { shimmerCart = shimmerCart.filter(i => i.code !== code); cartSave(); cartUpdateBadge(); cartRender(); };
+      window._cartChgQty = function(code, delta) { const item = shimmerCart.find(i => i.code === code); if (!item) return; item.qty += delta; if (item.qty <= 0) window._cartRem(code); else { cartSave(); cartUpdateBadge(); cartRender(); } };
+      window.checkoutCart = function() {
+        if (!shimmerCart.length) return;
+        let msg = 'Olá! Quero finalizar meu pedido:\n\n';
+        shimmerCart.forEach(i => { msg += `*${i.name}* (#${i.code})\nPreço: ${i.preco}${i.qty > 1 ? ` × ${i.qty}` : ''}\n\n`; });
+        let total = 0; let hasC = false;
+        shimmerCart.forEach(i => { const v = cartParsePreco(i.preco); if (v) total += v * i.qty; else hasC = true; });
+        if (total > 0) msg += `Subtotal: ${cartFmt(total)}${hasC ? ' + itens a consultar' : ''}\n\n`;
+        msg += 'Pode me informar as opções de envio para meu CEP?';
+        window.open(`https://wa.me/554199441433?text=${encodeURIComponent(msg)}`, '_blank');
+      };
+      // btn-sacola → carrinho
+      document.querySelectorAll('.btn-sacola').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+          e.stopPropagation();
+          const card = btn.closest('.produto-card');
+          if (!card) return;
+          const img = card.querySelector('.produto-img-foto')?.dataset.gallery?.split(',')[0] || '';
+          cartAdd(card.dataset.code || '', card.dataset.name || '', card.dataset.preco || 'A consultar', img);
+        });
+      });
+      document.getElementById('cart-btn')?.addEventListener('click', (e) => { e.preventDefault(); cartOpen(); });
+      document.getElementById('cart-close')?.addEventListener('click', cartClose);
+      document.getElementById('cart-overlay')?.addEventListener('click', cartClose);
+      cartUpdateBadge(); cartRender();
+    })();
   </script>
+
+  <!-- CART DRAWER -->
+  <div class="cart-overlay" id="cart-overlay"></div>
+  <div class="cart-drawer" id="cart-drawer">
+    <div class="cart-header">
+      <h3>Minha Sacola</h3>
+      <span class="cart-count-label" id="cart-count-label">0 itens</span>
+      <button class="cart-close" id="cart-close">×</button>
+    </div>
+    <div class="cart-items" id="cart-items"></div>
+    <div class="cart-empty" id="cart-empty">
+      <svg viewBox="0 0 24 24" width="48" height="48" fill="none" stroke="#ddd" stroke-width="1.2"><path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 01-8 0"/></svg>
+      <p>Sua sacola está vazia</p>
+    </div>
+    <div class="cart-footer" id="cart-footer">
+      <div class="cart-subtotal">
+        <span>Subtotal estimado</span>
+        <span class="cart-subtotal-value" id="cart-subtotal-value">—</span>
+      </div>
+      <p class="cart-obs">* Frete calculado pelo WhatsApp conforme seu CEP</p>
+      <button class="btn-primary cart-wa-btn" onclick="checkoutCart()">
+        <svg viewBox="0 0 24 24" width="18" height="18" fill="white"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M11.5 2C6.262 2 2 6.262 2 11.5c0 1.91.553 3.685 1.508 5.183L2 22l5.47-1.487A9.459 9.459 0 0011.5 21c5.238 0 9.5-4.262 9.5-9.5S16.738 2 11.5 2zm0 17.4c-1.703 0-3.285-.48-4.618-1.313l-.33-.196-3.424.931.931-3.371-.215-.347A7.872 7.872 0 013.6 11.5C3.6 7.14 7.14 3.6 11.5 3.6c4.36 0 7.9 3.54 7.9 7.9 0 4.36-3.54 7.9-7.9 7.9z"/></svg>
+        Finalizar pelo WhatsApp
+      </button>
+    </div>
+  </div>
+  <div id="toast-container"></div>
 </body>
 </html>

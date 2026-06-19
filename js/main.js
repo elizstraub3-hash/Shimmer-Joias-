@@ -128,47 +128,133 @@ formSenha.addEventListener('submit', (e) => {
   }
 });
 
-// ===== PROMO CHECKOUT TRIGGER =====
-function abrirCheckoutPromo(btn) {
-  _checkoutProduto = {
-    code: btn.dataset.code,
-    name: btn.dataset.name,
-    preco: btn.dataset.preco,
-  };
-  document.getElementById('checkout-nome-produto').textContent = _checkoutProduto.name;
-  document.getElementById('checkout-preco-produto').textContent = _checkoutProduto.preco;
-  document.getElementById('checkout-code-produto').textContent = _checkoutProduto.code;
-  document.getElementById('checkout-step1').style.display = 'flex';
-  document.getElementById('checkout-info').style.display = 'none';
-  document.querySelectorAll('.checkout-opcao').forEach(o => o.classList.remove('selected'));
-  document.getElementById('modal-checkout').style.display = 'flex';
+// ===== CARRINHO =====
+const WA_NUMBER = '554199441433';
+let shimmerCart = JSON.parse(localStorage.getItem('shimmer_cart') || '[]');
+
+function cartParsePreco(p) {
+  if (!p || p === 'A consultar') return null;
+  return parseFloat(p.replace(/[R$\s.]/g, '').replace(',', '.'));
+}
+function cartFmt(v) {
+  return 'R$ ' + v.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+}
+function cartSave() { localStorage.setItem('shimmer_cart', JSON.stringify(shimmerCart)); }
+
+function cartUpdateBadge() {
+  const total = shimmerCart.reduce((s, i) => s + i.qty, 0);
+  document.querySelectorAll('.cart-badge').forEach(b => {
+    b.textContent = total;
+    b.style.display = total > 0 ? 'flex' : 'none';
+  });
 }
 
-// ===== MODAL CHECKOUT =====
-const WA_NUMBER = '554199441433';
-let _checkoutProduto = {};
+function cartOpen() {
+  document.getElementById('cart-overlay')?.classList.add('open');
+  document.getElementById('cart-drawer')?.classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+function cartClose() {
+  document.getElementById('cart-overlay')?.classList.remove('open');
+  document.getElementById('cart-drawer')?.classList.remove('open');
+  document.body.style.overflow = '';
+}
 
-const modalCheckout = document.getElementById('modal-checkout');
-document.getElementById('checkout-close').addEventListener('click', () => { modalCheckout.style.display = 'none'; });
-modalCheckout.addEventListener('click', (e) => { if (e.target === modalCheckout) modalCheckout.style.display = 'none'; });
+function cartRender() {
+  const itemsEl = document.getElementById('cart-items');
+  const emptyEl = document.getElementById('cart-empty');
+  const footerEl = document.getElementById('cart-footer');
+  const countEl = document.getElementById('cart-count-label');
+  const subtotalEl = document.getElementById('cart-subtotal-value');
+  if (!itemsEl) return;
 
+  const totalItems = shimmerCart.reduce((s, i) => s + i.qty, 0);
+  if (countEl) countEl.textContent = totalItems === 1 ? '1 item' : `${totalItems} itens`;
+
+  if (shimmerCart.length === 0) {
+    itemsEl.innerHTML = '';
+    if (emptyEl) emptyEl.style.display = 'flex';
+    if (footerEl) footerEl.style.display = 'none';
+    return;
+  }
+  if (emptyEl) emptyEl.style.display = 'none';
+  if (footerEl) footerEl.style.display = 'block';
+
+  itemsEl.innerHTML = shimmerCart.map(item => `
+    <div class="cart-item">
+      ${item.img ? `<img src="${item.img}" alt="${item.name}" class="cart-item-img" />` : '<div class="cart-item-img"></div>'}
+      <div class="cart-item-body">
+        <div class="cart-item-name">${item.name}</div>
+        <div class="cart-item-code">#${item.code}</div>
+        <div class="cart-item-preco">${item.preco}</div>
+        <div class="cart-item-controls">
+          <button class="cart-qty-btn" onclick="cartChangeQty('${item.code}',-1)">−</button>
+          <span class="cart-qty-num">${item.qty}</span>
+          <button class="cart-qty-btn" onclick="cartChangeQty('${item.code}',1)">+</button>
+          <button class="cart-item-remove" onclick="cartRemove('${item.code}')" title="Remover">×</button>
+        </div>
+      </div>
+    </div>
+  `).join('');
+
+  let total = 0; let hasConsultar = false;
+  shimmerCart.forEach(i => { const v = cartParsePreco(i.preco); if (v) total += v * i.qty; else hasConsultar = true; });
+  if (subtotalEl) subtotalEl.textContent = total > 0 ? cartFmt(total) + (hasConsultar ? ' + consultar' : '') : 'A consultar';
+}
+
+function cartAdd(code, name, preco, img) {
+  const ex = shimmerCart.find(i => i.code === code);
+  if (ex) ex.qty++; else shimmerCart.push({ code, name, preco, img: img || '', qty: 1 });
+  cartSave(); cartUpdateBadge(); cartRender(); cartOpen();
+  showToast(`${name} adicionada à sacola!`, 'success');
+}
+
+function cartRemove(code) {
+  shimmerCart = shimmerCart.filter(i => i.code !== code);
+  cartSave(); cartUpdateBadge(); cartRender();
+}
+
+function cartChangeQty(code, delta) {
+  const item = shimmerCart.find(i => i.code === code);
+  if (!item) return;
+  item.qty += delta;
+  if (item.qty <= 0) cartRemove(code); else { cartSave(); cartUpdateBadge(); cartRender(); }
+}
+
+function checkoutCart() {
+  if (!shimmerCart.length) return;
+  let msg = 'Olá! Quero finalizar meu pedido:\n\n';
+  shimmerCart.forEach(i => { msg += `*${i.name}* (#${i.code})\nPreço: ${i.preco}${i.qty > 1 ? ` × ${i.qty}` : ''}\n\n`; });
+  let total = 0; let hasC = false;
+  shimmerCart.forEach(i => { const v = cartParsePreco(i.preco); if (v) total += v * i.qty; else hasC = true; });
+  if (total > 0) msg += `Subtotal: ${cartFmt(total)}${hasC ? ' + itens a consultar' : ''}\n\n`;
+  msg += 'Pode me informar as opções de envio para meu CEP?';
+  window.open(`https://wa.me/${WA_NUMBER}?text=${encodeURIComponent(msg)}`, '_blank');
+}
+
+// btn-sacola → carrinho
 document.querySelectorAll('.btn-sacola').forEach(btn => {
-  btn.addEventListener('click', () => {
+  btn.addEventListener('click', (e) => {
+    e.stopPropagation();
     const card = btn.closest('.produto-card');
-    _checkoutProduto = {
-      code: card.dataset.code || '',
-      name: card.dataset.name || '',
-      preco: card.dataset.preco || '',
-    };
-    document.getElementById('checkout-nome-produto').textContent = _checkoutProduto.name;
-    document.getElementById('checkout-preco-produto').textContent = _checkoutProduto.preco;
-    document.getElementById('checkout-code-produto').textContent = _checkoutProduto.code;
-    document.getElementById('checkout-step1').style.display = 'flex';
-    document.getElementById('checkout-info').style.display = 'none';
-    document.querySelectorAll('.checkout-opcao').forEach(o => o.classList.remove('selected'));
-    modalCheckout.style.display = 'flex';
+    if (!card) return;
+    const img = card.querySelector('.produto-img-foto')?.dataset.gallery?.split(',')[0] || '';
+    cartAdd(card.dataset.code || '', card.dataset.name || '', card.dataset.preco || 'A consultar', img);
   });
 });
+
+// Promo button
+function abrirCheckoutPromo(btn) {
+  cartAdd(btn.dataset.code, btn.dataset.name, btn.dataset.preco, `images/${btn.dataset.code}.jpg`);
+}
+
+// cart UI events
+document.getElementById('cart-btn')?.addEventListener('click', (e) => { e.preventDefault(); cartOpen(); });
+document.getElementById('cart-close')?.addEventListener('click', cartClose);
+document.getElementById('cart-overlay')?.addEventListener('click', cartClose);
+
+cartUpdateBadge();
+cartRender();
 
 function escolherEntrega(tipo) {
   document.getElementById('checkout-step1').style.display = 'none';

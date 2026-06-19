@@ -832,6 +832,7 @@ const PRODUTOS_DEFAULT = [
   { code: 'SH-1016', name: 'Colar Grumet', colecao: 'Shimmer Joias', material: 'Ouro 18k · Elo grumet', preco: 'A consultar', precoOld: '', badge: '', foto: 'images/SH-1016.jpg', categoria: 'colares' },
   { code: 'SH-1017', name: 'Pulseira Grumet', colecao: 'Shimmer Joias', material: 'Ouro 18k · Elo grumet · Fecho caixa', preco: 'A consultar', precoOld: '', badge: '', foto: 'images/SH-1017a.jpg', fotos: ['images/SH-1017a.jpg', 'images/SH-1017b.jpg'], categoria: 'pulseiras' },
   { code: 'SH-1018', name: 'Anel Solitário 7 Pedras', colecao: 'Shimmer Joias', material: '7 moissanites 1,25mm · Pedra central 4mm · Ouro 18k', preco: 'R$ 1.550,00', precoOld: 'R$ 1.700,00', badge: '-9%', foto: 'images/SH-1018.jpg', categoria: 'aneis' },
+  { code: 'SH-1019', name: 'Anel com Turmalina Rosa', colecao: 'Shimmer Joias', material: '7 pedras laterais 2,25mm · Pedra central 2,50mm turmalina rosa · Ouro 18k', preco: 'A consultar', precoOld: '', badge: 'Novo', foto: 'images/SH-1019.jpg', fotos: [], categoria: 'aneis' },
 ];
 
 function getProdutos() {

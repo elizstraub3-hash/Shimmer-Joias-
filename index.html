@@ -36,9 +36,12 @@
             <a href="categoria.html?cat=brincos">Brincos</a>
             <div class="dropdown-divider"></div>
             <a href="categoria.html?cat=casamento" class="dropdown-destaque">Coleções Especiais — Alianças</a>
+            <div class="dropdown-divider"></div>
+            <a href="escolher-joia.html">✦ Como Escolher sua Joia</a>
           </div>
         </div>
         <a href="#novidades">Novidades</a>
+        <a href="escolher-joia.html" class="nav-hide-mobile">Guia</a>
         <a href="#sobre">Sobre</a>
       </nav>
 
@@ -49,8 +52,9 @@
 
       <nav class="nav-right">
         <a href="#contato" class="nav-hide-mobile">Contato</a>
-        <a href="#" class="nav-icon" aria-label="Sacola">
+        <a href="#" class="nav-icon" id="cart-btn" aria-label="Sacola">
           <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 01-8 0"/></svg>
+          <span class="cart-badge" id="cart-badge" style="display:none">0</span>
         </a>
         <!-- HAMBÚRGUER MOBILE -->
         <button class="hamburger" id="hamburger" aria-label="Menu">
@@ -72,6 +76,7 @@
       <a href="#colecoes" class="mobile-destaque">Coleções Especiais — Alianças</a>
       <div class="mobile-divider"></div>
       <a href="#novidades">Novidades</a>
+      <a href="escolher-joia.html">✦ Como Escolher sua Joia</a>
       <a href="#sobre">Sobre</a>
       <a href="#contato">Contato</a>
     </div>
@@ -426,6 +431,77 @@
     </div>
   </section>
 
+  <!-- ===== FORMATURAS & CONQUISTAS ===== -->
+  <section class="produtos secao-formaturas" id="formaturas">
+    <div class="container">
+      <div class="section-header">
+        <p class="section-label">Momentos Especiais</p>
+        <h2>Formaturas &amp; <em>Conquistas</em></h2>
+        <p style="font-family:'Montserrat',sans-serif;font-size:0.9rem;color:#7a6a5a;margin-top:12px;max-width:520px;margin-left:auto;margin-right:auto;">Cada conquista merece ser celebrada com uma joia única. Peças criadas para marcar os momentos mais especiais da sua trajetória.</p>
+      </div>
+      <div class="produtos-grid mais-pedidos-grid">
+        <div class="produto-card" data-code="SH-1019" data-name="Anel com Turmalina Rosa" data-preco="A consultar">
+          <div class="produto-img produto-img-foto" data-gallery="images/SH-1019.jpg">
+            <span class="produto-code-img">#SH-1019</span>
+            <img src="images/SH-1019.jpg" alt="Anel com Turmalina Rosa" loading="lazy" />
+            <div class="produto-badge">Novo</div>
+            <div class="produto-hover-btn"><button class="btn-sacola">Adicionar à Sacola</button></div>
+          </div>
+          <div class="produto-info">
+            <p class="produto-colecao">Shimmer Joias</p>
+            <h4>Anel com Turmalina Rosa</h4>
+            <p class="produto-material">7 pedras laterais 2,25mm · Pedra central 2,50mm turmalina rosa · Ouro 18k</p>
+            <p class="produto-preco">A consultar</p>
+          </div>
+        </div>
+        <div class="produto-card" data-code="SH-1001" data-name="Anel Solitário" data-preco="R$ 2.260,00">
+          <div class="produto-img produto-img-foto" data-gallery="images/SH-1001.jpg">
+            <span class="produto-code-img">#SH-1001</span>
+            <img src="images/SH-1001.jpg" alt="Anel Solitário Shimmer" loading="lazy" />
+            <div class="produto-badge sale">-22%</div>
+            <div class="produto-hover-btn"><button class="btn-sacola">Adicionar à Sacola</button></div>
+          </div>
+          <div class="produto-info">
+            <p class="produto-colecao">Shimmer Joias</p>
+            <h4>Anel Solitário</h4>
+            <p class="produto-material">Pedra central 6,0mm · 12 laterais 1,25mm · Todas moissanites</p>
+            <div class="preco-grupo">
+              <p class="produto-preco-old">R$ 2.909,00</p>
+              <p class="produto-preco">R$ 2.260,00</p>
+            </div>
+          </div>
+        </div>
+        <div class="produto-card" data-code="SH-1005" data-name="Anel Esmeralda" data-preco="R$ 2.100,00">
+          <div class="produto-img produto-img-foto" data-gallery="images/SH-1005.jpg">
+            <span class="produto-code-img">#SH-1005</span>
+            <img src="images/SH-1005.jpg" alt="Anel Esmeralda" loading="lazy" />
+            <div class="produto-badge">Novo</div>
+            <div class="produto-hover-btn"><button class="btn-sacola">Adicionar à Sacola</button></div>
+          </div>
+          <div class="produto-info">
+            <p class="produto-colecao">Shimmer Joias</p>
+            <h4>Anel Esmeralda</h4>
+            <p class="produto-material">Pedra esmeralda natural 5,5mm · Ouro 18k</p>
+            <p class="produto-preco">R$ 2.100,00</p>
+          </div>
+        </div>
+      </div>
+      <div class="ver-mais">
+        <a href="categoria.html?cat=aneis" class="btn-outline" style="color:#654321;border-color:#654321">Ver todos os anéis →</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- BANNER ESCOLHER JOIA -->
+  <section class="banner-escolher">
+    <div class="banner-escolher-inner">
+      <span>Guia de Compra</span>
+      <h3>Não sabe qual joia<br /><em>escolher?</em></h3>
+      <p>Criamos um guia completo passo a passo para você encontrar o formato, largura e acabamento perfeito para sua aliança ou anel.</p>
+      <a href="escolher-joia.html" class="btn-white-outline">Ver o guia completo →</a>
+    </div>
+  </section>
+
   <!-- BANNER LUXO -->
   <section class="banner-luxo">
     <div class="banner-content">
@@ -659,6 +735,7 @@
             <li><a href="#sobre">Sobre a Shimmer</a></li>
             <li><a href="#contato">Contato</a></li>
             <li><a href="https://wa.me/554199441433" target="_blank">WhatsApp</a></li>
+            <li><a href="escolher-joia.html">Como Escolher sua Joia</a></li>
             <li><a href="garantia.html" target="_blank">Garantia Vitalícia</a></li>
             <li><a href="entrega.html" target="_blank">Política de Entrega</a></li>
           </ul>
@@ -748,6 +825,32 @@
     <img class="lb-img" id="lb-img" src="" alt="" />
     <button class="lb-nav lb-next" id="lb-next" aria-label="Próxima">›</button>
     <div class="lb-counter" id="lb-counter"></div>
+  </div>
+
+  <!-- CART DRAWER -->
+  <div class="cart-overlay" id="cart-overlay"></div>
+  <div class="cart-drawer" id="cart-drawer">
+    <div class="cart-header">
+      <h3>Minha Sacola</h3>
+      <span class="cart-count-label" id="cart-count-label">0 itens</span>
+      <button class="cart-close" id="cart-close">×</button>
+    </div>
+    <div class="cart-items" id="cart-items"></div>
+    <div class="cart-empty" id="cart-empty">
+      <svg viewBox="0 0 24 24" width="48" height="48" fill="none" stroke="#ddd" stroke-width="1.2"><path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 01-8 0"/></svg>
+      <p>Sua sacola está vazia</p>
+    </div>
+    <div class="cart-footer" id="cart-footer">
+      <div class="cart-subtotal">
+        <span>Subtotal estimado</span>
+        <span class="cart-subtotal-value" id="cart-subtotal-value">—</span>
+      </div>
+      <p class="cart-obs">* Frete calculado pelo WhatsApp conforme seu CEP</p>
+      <button class="btn-primary cart-wa-btn" onclick="checkoutCart()">
+        <svg viewBox="0 0 24 24" width="18" height="18" fill="white"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M11.5 2C6.262 2 2 6.262 2 11.5c0 1.91.553 3.685 1.508 5.183L2 22l5.47-1.487A9.459 9.459 0 0011.5 21c5.238 0 9.5-4.262 9.5-9.5S16.738 2 11.5 2zm0 17.4c-1.703 0-3.285-.48-4.618-1.313l-.33-.196-3.424.931.931-3.371-.215-.347A7.872 7.872 0 013.6 11.5C3.6 7.14 7.14 3.6 11.5 3.6c4.36 0 7.9 3.54 7.9 7.9 0 4.36-3.54 7.9-7.9 7.9z"/></svg>
+        Finalizar pelo WhatsApp
+      </button>
+    </div>
   </div>
 
   <script src="js/main.js"></script>
