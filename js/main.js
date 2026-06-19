@@ -209,6 +209,10 @@ document.querySelectorAll('.produto-card').forEach(card => {
   p.className = 'produto-parcela';
   p.textContent = `ou 10x sem juros de R$ ${parcela}`;
   info.appendChild(p);
+  const pix = document.createElement('p');
+  pix.className = 'produto-pix';
+  pix.textContent = '5% de desconto no Pix';
+  info.appendChild(pix);
 });
 
 // ===== SMOOTH ANCHOR SCROLL =====
