@@ -1291,10 +1291,11 @@ ul { list-style: none; }
 
 /* ===== CONTATO ===== */
 .contato { padding: 100px 0; background: rgba(230,224,214,0.88); }
-.contato-simples { display: flex; justify-content: center; align-items: center; }
+.contato-simples { display: flex !important; justify-content: center; align-items: center; }
 .contato-simples .contato-info-center { text-align: center; max-width: 560px; width: 100%; margin: 0 auto; }
-.contato-simples .contato-canais { justify-content: center; align-items: center; }
+.contato-simples .contato-canais { display: flex; flex-direction: column; align-items: center; }
 .contato-simples .canal { justify-content: center; max-width: 380px; margin: 0 auto; width: 100%; }
+.contato-simples .contato-endereco { margin: 0 auto 24px; max-width: 380px; }
 .contato-inner {
   display: grid;
   grid-template-columns: 1fr 1fr;
