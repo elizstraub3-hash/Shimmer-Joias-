@@ -1846,8 +1846,52 @@ ul { list-style: none; }
 
 /* ===== SEÇÃO PROMOÇÃO ===== */
 .secao-promo {
-  padding: 80px 0;
   background: rgba(230,224,214,0.88);
+  overflow: hidden;
+}
+.promo-slider { position: relative; }
+.promo-slide {
+  display: none;
+  padding: 80px 0;
+  animation: promoFade 0.5s ease;
+}
+.promo-slide.active { display: block; }
+@keyframes promoFade {
+  from { opacity: 0; transform: translateX(24px); }
+  to   { opacity: 1; transform: translateX(0); }
+}
+.promo-nav {
+  position: absolute;
+  top: 50%; transform: translateY(-50%);
+  background: rgba(255,255,255,0.88);
+  border: 1px solid rgba(201,168,76,0.35);
+  color: #654321; font-size: 30px;
+  width: 46px; height: 46px;
+  cursor: pointer; z-index: 10;
+  display: flex; align-items: center; justify-content: center;
+  transition: all 0.2s; line-height: 1; padding: 0;
+}
+.promo-nav:hover { background: #fff; border-color: var(--gold); }
+.promo-prev { left: 20px; }
+.promo-next { right: 20px; }
+.promo-dots {
+  position: absolute; bottom: 18px;
+  left: 50%; transform: translateX(-50%);
+  display: flex; gap: 8px; z-index: 10;
+}
+.promo-dot {
+  width: 8px; height: 8px; border-radius: 50%;
+  border: none; background: rgba(101,67,33,0.22);
+  cursor: pointer; transition: background 0.3s; padding: 0;
+}
+.promo-dot.active { background: var(--gold-dark); }
+.promo-chamada {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(17px, 1.8vw, 22px);
+  color: #7a5c2e;
+  font-style: italic;
+  margin-bottom: 2px;
+  letter-spacing: 0.01em;
 }
 .promo-inner {
   display: grid;
@@ -1879,6 +1923,10 @@ ul { list-style: none; }
   font-weight: 700;
   text-transform: uppercase;
   padding: 6px 14px;
+}
+.promo-badge-hot {
+  background: #7a2020;
+  letter-spacing: 0.15em;
 }
 .promo-titulo {
   font-family: 'Cormorant Garamond', serif;
@@ -1945,6 +1993,9 @@ ul { list-style: none; }
   .promo-inner { grid-template-columns: 1fr; gap: 32px; }
   .promo-img-wrap { max-width: 100%; }
   .promo-por { font-size: 22px; }
+  .promo-nav { width: 36px; height: 36px; font-size: 22px; }
+  .promo-prev { left: 8px; }
+  .promo-next { right: 8px; }
   .mais-pedidos-grid { grid-template-columns: repeat(2, 1fr); }
 }
 @media (max-width: 480px) {

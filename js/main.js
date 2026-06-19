@@ -397,3 +397,31 @@ document.querySelectorAll('a[href^="#"]').forEach(a => {
   bindCards();
   window._bindLightboxCards = bindCards;
 })();
+
+// ===== PROMO SLIDER =====
+(function () {
+  const slides = document.querySelectorAll('.promo-slide');
+  const dots   = document.querySelectorAll('.promo-dot');
+  if (!slides.length) return;
+
+  let current = 0;
+  let timer;
+
+  function go(n) {
+    slides[current].classList.remove('active');
+    dots[current].classList.remove('active');
+    current = ((n % slides.length) + slides.length) % slides.length;
+    slides[current].classList.add('active');
+    dots[current].classList.add('active');
+  }
+
+  function startAuto() {
+    clearInterval(timer);
+    timer = setInterval(() => go(current + 1), 5500);
+  }
+
+  window.promoNav = (dir) => { go(current + dir); startAuto(); };
+  window.promoGo  = (n)   => { go(n);            startAuto(); };
+
+  startAuto();
+})();

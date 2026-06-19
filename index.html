@@ -263,30 +263,74 @@
     </div>
   </section>
 
-  <!-- ===== ANÉIS EM PROMOÇÃO ===== -->
+  <!-- ===== PROMOÇÃO — SLIDE ===== -->
   <section class="secao-promo" id="promocao">
-    <div class="container">
-      <div class="promo-inner">
-        <div class="promo-visual">
-          <div class="promo-img-wrap">
-            <img src="images/SH-1014.jpg" alt="Anel Solitário Clássico em Promoção" class="promo-img" />
-            <div class="promo-badge-float">PROMOÇÃO</div>
+    <div class="promo-slider" id="promoSlider">
+
+      <!-- SLIDE 1 — carro-chefe -->
+      <div class="promo-slide active">
+        <div class="container">
+          <div class="promo-inner">
+            <div class="promo-visual">
+              <div class="promo-img-wrap">
+                <img src="images/SH-1014.jpg" alt="Anel Solitário Clássico" class="promo-img" />
+                <div class="promo-badge-float promo-badge-hot">★ MAIS VENDIDO</div>
+              </div>
+            </div>
+            <div class="promo-info">
+              <p class="section-label">Oferta Especial</p>
+              <p class="promo-chamada">O anel que ela sempre sonhou.</p>
+              <h2 class="promo-titulo">Anel Solitário<br><em>Clássico</em></h2>
+              <p class="promo-material">Pedra central 5mm &nbsp;·&nbsp; Moissanite &nbsp;·&nbsp; Ouro 18k</p>
+              <div class="promo-preco-wrap">
+                <span class="promo-de">De R$ 1.200,00</span>
+                <span class="promo-por">R$ 999,00</span>
+              </div>
+              <p class="promo-pix">+ 5% de desconto no Pix</p>
+              <div class="promo-btns">
+                <button class="btn-primary btn-sacola" data-code="SH-1014" data-name="Anel Solitário Clássico" data-preco="R$ 999,00" onclick="abrirCheckoutPromo(this)">Quero este anel</button>
+                <a href="categoria.html?cat=aneis" class="promo-link">Ver todos os anéis →</a>
+              </div>
+            </div>
           </div>
         </div>
-        <div class="promo-info">
-          <p class="section-label">Oferta Especial</p>
-          <h2 class="promo-titulo">Anel Solitário<br><em>Clássico</em></h2>
-          <p class="promo-material">Pedra central 5mm &nbsp;·&nbsp; Moissanite &nbsp;·&nbsp; Ouro 18k</p>
-          <div class="promo-preco-wrap">
-            <span class="promo-de">De R$ 1.200,00</span>
-            <span class="promo-por">R$ 999,00</span>
-          </div>
-          <p class="promo-pix">+ 5% de desconto no Pix</p>
-          <div class="promo-btns">
-            <button class="btn-primary btn-sacola" data-code="SH-1014" data-name="Anel Solitário Clássico" data-preco="R$ 999,00" onclick="abrirCheckoutPromo(this)">Quero este anel</button>
-            <a href="categoria.html?cat=aneis" class="promo-link">Ver todos os anéis →</a>
+      </div>
+
+      <!-- SLIDE 2 -->
+      <div class="promo-slide">
+        <div class="container">
+          <div class="promo-inner">
+            <div class="promo-visual">
+              <div class="promo-img-wrap">
+                <img src="images/SH-1018.jpg" alt="Anel Solitário 7 Pedras" class="promo-img" />
+                <div class="promo-badge-float">PROMOÇÃO</div>
+              </div>
+            </div>
+            <div class="promo-info">
+              <p class="section-label">Oferta Especial</p>
+              <p class="promo-chamada">Sete pedras. Uma declaração inesquecível.</p>
+              <h2 class="promo-titulo">Anel Solitário<br><em>7 Pedras</em></h2>
+              <p class="promo-material">7 moissanites &nbsp;·&nbsp; Pedra central 4mm &nbsp;·&nbsp; Ouro 18k</p>
+              <div class="promo-preco-wrap">
+                <span class="promo-de">De R$ 1.700,00</span>
+                <span class="promo-por">R$ 1.550,00</span>
+              </div>
+              <p class="promo-pix">+ 5% de desconto no Pix</p>
+              <div class="promo-btns">
+                <button class="btn-primary btn-sacola" data-code="SH-1018" data-name="Anel Solitário 7 Pedras" data-preco="R$ 1.550,00" onclick="abrirCheckoutPromo(this)">Quero este anel</button>
+                <a href="categoria.html?cat=aneis" class="promo-link">Ver todos os anéis →</a>
+              </div>
+            </div>
           </div>
         </div>
+      </div>
+
+      <!-- Controles -->
+      <button class="promo-nav promo-prev" onclick="promoNav(-1)" aria-label="Anterior">&#8249;</button>
+      <button class="promo-nav promo-next" onclick="promoNav(1)" aria-label="Próximo">&#8250;</button>
+      <div class="promo-dots">
+        <button class="promo-dot active" onclick="promoGo(0)" aria-label="Slide 1"></button>
+        <button class="promo-dot" onclick="promoGo(1)" aria-label="Slide 2"></button>
       </div>
     </div>
   </section>
