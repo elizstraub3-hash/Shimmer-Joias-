@@ -225,6 +225,14 @@
       try { return JSON.parse(localStorage.getItem(PRODUTOS_KEY)) || PRODUTOS_DEFAULT; } catch { return PRODUTOS_DEFAULT; }
     }
 
+    function calcParcela(preco) {
+      if (!preco || preco === 'A consultar') return '';
+      const val = parseFloat(preco.replace(/[R$\s.]/g, '').replace(',', '.'));
+      if (isNaN(val) || val <= 0) return '';
+      const p = (val / 10).toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+      return `<p class="produto-parcela">ou 10x de R$ ${p}</p>`;
+    }
+
     // ===== INIT CATEGORY PAGE =====
     const params = new URLSearchParams(location.search);
     const cat = params.get('cat') || 'aneis';
@@ -261,8 +269,8 @@
             <h4>${p.name}</h4>
             <p class="produto-material">${p.material}</p>
             ${p.precoOld
-              ? `<div class="preco-grupo"><p class="produto-preco-old">${p.precoOld}</p><p class="produto-preco">${p.preco}</p></div>`
-              : `<p class="produto-preco">${p.preco}</p>`
+              ? `<div class="preco-grupo"><p class="produto-preco-old">${p.precoOld}</p><p class="produto-preco">${p.preco}</p></div>${calcParcela(p.preco)}`
+              : `<p class="produto-preco">${p.preco}</p>${calcParcela(p.preco)}`
             }
           </div>
         </div>

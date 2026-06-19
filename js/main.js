@@ -183,6 +183,21 @@ function voltarCheckout() {
   document.getElementById('checkout-info').style.display = 'none';
 }
 
+// ===== PARCELAMENTO NOS CARDS =====
+document.querySelectorAll('.produto-card').forEach(card => {
+  const preco = card.dataset.preco;
+  if (!preco || preco === 'A consultar') return;
+  const val = parseFloat(preco.replace(/[R$\s.]/g, '').replace(',', '.'));
+  if (isNaN(val) || val <= 0) return;
+  const parcela = (val / 10).toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+  const info = card.querySelector('.produto-info');
+  if (!info) return;
+  const p = document.createElement('p');
+  p.className = 'produto-parcela';
+  p.textContent = `ou 10x de R$ ${parcela}`;
+  info.appendChild(p);
+});
+
 // ===== SMOOTH ANCHOR SCROLL =====
 document.querySelectorAll('a[href^="#"]').forEach(a => {
   a.addEventListener('click', (e) => {
