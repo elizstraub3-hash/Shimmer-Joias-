@@ -91,7 +91,7 @@
     }
 
     .sobre-stats {
-      background: #fff;
+      background: rgba(255,255,255,0.6);
       padding: 56px 0;
       border-bottom: 1px solid rgba(201,168,76,0.12);
     }
@@ -128,7 +128,7 @@
 
     .sobre-content {
       padding: 80px 0 100px;
-      background: var(--cream);
+      background: transparent;
     }
     .sobre-content-grid {
       display: grid;
@@ -230,7 +230,7 @@
     }
 
     .sobre-cta {
-      background: #fff;
+      background: rgba(255,255,255,0.6);
       padding: 72px 40px;
       text-align: center;
     }
@@ -252,6 +252,25 @@
       justify-content: center;
       flex-wrap: wrap;
     }
+
+    /* ===== FUNDO PATTERN + DEGRADÊ BRANCO + TEXTO MARROM ===== */
+    body {
+      background:
+        linear-gradient(180deg,
+          rgba(255,255,255,0.96) 0%,
+          rgba(255,255,255,0.80) 25%,
+          rgba(255,255,255,0.75) 50%,
+          rgba(255,255,255,0.80) 75%,
+          rgba(255,255,255,0.96) 100%
+        ),
+        url('images/bg-pattern.jpg') repeat center / 260px;
+    }
+    .sobre-texto h2    { color: #3a2510; }
+    .sobre-texto p     { color: #654321; }
+    .sobre-pilar-text strong { color: #3a2510; }
+    .sobre-pilar-text span   { color: #654321; }
+    .sobre-cta h2      { color: #3a2510; }
+    .sobre-cta p       { color: #654321; }
 
     @media (max-width: 768px) {
       .sobre-content-grid { grid-template-columns: 1fr; gap: 40px; padding: 0 20px; }

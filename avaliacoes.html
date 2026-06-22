@@ -54,7 +54,7 @@
 
     /* Hero section */
     .aval-hero {
-      background: var(--cream);
+      background: transparent;
       border-bottom: 1px solid rgba(201,168,76,0.15);
       padding: 80px 40px 72px;
       text-align: center;
@@ -106,7 +106,6 @@
 
     /* Reviews section */
     .aval-reviews-section {
-      background: #e6e0d6;
       background-image: url('images/bg-pattern.jpg');
       background-size: 300px;
       background-repeat: repeat;
@@ -213,6 +212,21 @@
     }
 
     /* Responsive */
+    /* ===== FUNDO PATTERN + DEGRADÊ BRANCO + TEXTO MARROM ===== */
+    body {
+      background:
+        linear-gradient(180deg,
+          rgba(255,255,255,0.96) 0%,
+          rgba(255,255,255,0.80) 25%,
+          rgba(255,255,255,0.75) 50%,
+          rgba(255,255,255,0.80) 75%,
+          rgba(255,255,255,0.96) 100%
+        ),
+        url('images/bg-pattern.jpg') repeat center / 260px;
+    }
+    .aval-hero h1, .aval-hero h2 { color: #3a2510; }
+    .aval-hero p                  { color: #654321; }
+
     @media (max-width: 640px) {
       .back-bar { padding: 10px 20px; }
       .aval-hero { padding: 64px 20px 56px; }

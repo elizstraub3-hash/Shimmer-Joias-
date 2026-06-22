@@ -19,13 +19,28 @@
     .back-bar { background: var(--cream); border-bottom: 1px solid rgba(201,168,76,0.15); padding: 10px 40px; }
     .back-bar a { font-size: 12px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--gray); font-weight: 500; transition: color 0.3s; display: inline-flex; align-items: center; gap: 6px; }
     .back-bar a:hover { color: var(--gold); }
+    /* ===== FUNDO PATTERN + DEGRADÊ BRANCO + TEXTO MARROM ===== */
+    body {
+      background:
+        linear-gradient(180deg,
+          rgba(255,255,255,0.96) 0%,
+          rgba(255,255,255,0.80) 25%,
+          rgba(255,255,255,0.75) 50%,
+          rgba(255,255,255,0.80) 75%,
+          rgba(255,255,255,0.96) 100%
+        ),
+        url('images/bg-pattern.jpg') repeat center / 260px;
+    }
+    .step-body h3 { color: #3a2510; }
+    .guia-hero p  { color: #654321; }
+
     @media (max-width: 768px) { .back-bar { padding: 10px 20px; } }
 
     /* PAGE HERO */
     .guia-hero {
       padding: 80px 40px 56px;
       text-align: center;
-      background: rgba(230,224,214,0.88);
+      background: transparent;
       border-bottom: 1px solid rgba(201,168,76,0.12);
     }
     .guia-hero h1 {
@@ -49,7 +64,7 @@
     /* GUIDE IMAGE SECTION */
     .guia-imagem-section {
       padding: 72px 0 0;
-      background: var(--white);
+      background: transparent;
     }
     .guia-imagem-wrap {
       max-width: 680px;
@@ -65,7 +80,7 @@
     /* STEPS */
     .guia-steps {
       padding: 60px 0 80px;
-      background: var(--white);
+      background: transparent;
     }
     .guia-steps .container { max-width: 760px; }
     .step-block {
@@ -100,7 +115,7 @@
     }
     .step-body p {
       font-size: 14px;
-      color: var(--gray);
+      color: #654321;
       line-height: 1.8;
       margin-bottom: 12px;
     }

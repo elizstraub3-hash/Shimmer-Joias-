@@ -41,7 +41,7 @@
       font-size: clamp(32px, 5vw, 52px); font-weight: 300;
       color: var(--white); line-height: 1.2;
     }
-    .policy-wrap { background: #fff; }
+    .policy-wrap { background: transparent; }
     .policy-content {
       max-width: 780px; margin: 0 auto; padding: 64px 40px 80px;
     }
@@ -66,6 +66,18 @@
       .back-bar { padding: 10px 20px; }
       .policy-content { padding: 40px 24px 60px; }
       .policy-hero { padding: 60px 20px 50px; }
+    }
+    /* ===== FUNDO PATTERN + DEGRADÊ BRANCO + TEXTO MARROM ===== */
+    body {
+      background:
+        linear-gradient(180deg,
+          rgba(255,255,255,0.96) 0%,
+          rgba(255,255,255,0.80) 25%,
+          rgba(255,255,255,0.75) 50%,
+          rgba(255,255,255,0.80) 75%,
+          rgba(255,255,255,0.96) 100%
+        ),
+        url('images/bg-pattern.jpg') repeat center / 260px;
     }
   </style>
 </head>
