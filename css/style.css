@@ -1989,7 +1989,7 @@ ul { list-style: none; }
 /* Novidades / Mais Pedidos — usa .produtos base + override de fundo alternado */
 .secao-novidades { background: var(--white); }
 .secao-mais-pedidos { background: rgba(230,224,214,0.88); }
-.mais-pedidos-grid { grid-template-columns: repeat(3, 1fr); }
+.mais-pedidos-grid { grid-template-columns: repeat(4, 1fr); }
 /* Mobile */
 @media (max-width: 768px) {
   .promo-inner { grid-template-columns: 1fr; gap: 32px; }
