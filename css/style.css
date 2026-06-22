@@ -2006,14 +2006,13 @@ ul { list-style: none; }
 
 /* ===== DIA DOS PAIS ===== */
 .pais-section {
-  background: #12090300;
   background-color: #120903;
   background-image: url('../images/bg-pattern.jpg');
   background-size: 300px;
   background-repeat: repeat;
   position: relative;
   overflow: hidden;
-  padding: 56px 0;
+  padding: 64px 0;
 }
 .pais-bg-overlay {
   position: absolute;
@@ -2040,40 +2039,42 @@ ul { list-style: none; }
 }
 .pais-chamada {
   font-family: 'Cormorant Garamond', serif;
-  font-size: clamp(30px, 3.6vw, 52px);
+  font-size: clamp(28px, 3.4vw, 50px);
   font-weight: 300;
   color: var(--gold-light);
   line-height: 1.1;
-  margin-bottom: 12px;
+  margin-bottom: 14px;
+  word-break: break-word;
+  overflow-wrap: break-word;
 }
 .pais-chamada em { font-style: italic; color: #fff; }
 .pais-title {
   font-family: 'Montserrat', sans-serif;
   font-size: 12px;
   font-weight: 400;
-  color: rgba(255,255,255,0.55);
+  color: rgba(255,255,255,0.5);
   line-height: 1.7;
-  margin-bottom: 14px;
-  letter-spacing: 0.02em;
+  margin-bottom: 16px;
+  letter-spacing: 0.01em;
 }
 .pais-gravacao {
   font-family: 'Montserrat', sans-serif;
-  font-size: 11px;
+  font-size: 10px;
   font-weight: 600;
   color: var(--gold);
-  letter-spacing: 0.06em;
-  background: rgba(201,168,76,0.10);
-  border: 1px solid rgba(201,168,76,0.25);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  border-bottom: 1px solid rgba(201,168,76,0.4);
   display: inline-block;
-  padding: 7px 14px;
+  padding-bottom: 4px;
   margin-bottom: 16px;
 }
 .pais-sub {
   font-family: 'Montserrat', sans-serif;
   font-size: 12px;
-  color: rgba(255,255,255,0.45);
+  color: rgba(255,255,255,0.38);
   line-height: 1.75;
-  margin-bottom: 24px;
+  margin-bottom: 28px;
 }
 .pais-btn {
   display: inline-block;
@@ -2186,24 +2187,27 @@ ul { list-style: none; }
 .pais-next { right: 0; }
 
 @media (max-width: 900px) {
+  .pais-section { padding: 48px 24px; overflow: hidden; }
   .pais-inner {
-    grid-template-columns: 1fr;
-    gap: 28px;
-    padding-left: 20px;
-    padding-right: 20px;
+    display: block;
+    padding: 0;
+    max-width: 100%;
   }
-  .pais-header { text-align: center; }
-  .pais-gravacao { display: block; }
-  .pais-chamada { font-size: clamp(26px, 7.5vw, 38px); }
-  .pais-sub { max-width: 100%; }
-  .pais-btn { display: block; text-align: center; }
-  .pais-card { flex: 0 0 calc(60% - 8px); }
+  .pais-header {
+    width: 100%;
+    max-width: 100%;
+    box-sizing: border-box;
+    margin-bottom: 32px;
+  }
+  .pais-chamada { font-size: 26px; }
+  .pais-slider-wrap { width: 100%; overflow: hidden; }
+  .pais-card { flex: 0 0 56%; }
+  .pais-card-img { aspect-ratio: 1/1; }
 }
-@media (max-width: 540px) {
-  .pais-section { padding: 44px 0; }
-  .pais-inner { padding-left: 16px; padding-right: 16px; gap: 24px; }
-  .pais-chamada { font-size: clamp(24px, 7vw, 32px); }
-  .pais-card { flex: 0 0 calc(78% - 8px); }
+@media (max-width: 480px) {
+  .pais-section { padding: 40px 20px; }
+  .pais-chamada { font-size: 24px; }
+  .pais-card { flex: 0 0 72%; }
   .pais-nav { display: none; }
 }
 
