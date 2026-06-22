@@ -2004,6 +2004,176 @@ ul { list-style: none; }
   .mais-pedidos-grid { grid-template-columns: repeat(2, 1fr); gap: 12px; }
 }
 
+/* ===== DIA DOS PAIS ===== */
+.pais-section {
+  background: #12090300;
+  background-color: #120903;
+  background-image: url('../images/bg-pattern.jpg');
+  background-size: 300px;
+  background-repeat: repeat;
+  position: relative;
+  overflow: hidden;
+  padding: 80px 0;
+}
+.pais-bg-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, rgba(10,5,1,0.94) 0%, rgba(20,10,3,0.90) 100%);
+  pointer-events: none;
+}
+.pais-inner {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  grid-template-columns: 340px 1fr;
+  gap: 64px;
+  align-items: center;
+}
+.pais-label {
+  font-family: 'Montserrat', sans-serif;
+  font-size: 10px;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--gold);
+  display: block;
+  margin-bottom: 20px;
+}
+.pais-title {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(34px, 3.8vw, 54px);
+  font-weight: 300;
+  color: #fff;
+  line-height: 1.15;
+  margin-bottom: 22px;
+}
+.pais-title em { color: var(--gold-light); font-style: italic; }
+.pais-sub {
+  font-family: 'Montserrat', sans-serif;
+  font-size: 13px;
+  color: rgba(255,255,255,0.55);
+  line-height: 1.8;
+  margin-bottom: 36px;
+}
+.pais-btn {
+  display: inline-block;
+  font-family: 'Montserrat', sans-serif;
+  font-size: 10px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--gold);
+  border: 1px solid rgba(201,168,76,0.45);
+  padding: 13px 30px;
+  text-decoration: none;
+  transition: background 0.3s, border-color 0.3s;
+}
+.pais-btn:hover { background: rgba(201,168,76,0.1); border-color: var(--gold); }
+
+/* Slider */
+.pais-slider-wrap { position: relative; }
+.pais-slider {
+  display: flex;
+  gap: 16px;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  scroll-behavior: smooth;
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+  padding: 4px 2px 12px;
+}
+.pais-slider::-webkit-scrollbar { display: none; }
+.pais-card {
+  flex: 0 0 calc(50% - 8px);
+  scroll-snap-align: start;
+  background: rgba(255,255,255,0.04);
+  border: 1px solid rgba(201,168,76,0.18);
+  overflow: hidden;
+  transition: border-color 0.3s;
+  cursor: pointer;
+}
+.pais-card:hover { border-color: rgba(201,168,76,0.5); }
+.pais-card-img {
+  aspect-ratio: 3/4;
+  overflow: hidden;
+}
+.pais-card-img img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.5s ease;
+  display: block;
+}
+.pais-card:hover .pais-card-img img { transform: scale(1.05); }
+.pais-card-info { padding: 16px 18px 20px; }
+.pais-card-code {
+  font-family: 'Montserrat', sans-serif;
+  font-size: 9px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin-bottom: 5px;
+}
+.pais-card-name {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 19px;
+  font-weight: 400;
+  color: #fff;
+  margin-bottom: 5px;
+  line-height: 1.2;
+}
+.pais-card-mat {
+  font-family: 'Montserrat', sans-serif;
+  font-size: 10px;
+  color: rgba(255,255,255,0.4);
+  line-height: 1.5;
+  margin-bottom: 14px;
+}
+.pais-card-btn {
+  font-family: 'Montserrat', sans-serif;
+  font-size: 9px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  background: transparent;
+  color: var(--gold);
+  border: 1px solid rgba(201,168,76,0.35);
+  padding: 8px 16px;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+.pais-card-btn:hover { background: rgba(201,168,76,0.12); }
+
+/* Nav arrows */
+.pais-nav {
+  position: absolute;
+  top: 35%;
+  transform: translateY(-50%);
+  width: 42px;
+  height: 42px;
+  background: rgba(12,6,1,0.75);
+  border: 1px solid rgba(201,168,76,0.3);
+  color: var(--gold);
+  font-size: 26px;
+  line-height: 1;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 3;
+  transition: background 0.2s;
+}
+.pais-nav:hover { background: rgba(201,168,76,0.15); }
+.pais-prev { left: 0; }
+.pais-next { right: 0; }
+
+@media (max-width: 900px) {
+  .pais-inner { grid-template-columns: 1fr; gap: 40px; }
+  .pais-card { flex: 0 0 calc(70% - 8px); }
+}
+@media (max-width: 540px) {
+  .pais-section { padding: 60px 0; }
+  .pais-card { flex: 0 0 calc(85% - 8px); }
+  .pais-nav { display: none; }
+}
+
 /* ===== DEPOIMENTOS GRID HOME (3 colunas desktop, 1 coluna mobile) ===== */
 .dep-grid-home {
   display: grid;

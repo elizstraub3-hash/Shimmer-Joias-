@@ -425,3 +425,15 @@ document.querySelectorAll('a[href^="#"]').forEach(a => {
 
   startAuto();
 })();
+
+// Slider Dia dos Pais
+(function () {
+  const slider = document.getElementById('paisSlider');
+  if (!slider) return;
+  window.paisNav = function (dir) {
+    const card = slider.querySelector('.pais-card');
+    if (!card) return;
+    const w = card.offsetWidth + 16;
+    slider.scrollBy({ left: dir * w, behavior: 'smooth' });
+  };
+})();
