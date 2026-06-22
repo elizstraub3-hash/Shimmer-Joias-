@@ -254,9 +254,10 @@
 
     @media (max-width: 768px) {
       .sobre-content-grid { grid-template-columns: 1fr; gap: 40px; padding: 0 20px; }
-      .sobre-stats-grid { grid-template-columns: 1fr; }
-      .sobre-stat { border-right: none; border-bottom: 1px solid rgba(201,168,76,0.2); }
-      .sobre-stat:last-child { border-bottom: none; }
+      .sobre-stats-grid { grid-template-columns: repeat(3, 1fr); }
+      .sobre-stat { padding: 16px 8px; }
+      .sobre-stat-num { font-size: 34px; }
+      .sobre-stat-label { font-size: 10px; }
       .sobre-hero { padding: 80px 20px 70px; }
       .back-bar { padding: 10px 20px; }
     }
