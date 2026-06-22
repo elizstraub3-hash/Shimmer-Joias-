@@ -345,6 +345,27 @@
     }
     .policy-footer a:hover { color: var(--gold-light); }
 
+    /* ===== FUNDO PATTERN + DEGRADÊ BRANCO + TEXTO MARROM ===== */
+    body {
+      background:
+        linear-gradient(180deg,
+          rgba(255,255,255,0.96) 0%,
+          rgba(255,255,255,0.80) 25%,
+          rgba(255,255,255,0.75) 50%,
+          rgba(255,255,255,0.80) 75%,
+          rgba(255,255,255,0.96) 100%
+        ),
+        url('images/bg-pattern.jpg') repeat center / 260px;
+    }
+    .policy-section h2       { color: #3a2510; }
+    .policy-section p        { color: #654321; }
+    .policy-list li          { color: #654321; }
+    .step-body strong        { color: #3a2510; }
+    .step-body p             { color: #654321; }
+    .certificate-text h3     { color: #3a2510; }
+    .certificate-text p      { color: #654321; }
+    .policy-section-label    { color: #c9a84c; }
+
     /* Responsive */
     @media (max-width: 640px) {
       .policy-hero { padding: 72px 20px 64px; }
