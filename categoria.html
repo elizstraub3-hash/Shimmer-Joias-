@@ -67,7 +67,7 @@
       <nav class="nav-left">
         <a href="index.html#colecoes">Coleções</a>
         <a href="categoria.html?cat=aneis">Anéis</a>
-        <a href="index.html#novidades">Novidades</a>
+        <a href="categoria.html?cat=aneis-exclusivos">Exclusivos</a>
       </nav>
       <a href="index.html" class="logo">
         <img src="images/logo.png" alt="SHIMMER JOIAS" class="logo-img" />
@@ -108,6 +108,7 @@
       <div class="mobile-divider"></div>
       <p class="mobile-menu-label">Coleções</p>
       <a href="categoria.html?cat=casamento" class="mobile-destaque">Alianças &amp; Casamento</a>
+      <a href="categoria.html?cat=aneis-exclusivos" class="mobile-destaque">Anéis Exclusivos</a>
       <div class="mobile-divider"></div>
       <a href="index.html">Início</a>
       <a href="index.html#sobre">Sobre</a>
@@ -172,7 +173,7 @@
             <li><a href="categoria.html?cat=correntes-femininas">Correntes Femininas</a></li>
             <li><a href="categoria.html?cat=aneis-masculinos">Anéis Masculinos</a></li>
             <li><a href="categoria.html?cat=aneis-formatura">Anéis de Formatura</a></li>
-            <li><a href="index.html#novidades">Novidades</a></li>
+            <li><a href="categoria.html?cat=aneis-exclusivos">Anéis Exclusivos</a></li>
           </ul>
         </div>
         <div class="footer-links">
@@ -277,6 +278,7 @@
       casamento:       { name: 'Coleções Especiais — Alianças', subtitle: 'Para o momento mais especial da sua vida' },
       correntes:       { name: 'Correntes Masculinas',     subtitle: 'Ouro 18k com acabamento de alto padrão' },
       homenagem:       { name: 'Correntes de Homenagem',   subtitle: 'Correntes personalizadas com nome ou gravação especial' },
+      'aneis-exclusivos': { name: 'Anéis Exclusivos',        subtitle: 'Peças únicas cravejadas · Encomenda · Ouro 18k com diamantes' },
     };
 
     const PRODUTOS_KEY = 'shimmer_produtos';
@@ -331,6 +333,7 @@
       { code: 'SH-1021', name: 'Corrente com Pingente Cruz', colecao: 'Coleção Masculina', material: 'Ouro 18k', preco: 'R$ 12.000,00', precoOld: '', badge: 'Novo', foto: 'images/SH-1021.jpg', fotos: [], categoria: 'correntes' },
       { code: 'SH-1022', name: 'Corrente Elo Cadeado Fina', colecao: 'Coleção Masculina', material: 'Ouro 18k', preco: 'R$ 9.000,00', precoOld: '', badge: 'Novo', foto: 'images/SH-1022.jpg', fotos: [], categoria: 'correntes' },
       { code: 'SH-1023', name: 'Corrente Elo Cartier', colecao: 'Coleção Masculina', material: 'Ouro 18k', preco: 'A consultar', precoOld: '', badge: 'Novo', foto: 'images/SH-1023.jpg', fotos: [], categoria: 'correntes' },
+      { code: 'SH-1055', name: 'Anel Exclusivo Cravejado', colecao: 'Anéis Exclusivos', material: 'Anel personalizado · 10g · Todo cravejado com diamantes · Ouro 18k', preco: 'A consultar', precoOld: '', badge: 'Exclusivo', foto: 'images/SH-1055.jpg', fotos: ['images/SH-1055.jpg', 'images/SH-1055b.jpg'], categoria: 'aneis-exclusivos' },
     ];
 
     function getProdutos() {

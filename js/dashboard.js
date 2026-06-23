@@ -868,6 +868,7 @@ const PRODUTOS_DEFAULT = [
   { code: 'SH-1021', name: 'Corrente com Pingente Cruz', colecao: 'Coleção Masculina', material: 'Ouro 18k', preco: 'R$ 12.000,00', precoOld: '', badge: 'Novo', foto: 'images/SH-1021.jpg', fotos: [], categoria: 'correntes' },
   { code: 'SH-1022', name: 'Corrente Elo Cadeado Fina', colecao: 'Shimmer Joias', material: 'Ouro 18k', preco: 'R$ 9.000,00', precoOld: '', badge: 'Novo', foto: 'images/SH-1022.jpg', fotos: [], categoria: 'correntes' },
   { code: 'SH-1023', name: 'Corrente Elo Cartier', colecao: 'Coleção Masculina', material: 'Ouro 18k', preco: 'A consultar', precoOld: '', badge: 'Novo', foto: 'images/SH-1023.jpg', fotos: [], categoria: 'correntes' },
+  { code: 'SH-1055', name: 'Anel Exclusivo Cravejado', colecao: 'Anéis Exclusivos', material: 'Anel personalizado · 10g · Todo cravejado com diamantes · Ouro 18k', preco: 'A consultar', precoOld: '', badge: 'Exclusivo', foto: 'images/SH-1055.jpg', fotos: ['images/SH-1055.jpg', 'images/SH-1055b.jpg'], categoria: 'aneis-exclusivos' },
 ];
 
 function getProdutos() {
