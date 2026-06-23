@@ -359,7 +359,9 @@
     document.getElementById('cat-page-title').textContent = catInfo.name;
     document.getElementById('cat-page-subtitle').textContent = catInfo.subtitle;
 
-    const produtos = getProdutos().filter(p => p.categoria === cat);
+    const produtos = cat === 'aneis-exclusivos'
+      ? getProdutos().filter(p => p.badge === 'Exclusivo')
+      : getProdutos().filter(p => p.categoria === cat);
     const grid = document.getElementById('cat-produtos-grid');
 
     if (produtos.length === 0) {
