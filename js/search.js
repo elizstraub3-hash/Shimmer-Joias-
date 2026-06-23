@@ -44,7 +44,7 @@
     { code: 'SH-1044', name: 'Anel com Topázio Azul e Laterais', material: 'Topázio sintético 6x8mm · 6 moissanites 2mm nas laterais', preco: 'R$ 2.550,00', foto: 'images/SH-1044.jpg', categoria: 'aneis' },
     { code: 'SH-1045', name: 'Anel Sinete Personalizado', material: 'Anel personalizado · Ouro 18k', preco: 'R$ 5.100,00', foto: 'images/SH-1045.jpg', categoria: 'aneis-masculinos' },
     { code: 'SH-1046', name: 'Anel São Bento', material: 'Ouro 18k', preco: 'R$ 15.300,00', foto: 'images/SH-1046.jpg', categoria: 'aneis-masculinos' },
-    { code: 'SH-1047', name: 'Anel de Formatura', material: 'Formatura · Pedra central 6mm', preco: 'R$ 3.650,00', foto: 'images/SH-1047.jpg', categoria: 'aneis-formatura' },
+    { code: 'SH-1047', name: 'Anel de Formatura', material: 'Formatura · Pedra central 6mm', preco: 'R$ 7.000,00', foto: 'images/SH-1047.jpg', categoria: 'aneis-formatura' },
     { code: 'SH-1048', name: 'Anel Oval com Laterais', material: 'Pedra oval 5x7mm · 2 laterais 1,25mm · Moissanite', preco: 'A consultar', foto: 'images/SH-1048.jpg', categoria: 'aneis' },
     { code: 'SH-1049', name: 'Pingente Nossa Senhora Aparecida', material: 'Ouro 18k', preco: 'R$ 3.950,00', foto: 'images/SH-1049.jpg', categoria: 'correntes-femininas' },
     { code: 'SH-1050', name: 'Anel de Formatura', material: 'Formatura · Pedra central 3mm · 6 laterais 1,75mm', preco: 'R$ 2.550,00', foto: 'images/SH-1050.jpg', categoria: 'aneis-formatura' },
