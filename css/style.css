@@ -966,7 +966,7 @@ ul { list-style: none; }
 
 /* ===== BANNER LUXO ===== */
 .banner-luxo {
-  background: linear-gradient(135deg, #1a1209, #0d0d0d, #1a0a00);
+  background: linear-gradient(135deg, #4a2800, #3b1f00, #5c3200);
   min-height: 450px;
   display: flex;
   align-items: stretch;
