@@ -93,7 +93,8 @@
   <div class="mobile-menu" id="mobile-menu">
     <div class="mobile-menu-inner">
       <p class="mobile-menu-label">Joias</p>
-      <a href="categoria.html?cat=aneis">Anéis Solitários</a>
+      <a href="categoria.html?cat=solitarios">Anéis Solitários</a>
+      <a href="categoria.html?cat=aneis">Anéis com Pedras</a>
       <a href="categoria.html?cat=aparadores">Aparadores</a>
       <a href="categoria.html?cat=aneis-formatura">Anéis de Formatura</a>
       <a href="categoria.html?cat=aneis-masculinos">Anéis Masculinos</a>
@@ -263,20 +264,19 @@
 
     // ===== CATEGORY DATA =====
     const CAT_INFO = {
-      aneis:           { name: 'Anéis',                subtitle: 'Solitários, aparadores e alianças' },
-      aparadores:      { name: 'Aparadores',            subtitle: 'Elegância que complementa' },
-      'aneis-masculinos': { name: 'Anéis Masculinos',  subtitle: 'Força e sofisticação' },
-      colares:              { name: 'Colares & Pingentes',    subtitle: 'Elegância que emoldura o decote' },
-      'correntes-femininas': { name: 'Correntes Femininas',    subtitle: 'Correntes e pingentes em ouro 18k' },
-      pingentes:             { name: 'Pingentes',               subtitle: 'Pingentes em ouro 18k' },
-      brincos:         { name: 'Brincos',              subtitle: 'Argolas, pérolas e cristais' },
-      pulseiras:            { name: 'Pulseiras & Braceletes', subtitle: 'Do clássico ao contemporâneo' },
+      solitarios:      { name: 'Anéis Solitários',         subtitle: 'Uma única pedra, toda a elegância — a simplicidade que encanta' },
+      aneis:           { name: 'Anéis',                    subtitle: 'Pedra central com laterais, chuveiros e designs multistone' },
+      aparadores:      { name: 'Aparadores',               subtitle: 'Elegância que complementa o solitário' },
+      'aneis-formatura': { name: 'Anéis de Formatura',    subtitle: 'Anéis personalizados para celebrar sua conquista · A pedra muda conforme o curso' },
+      'aneis-masculinos': { name: 'Anéis Masculinos',     subtitle: 'Força e sofisticação' },
+      'correntes-femininas': { name: 'Correntes Femininas', subtitle: 'Correntes e pingentes em ouro 18k' },
+      pingentes:             { name: 'Pingentes',          subtitle: 'Pingentes em ouro 18k' },
+      brincos:         { name: 'Brincos',                  subtitle: 'Argolas, pérolas e cristais' },
       'pulseiras-masculinas': { name: 'Pulseiras Masculinas', subtitle: 'Pulseiras em ouro 18k para ele' },
-      'pulseiras-femininas':  { name: 'Pulseiras Femininas', subtitle: 'Pulseiras e braceletes em ouro 18k para ela' },
+      'pulseiras-femininas':  { name: 'Pulseiras Femininas',  subtitle: 'Pulseiras e braceletes em ouro 18k para ela' },
       casamento:       { name: 'Coleções Especiais — Alianças', subtitle: 'Para o momento mais especial da sua vida' },
-      correntes:       { name: 'Correntes Masculinas',          subtitle: 'Ouro 18k com acabamento de alto padrão' },
-      homenagem:       { name: 'Correntes de Homenagem',         subtitle: 'Correntes personalizadas com nome ou gravação especial' },
-      'aneis-formatura': { name: 'Anéis de Formatura',           subtitle: 'Anéis personalizados para celebrar sua conquista · A pedra muda conforme o curso' },
+      correntes:       { name: 'Correntes Masculinas',     subtitle: 'Ouro 18k com acabamento de alto padrão' },
+      homenagem:       { name: 'Correntes de Homenagem',   subtitle: 'Correntes personalizadas com nome ou gravação especial' },
     };
 
     const PRODUTOS_KEY = 'shimmer_produtos';
@@ -290,15 +290,15 @@
       { code: 'SH-1011', name: 'Anel Maçom', colecao: 'Sob Encomenda', material: 'Anel maçom · Ouro 18k', preco: 'R$ 13.600,00', precoOld: '', badge: 'Exclusivo', foto: 'images/SH-1011.jpg', categoria: 'aneis-masculinos' },
       { code: 'SH-1012', name: 'Aparador Marquise', colecao: 'Shimmer Joias', material: '5 navetes 2x5mm · 8 pedras 1,25mm · Moissanites', preco: 'R$ 3.400,00', precoOld: '', badge: '', foto: 'images/SH-1012.jpg', categoria: 'aparadores' },
       { code: 'SH-1013', name: 'Aparador Esmeralda', colecao: 'Shimmer Joias', material: 'Esmeraldas e moissanites · Ouro 18k', preco: 'A consultar', precoOld: '', badge: '', foto: 'images/SH-1013.jpg', categoria: 'aparadores' },
-      { code: 'SH-1014', name: 'Anel Solitário Clássico', colecao: 'Shimmer Joias', material: 'Solitário · Pedra central 5mm · Moissanite', preco: 'R$ 999,00', precoOld: 'R$ 1.200,00', badge: 'Solitário', foto: 'images/SH-1014.jpg', categoria: 'aneis' },
+      { code: 'SH-1014', name: 'Anel Solitário Clássico', colecao: 'Shimmer Joias', material: 'Solitário · Pedra central 5mm · Moissanite', preco: 'R$ 999,00', precoOld: 'R$ 1.200,00', badge: 'Solitário', foto: 'images/SH-1014.jpg', categoria: 'solitarios' },
       { code: 'SH-1015', name: 'Par de Alianças Lisas', colecao: 'Coleção Casamento', material: 'Ouro amarelo 18k polido · Design clássico', preco: 'R$ 2.200,00', precoOld: '', badge: '', foto: 'images/SH-1015.jpg', categoria: 'casamento' },
       { code: 'SH-1016', name: 'Colar Grumet Masculino', colecao: 'Shimmer Joias', material: 'Ouro 18k · Elo grumet', preco: 'R$ 64.800,00', precoOld: '', badge: '', foto: 'images/SH-1016.jpg', categoria: 'correntes' },
       { code: 'SH-1017', name: 'Pulseira Grumet', colecao: 'Shimmer Joias', material: 'Ouro 18k · Elo grumet · Fecho caixa', preco: 'R$ 27.000,00', precoOld: '', badge: '', foto: 'images/SH-1017a.jpg', fotos: ['images/SH-1017a.jpg', 'images/SH-1017b.jpg'], categoria: 'pulseiras-masculinas' },
       { code: 'SH-1018', name: 'Anel Solitário 7 Pedras', colecao: 'Shimmer Joias', material: '14 moissanites 1,25mm · Central 4mm', preco: 'R$ 1.550,00', precoOld: 'R$ 1.700,00', badge: '-9%', foto: 'images/SH-1018.jpg', categoria: 'aneis' },
       { code: 'SH-1019', name: 'Anel de Formatura', colecao: 'Shimmer Joias', material: 'Formatura · 7 pedras 2mm · Pedra central personalizada por curso', preco: 'R$ 2.630,00', precoOld: '', badge: 'Novo', foto: 'images/SH-1019.jpg', fotos: [], categoria: 'aneis-formatura' },
       { code: 'SH-1024', name: 'Pingente Gota Esmeralda', colecao: 'Shimmer Joias', material: 'Ouro 18k', preco: 'A consultar', precoOld: '', badge: 'Novo', foto: 'images/SH-1024.jpg', fotos: ['images/SH-1024.jpg', 'images/SH-1024b.jpg'], categoria: 'pingentes' },
-      { code: 'SH-1025', name: 'Anel Solitário Delicado', colecao: 'Shimmer Joias', material: 'Solitário · Pedra central 3mm · Moissanite', preco: 'R$ 999,00', precoOld: '', badge: 'Solitário', foto: 'images/SH-1025.jpg', fotos: [], categoria: 'aneis' },
-      { code: 'SH-1026', name: 'Anel com Topázio Azul', colecao: 'Shimmer Joias', material: 'Solitário · Zircônia azul 5mm', preco: 'R$ 999,00', precoOld: '', badge: 'Solitário', foto: 'images/SH-1026.jpg', fotos: [], categoria: 'aneis' },
+      { code: 'SH-1025', name: 'Anel Solitário Delicado', colecao: 'Shimmer Joias', material: 'Solitário · Pedra central 3mm · Moissanite', preco: 'R$ 999,00', precoOld: '', badge: 'Solitário', foto: 'images/SH-1025.jpg', fotos: [], categoria: 'solitarios' },
+      { code: 'SH-1026', name: 'Anel com Topázio Azul', colecao: 'Shimmer Joias', material: 'Solitário · Zircônia azul 5mm', preco: 'R$ 999,00', precoOld: '', badge: 'Solitário', foto: 'images/SH-1026.jpg', fotos: [], categoria: 'solitarios' },
       { code: 'SH-1027', name: 'Anel Solitário com Laterais', colecao: 'Shimmer Joias', material: 'Pedra central 5mm · 2 laterais 1,25mm · Moissanites', preco: 'R$ 2.100,00', precoOld: '', badge: 'Novo', foto: 'images/SH-1027.jpg', fotos: [], categoria: 'aneis' },
       { code: 'SH-1028', name: 'Anel com Safira Azul', colecao: 'Shimmer Joias', material: '14 pedras 1,25mm · Central 4mm · Safira sintética', preco: 'R$ 1.550,00', precoOld: '', badge: 'Novo', foto: 'images/SH-1028.jpg', fotos: [], categoria: 'aneis' },
       { code: 'SH-1029', name: 'Anel Chuveiro', colecao: 'Shimmer Joias', material: 'Chuveiro · Ouro 18k · Diamantes', preco: 'R$ 3.390,00', precoOld: '', badge: 'Novo', foto: 'images/SH-1029.jpg', fotos: [], categoria: 'aneis' },
@@ -311,7 +311,7 @@
       { code: 'SH-1036', name: 'Conjunto Noivado (Solitário + Aliança)', colecao: 'Coleção Casamento', material: 'Ouro 18k', preco: 'R$ 3.380,00', precoOld: '', badge: 'Novo', foto: 'images/SH-1036.jpg', fotos: [], categoria: 'casamento' },
       { code: 'SH-1037', name: 'Par de Alianças com Pedras', colecao: 'Coleção Casamento', material: 'Ouro 18k', preco: 'R$ 19.480,00', precoOld: '', badge: 'Novo', foto: 'images/SH-1037.jpg', fotos: [], categoria: 'casamento' },
       { code: 'SH-1038', name: 'Pulseira Personalizada com Letras', colecao: 'Shimmer Joias', material: 'Ouro 18k', preco: 'R$ 1.650,00', precoOld: '', badge: 'Novo', foto: 'images/SH-1038.jpg', fotos: [], categoria: 'pulseiras-femininas' },
-      { code: 'SH-1039', name: 'Anel Solitário Oval', colecao: 'Shimmer Joias', material: 'Pedra oval 5x7mm · Moissanite', preco: 'R$ 1.400,00', precoOld: '', badge: 'Novo', foto: 'images/SH-1039.jpg', fotos: [], categoria: 'aneis' },
+      { code: 'SH-1039', name: 'Anel Solitário Oval', colecao: 'Shimmer Joias', material: 'Pedra oval 5x7mm · Moissanite', preco: 'R$ 1.400,00', precoOld: '', badge: 'Novo', foto: 'images/SH-1039.jpg', fotos: [], categoria: 'solitarios' },
       { code: 'SH-1040', name: 'Par de Alianças Lisas', colecao: 'Coleção Casamento', material: 'Ouro 18k', preco: 'A consultar', precoOld: '', badge: 'Novo', foto: 'images/SH-1040.jpg', fotos: [], categoria: 'casamento' },
       { code: 'SH-1041', name: 'Colar Pingente Coração', colecao: 'Shimmer Joias', material: 'Ouro 18k', preco: 'R$ 3.000,00', precoOld: '', badge: 'Novo', foto: 'images/SH-1041.jpg', fotos: [], categoria: 'correntes-femininas' },
       { code: 'SH-1042', name: 'Colar Pingente Solitário', colecao: 'Shimmer Joias', material: 'Ouro 18k', preco: 'R$ 2.000,00', precoOld: '', badge: 'Novo', foto: 'images/SH-1042.jpg', fotos: [], categoria: 'correntes-femininas' },
