@@ -529,7 +529,12 @@
         const total = shimmerCart.reduce((s, i) => s + i.qty, 0);
         document.querySelectorAll('.cart-badge').forEach(b => { b.textContent = total; b.style.display = total > 0 ? 'flex' : 'none'; });
       }
-      function cartOpen() { document.getElementById('cart-overlay')?.classList.add('open'); document.getElementById('cart-drawer')?.classList.add('open'); document.body.style.overflow = 'hidden'; }
+      function cartOpen() {
+        cartRender();
+        document.getElementById('cart-overlay')?.classList.add('open');
+        document.getElementById('cart-drawer')?.classList.add('open');
+        document.body.style.overflow = 'hidden';
+      }
       function cartClose() { document.getElementById('cart-overlay')?.classList.remove('open'); document.getElementById('cart-drawer')?.classList.remove('open'); document.body.style.overflow = ''; }
       function cartRender() {
         const itemsEl = document.getElementById('cart-items');
@@ -594,7 +599,8 @@
         });
       });
       document.getElementById('cart-btn')?.addEventListener('click', (e) => { e.preventDefault(); cartOpen(); });
-      cartUpdateBadge(); cartRender();
+      window._cartClose = cartClose;
+      cartUpdateBadge();
     })();
   </script>
 
@@ -625,8 +631,8 @@
   </div>
   <div id="toast-container"></div>
   <script>
-    document.getElementById('cart-close').addEventListener('click', cartClose);
-    document.getElementById('cart-overlay').addEventListener('click', cartClose);
+    document.getElementById('cart-close').addEventListener('click', window._cartClose);
+    document.getElementById('cart-overlay').addEventListener('click', window._cartClose);
   </script>
 <script src="js/search.js"></script>
 </body>

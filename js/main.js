@@ -150,6 +150,7 @@ function cartUpdateBadge() {
 }
 
 function cartOpen() {
+  cartRender();
   document.getElementById('cart-overlay')?.classList.add('open');
   document.getElementById('cart-drawer')?.classList.add('open');
   document.body.style.overflow = 'hidden';
