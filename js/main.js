@@ -313,7 +313,7 @@ document.querySelectorAll('.produto-card').forEach(card => {
   info.appendChild(p);
   const pix = document.createElement('p');
   pix.className = 'produto-pix';
-  pix.textContent = '5% de desconto no Pix';
+  pix.textContent = '10% de desconto no Pix';
   info.appendChild(pix);
 });
 

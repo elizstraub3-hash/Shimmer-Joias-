@@ -346,7 +346,7 @@
       const val = parseFloat(preco.replace(/[R$\s.]/g, '').replace(',', '.'));
       if (isNaN(val) || val <= 0) return '';
       const p = (val / 10).toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
-      return `<p class="produto-parcela">ou 10x sem juros de R$ ${p}</p><p class="produto-pix">5% de desconto no Pix</p>`;
+      return `<p class="produto-parcela">ou 10x sem juros de R$ ${p}</p><p class="produto-pix">10% de desconto no Pix</p>`;
     }
 
     // ===== INIT CATEGORY PAGE =====
