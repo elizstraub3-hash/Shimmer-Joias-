@@ -36,7 +36,7 @@
     { code: 'SH-1036', name: 'Conjunto Noivado (Solitário + Aliança)', material: 'Ouro 18k', preco: 'R$ 3.380,00', foto: 'images/SH-1036.jpg', categoria: 'casamento' },
     { code: 'SH-1037', name: 'Par de Alianças com Pedras', material: 'Ouro 18k', preco: 'R$ 19.480,00', foto: 'images/SH-1037.jpg', categoria: 'casamento' },
     { code: 'SH-1038', name: 'Pulseira Personalizada com Letras', material: 'Ouro 18k', preco: 'R$ 1.650,00', foto: 'images/SH-1038.jpg', categoria: 'pulseiras-femininas' },
-    { code: 'SH-1039', name: 'Anel Solitário Oval', material: 'Pedra oval 5x7mm · Moissanite', preco: 'R$ 1.400,00', foto: 'images/SH-1039.jpg', categoria: 'solitarios' },
+    { code: 'SH-1039', name: 'Anel Solitário Oval', material: 'Pedra oval 5x7mm · Moissanite', preco: 'R$ 1.550,00', foto: 'images/SH-1039.jpg', categoria: 'solitarios' },
     { code: 'SH-1040', name: 'Par de Alianças Lisas', material: 'Ouro 18k', preco: 'A consultar', foto: 'images/SH-1040.jpg', categoria: 'casamento' },
     { code: 'SH-1041', name: 'Colar Pingente Coração', material: 'Ouro 18k', preco: 'R$ 3.000,00', foto: 'images/SH-1041.jpg', categoria: 'correntes-femininas' },
     { code: 'SH-1042', name: 'Colar Pingente Solitário', material: 'Ouro 18k', preco: 'R$ 2.000,00', foto: 'images/SH-1042.jpg', categoria: 'correntes-femininas' },
