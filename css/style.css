@@ -758,7 +758,23 @@ ul { list-style: none; }
 .checkout-box { max-width: 440px; width: 100%; }
 .checkout-label { font-size: 11px; letter-spacing: 0.1em; color: var(--gold); font-weight: 600; text-transform: uppercase; margin-bottom: 4px; }
 .checkout-box h3 { font-family: 'Cormorant Garamond', serif; font-size: 22px; margin-bottom: 4px; }
-.checkout-preco { font-size: 18px; font-weight: 600; color: #654321; margin-bottom: 2px; }
+.checkout-preco {
+  font-size: 18px;
+  font-weight: 600;
+  color: #654321;
+  margin-bottom: 2px;
+  display: inline-flex;
+  align-items: baseline;
+  gap: 5px;
+}
+.checkout-preco::after {
+  content: 'à vista';
+  font-size: 10px;
+  font-weight: 400;
+  color: var(--gray);
+  letter-spacing: 0.04em;
+  align-self: center;
+}
 .checkout-code { font-size: 11px; color: #bbb; margin-bottom: 20px; }
 .checkout-pergunta { font-size: 13px; font-weight: 600; margin-bottom: 12px; color: #444; }
 .checkout-opcoes { display: flex; flex-direction: column; gap: 10px; }
