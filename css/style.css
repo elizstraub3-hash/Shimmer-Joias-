@@ -293,6 +293,29 @@ ul { list-style: none; }
   letter-spacing: 0.1em !important;
 }
 
+.hero-colecao-btn {
+  position: absolute;
+  left: 10%;
+  top: 62%;
+  width: 28%;
+  height: 10%;
+  cursor: pointer;
+  border-radius: 50px;
+  display: block;
+  transition: background 0.2s;
+}
+.hero-colecao-btn:hover {
+  background: rgba(255,255,255,0.12);
+}
+@media (max-width: 768px) {
+  .hero-colecao-btn {
+    left: 5%;
+    top: 60%;
+    width: 55%;
+    height: 9%;
+  }
+}
+
 @media (max-width: 768px) {
   .hero { height: 62svh; min-height: 340px; }
   .hero-img { object-position: center 22%; }
