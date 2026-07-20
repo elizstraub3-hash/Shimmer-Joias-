@@ -295,9 +295,9 @@ ul { list-style: none; }
 
 .hero-colecao-btn {
   position: absolute;
-  left: 10%;
+  left: 15%;
   top: 73%;
-  width: 34%;
+  width: 28%;
   height: 10%;
   cursor: pointer;
   border-radius: 50px;
