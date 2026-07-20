@@ -295,10 +295,10 @@ ul { list-style: none; }
 
 .hero-colecao-btn {
   position: absolute;
-  left: 14%;
+  left: 10%;
   top: 73%;
-  width: 24%;
-  height: 9%;
+  width: 34%;
+  height: 10%;
   cursor: pointer;
   border-radius: 50px;
   display: flex;
@@ -2065,6 +2065,14 @@ ul { list-style: none; }
   font-weight: 700;
   color: var(--gold-dark);
   letter-spacing: 0.02em;
+}
+.promo-por::after {
+  content: ' à vista';
+  font-size: 12px;
+  font-weight: 400;
+  color: var(--gray);
+  letter-spacing: 0.04em;
+  vertical-align: middle;
 }
 .promo-avista {
   font-size: 13px;
