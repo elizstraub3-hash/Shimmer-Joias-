@@ -295,10 +295,10 @@ ul { list-style: none; }
 
 .hero-colecao-btn {
   position: absolute;
-  left: 10%;
-  top: 72%;
-  width: 38%;
-  height: 12%;
+  left: 13%;
+  top: 73%;
+  width: 34%;
+  height: 9%;
   cursor: pointer;
   border-radius: 50px;
   display: flex;
