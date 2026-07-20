@@ -296,23 +296,33 @@ ul { list-style: none; }
 .hero-colecao-btn {
   position: absolute;
   left: 10%;
-  top: 62%;
-  width: 28%;
-  height: 10%;
+  top: 63%;
+  width: 26%;
+  height: 9%;
   cursor: pointer;
   border-radius: 50px;
-  display: block;
-  transition: background 0.2s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 2px solid rgba(255,255,255,0.55);
+  transition: background 0.25s, border-color 0.25s;
+  animation: pulseBtn 2.5s ease-in-out infinite;
 }
 .hero-colecao-btn:hover {
-  background: rgba(255,255,255,0.12);
+  background: rgba(255,255,255,0.18);
+  border-color: rgba(255,255,255,0.9);
+  animation: none;
+}
+@keyframes pulseBtn {
+  0%, 100% { border-color: rgba(255,255,255,0.35); }
+  50%       { border-color: rgba(255,255,255,0.75); }
 }
 @media (max-width: 768px) {
   .hero-colecao-btn {
     left: 5%;
-    top: 60%;
-    width: 55%;
-    height: 9%;
+    top: 61%;
+    width: 52%;
+    height: 8%;
   }
 }
 
