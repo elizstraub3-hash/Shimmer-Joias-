@@ -54,6 +54,9 @@
     { code: 'SH-1055', name: 'Anel Exclusivo Cravejado', material: 'Anel personalizado · 10g · Todo cravejado com diamantes · Ouro 18k', preco: 'R$ 15.000,00', foto: 'images/SH-1055.jpg', categoria: 'aneis-exclusivos' },
     { code: 'SH-1056', name: 'Pulseira Exclusiva com Iniciais', material: 'Bracelete personalizado com iniciais · Ouro 18k', preco: 'R$ 14.400,00', foto: 'images/SH-1056.jpg', categoria: 'pulseiras-femininas' },
     { code: 'SH-1057', name: 'Anel Solitário Infinito', material: 'Pedra central 4mm · Moissanite · Ouro 18k', preco: 'R$ 999,00', foto: 'images/SH-1057.jpg', categoria: 'solitarios' },
+    { code: 'SH-1058', name: 'Par de Alianças Tradicional Abaulada', material: '5g o par · 2,5mm de largura · Ouro 18k', preco: 'R$ 3.650,00', foto: 'images/SH-1058.png', categoria: 'casamento' },
+    { code: 'SH-1059', name: 'Par de Alianças Reta', material: 'Ouro 18k', preco: 'A consultar', foto: 'images/SH-1059.png', categoria: 'casamento' },
+    { code: 'SH-1060', name: 'Anel Solitário Oval', material: 'Moissanite · Ouro 18k', preco: 'A consultar', foto: 'images/SH-1060.png', categoria: 'solitarios' },
   ];
 
   function getProdutos() {
