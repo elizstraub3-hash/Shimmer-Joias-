@@ -834,19 +834,14 @@ ul { list-style: none; }
   font-weight: 600;
   color: #654321;
   letter-spacing: 0.02em;
-  display: inline-flex;
-  align-items: baseline;
-  gap: 5px;
 }
 .produto-preco::after {
-  content: 'à vista';
+  content: ' à vista';
   font-size: 10px;
   font-weight: 400;
   color: var(--gray);
   letter-spacing: 0.04em;
-  text-transform: lowercase;
-  line-height: 1;
-  align-self: center;
+  vertical-align: middle;
 }
 .produto-preco.sem-avista::after { display: none; }
 .preco-grupo { display: flex; gap: 10px; align-items: center; }
