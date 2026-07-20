@@ -295,33 +295,33 @@ ul { list-style: none; }
 
 .hero-colecao-btn {
   position: absolute;
-  left: 14%;
-  top: 74%;
-  background: rgba(155, 122, 93, 0.9);
+  left: 5%;
+  bottom: 12%;
+  background: rgba(155, 122, 93, 0.88);
   color: #fff;
   font-family: 'Cormorant Garamond', serif;
-  font-size: clamp(14px, 1.5vw, 20px);
+  font-size: clamp(11px, 1.1vw, 16px);
   letter-spacing: 0.2em;
   text-transform: uppercase;
   text-decoration: none;
-  padding: 22px 70px;
+  padding: 16px 48px;
   border-radius: 50px;
-  border: 1.5px solid rgba(255,255,255,0.5);
+  border: 1.5px solid rgba(255,255,255,0.55);
   cursor: pointer;
   display: inline-block;
   transition: background 0.25s, border-color 0.25s;
   white-space: nowrap;
 }
 .hero-colecao-btn:hover {
-  background: rgba(155, 122, 93, 1);
+  background: rgba(140, 108, 78, 1);
   border-color: rgba(255,255,255,0.9);
 }
 @media (max-width: 768px) {
   .hero-colecao-btn {
     left: 4%;
-    top: 68%;
-    font-size: 11px;
-    padding: 14px 28px;
+    bottom: 8%;
+    font-size: 10px;
+    padding: 12px 28px;
   }
 }
 
