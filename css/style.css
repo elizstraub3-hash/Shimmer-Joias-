@@ -295,8 +295,8 @@ ul { list-style: none; }
 
 .hero-colecao-btn {
   position: absolute;
-  left: 8%;
-  top: 70%;
+  left: 14%;
+  top: 74%;
   background: rgba(155, 122, 93, 0.9);
   color: #fff;
   font-family: 'Cormorant Garamond', serif;
@@ -304,7 +304,7 @@ ul { list-style: none; }
   letter-spacing: 0.2em;
   text-transform: uppercase;
   text-decoration: none;
-  padding: 20px 60px;
+  padding: 22px 70px;
   border-radius: 50px;
   border: 1.5px solid rgba(255,255,255,0.5);
   cursor: pointer;
