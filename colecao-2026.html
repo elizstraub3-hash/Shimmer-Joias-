@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>SHIMMER JOIAS — Coleção 2026 · Para Momentos Únicos</title>
+  <meta name="description" content="Coleção 2026 Shimmer Joias — Para Momentos Únicos. Alianças e solitários em ouro 18k criados para eternizar os momentos mais importantes da sua vida." />
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="SHIMMER JOIAS" />
+  <meta property="og:title" content="SHIMMER JOIAS — Coleção 2026 · Para Momentos Únicos" />
+  <meta property="og:description" content="Alianças e solitários em ouro 18k criados para eternizar os momentos mais importantes da sua vida." />
+  <meta property="og:image" content="https://shimmer-joias.vercel.app/images/colecao-2026-banner.png" />
+  <meta property="og:url" content="https://shimmer-joias.vercel.app/colecao-2026.html" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <link rel="stylesheet" href="css/style.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Montserrat:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <style>
+    .col26-hero {
+      width: 100%;
+      height: 70svh;
+      min-height: 420px;
+      overflow: hidden;
+      position: relative;
+    }
+    .col26-hero img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center 20%;
+      display: block;
+    }
+    .col26-hero-overlay {
+      position: absolute;
+      inset: 0;
+      background: rgba(0,0,0,0.08);
+    }
+    .col26-produtos {
+      padding: 64px 0 100px;
+      background: #faf8f5;
+    }
+    .col26-header {
+      text-align: center;
+      margin-bottom: 48px;
+    }
+    .col26-label {
+      font-size: 11px;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--gold-dark);
+      font-weight: 600;
+      margin-bottom: 12px;
+      display: block;
+    }
+    .col26-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(32px, 5vw, 52px);
+      font-weight: 300;
+      color: #3a2a1a;
+      margin-bottom: 10px;
+    }
+    .col26-title em { font-style: italic; color: var(--gold-dark); }
+    .col26-sub {
+      font-size: 14px;
+      color: var(--gray);
+      max-width: 480px;
+      margin: 0 auto;
+      line-height: 1.7;
+    }
+    .col26-grid {
+      grid-template-columns: repeat(3, 1fr);
+    }
+    @media (max-width: 768px) {
+      .col26-hero { height: 55svh; }
+      .col26-grid { grid-template-columns: repeat(2, 1fr); }
+    }
+    @media (max-width: 480px) {
+      .col26-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ANNOUNCEMENT BAR -->
+  <div class="announcement-bar">
+    <div class="announcement-track">
+      <span>Garantia vitalícia em qualquer peça &nbsp;✦&nbsp; Temos peças a pronta entrega &nbsp;✦&nbsp; 10% de desconto no pagamento à vista &nbsp;✦&nbsp; Garantia vitalícia em qualquer peça &nbsp;✦&nbsp; Temos peças a pronta entrega &nbsp;✦&nbsp; 10% de desconto no pagamento à vista &nbsp;✦&nbsp; </span>
+      <span>Garantia vitalícia em qualquer peça &nbsp;✦&nbsp; Temos peças a pronta entrega &nbsp;✦&nbsp; 10% de desconto no pagamento à vista &nbsp;✦&nbsp; Garantia vitalícia em qualquer peça &nbsp;✦&nbsp; Temos peças a pronta entrega &nbsp;✦&nbsp; 10% de desconto no pagamento à vista &nbsp;✦&nbsp; </span>
+    </div>
+  </div>
+
+  <!-- HEADER -->
+  <header id="header">
+    <div class="header-inner">
+      <nav class="nav-left">
+        <a href="index.html#colecoes">Coleções</a>
+        <a href="categoria.html?cat=aneis-exclusivos">Exclusivos</a>
+      </nav>
+      <a href="index.html" class="logo">
+        <img src="images/logo.png" alt="SHIMMER JOIAS" class="logo-img" />
+      </a>
+      <nav class="nav-right">
+        <a href="index.html#sobre" class="nav-hide-mobile">Sobre</a>
+        <a href="index.html#contato" class="nav-hide-mobile">Contato</a>
+        <a href="#" class="nav-icon" id="cart-btn" aria-label="Sacola">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 01-8 0"/></svg>
+          <span class="cart-badge" id="cart-badge" style="display:none">0</span>
+        </a>
+        <button class="hamburger" id="hamburger" aria-label="Menu">
+          <span></span><span></span><span></span>
+        </button>
+      </nav>
+    </div>
+  </header>
+
+  <!-- MENU MOBILE -->
+  <div class="mobile-menu" id="mobile-menu">
+    <div class="mobile-menu-inner">
+      <p class="mobile-menu-label">Joias</p>
+      <a href="categoria.html?cat=solitarios">Anéis Solitários</a>
+      <a href="categoria.html?cat=aneis">Anéis com Pedras</a>
+      <a href="categoria.html?cat=aparadores">Aparadores</a>
+      <a href="categoria.html?cat=casamento">Alianças &amp; Casamento</a>
+      <a href="categoria.html?cat=correntes">Correntes Masculinas</a>
+      <a href="categoria.html?cat=correntes-femininas">Correntes Femininas</a>
+      <a href="categoria.html?cat=brincos">Brincos</a>
+      <div class="mobile-divider"></div>
+      <p class="mobile-menu-label">Coleções</p>
+      <a href="colecao-2026.html" class="mobile-destaque">Coleção 2026</a>
+      <a href="categoria.html?cat=aneis-exclusivos" class="mobile-destaque">Exclusivos</a>
+      <div class="mobile-divider"></div>
+      <a href="index.html">Início</a>
+    </div>
+  </div>
+
+  <!-- HERO BANNER -->
+  <div class="col26-hero">
+    <img src="images/colecao-2026-banner.png" alt="Coleção 2026 — Para Momentos Únicos" />
+    <div class="col26-hero-overlay"></div>
+  </div>
+
+  <!-- PRODUTOS -->
+  <section class="col26-produtos">
+    <div class="container">
+      <div class="col26-header">
+        <span class="col26-label">Lançamento · 2026</span>
+        <h1 class="col26-title">Para Momentos <em>Únicos</em></h1>
+        <p class="col26-sub">Peças criadas para eternizar os momentos mais importantes da sua vida</p>
+      </div>
+
+      <div class="produtos-grid col26-grid">
+
+        <div class="produto-card" data-code="SH-1058" data-name="Par de Alianças Tradicional Abaulada" data-preco="R$ 3.650,00">
+          <div class="produto-img produto-img-foto" data-gallery="images/SH-1058.png">
+            <span class="produto-code-img">#SH-1058</span>
+            <img src="images/SH-1058.png" alt="Par de Alianças Tradicional Abaulada" loading="lazy" />
+            <div class="produto-badge">Coleção 2026</div>
+            <div class="produto-hover-btn"><button class="btn-sacola">Adicionar à Sacola</button></div>
+          </div>
+          <div class="produto-info">
+            <p class="produto-colecao">Coleção 2026</p>
+            <h4>Par de Alianças Tradicional Abaulada</h4>
+            <p class="produto-material">5g o par · 2,5mm de largura · Ouro 18k</p>
+            <div class="preco-grupo">
+              <p class="produto-preco">R$ 3.650,00</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="produto-card" data-code="SH-1059" data-name="Par de Alianças Chanfrada" data-preco="R$ 6.600,00">
+          <div class="produto-img produto-img-foto" data-gallery="images/SH-1059.png">
+            <span class="produto-code-img">#SH-1059</span>
+            <img src="images/SH-1059.png" alt="Par de Alianças Chanfrada" loading="lazy" />
+            <div class="produto-badge">Coleção 2026</div>
+            <div class="produto-hover-btn"><button class="btn-sacola">Adicionar à Sacola</button></div>
+          </div>
+          <div class="produto-info">
+            <p class="produto-colecao">Coleção 2026</p>
+            <h4>Par de Alianças Chanfrada</h4>
+            <p class="produto-material">9g o par · 4,80mm de largura · Ouro 18k</p>
+            <div class="preco-grupo">
+              <p class="produto-preco">R$ 6.600,00</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="produto-card" data-code="SH-1060" data-name="Anel Solitário Oval" data-preco="A consultar">
+          <div class="produto-img produto-img-foto" data-gallery="images/SH-1060.png">
+            <span class="produto-code-img">#SH-1060</span>
+            <img src="images/SH-1060.png" alt="Anel Solitário Oval" loading="lazy" />
+            <div class="produto-badge">Coleção 2026</div>
+            <div class="produto-hover-btn"><button class="btn-sacola">Adicionar à Sacola</button></div>
+          </div>
+          <div class="produto-info">
+            <p class="produto-colecao">Coleção 2026</p>
+            <h4>Anel Solitário Oval</h4>
+            <p class="produto-material">Moissanite · Ouro 18k</p>
+            <div class="preco-grupo">
+              <p class="produto-preco sem-avista">A consultar</p>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <div class="ver-mais" style="margin-top:60px">
+        <a href="index.html" class="btn-outline" style="color:#654321;border-color:#654321">← Voltar à loja</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer id="contato" class="footer">
+    <div class="container footer-inner">
+      <div class="footer-brand">
+        <img src="images/logo.png" alt="SHIMMER JOIAS" class="footer-logo" />
+        <p>Joias exclusivas em ouro 18k.<br/>Feitas para durar uma vida.</p>
+      </div>
+      <div class="footer-links">
+        <h4>Navegação</h4>
+        <a href="index.html">Início</a>
+        <a href="categoria.html?cat=solitarios">Solitários</a>
+        <a href="categoria.html?cat=casamento">Casamento</a>
+        <a href="colecao-2026.html">Coleção 2026</a>
+      </div>
+      <div class="footer-links">
+        <h4>Atendimento</h4>
+        <a href="https://wa.me/554199441433" target="_blank">WhatsApp</a>
+        <a href="sobre.html">Sobre nós</a>
+        <a href="garantia.html">Garantia</a>
+        <a href="privacidade.html">Privacidade</a>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>© 2026 SHIMMER JOIAS · Todos os direitos reservados</p>
+    </div>
+  </footer>
+
+  <script src="js/search.js"></script>
+  <script>
+    // Cart
+    const cartKey = 'shimmer_cart';
+    function getCart() { try { return JSON.parse(localStorage.getItem(cartKey)) || []; } catch { return []; } }
+    function updateBadge() {
+      const total = getCart().reduce((s, i) => s + i.qty, 0);
+      const b = document.getElementById('cart-badge');
+      if (b) { b.textContent = total; b.style.display = total > 0 ? 'flex' : 'none'; }
+    }
+    updateBadge();
+
+    // Hamburger
+    document.getElementById('hamburger').addEventListener('click', () => {
+      document.getElementById('mobile-menu').classList.toggle('open');
+    });
+
+    // Add to cart buttons
+    document.querySelectorAll('.btn-sacola').forEach(btn => {
+      btn.addEventListener('click', e => {
+        e.stopPropagation();
+        const card = btn.closest('.produto-card');
+        const code = card.dataset.code;
+        const name = card.dataset.name;
+        const preco = card.dataset.preco;
+        const foto = card.querySelector('img')?.src || '';
+        const cart = getCart();
+        const idx = cart.findIndex(i => i.code === code);
+        if (idx > -1) cart[idx].qty++;
+        else cart.push({ code, name, preco, foto, qty: 1 });
+        localStorage.setItem(cartKey, JSON.stringify(cart));
+        updateBadge();
+        btn.textContent = 'Adicionado!';
+        setTimeout(() => btn.textContent = 'Adicionar à Sacola', 1500);
+      });
+    });
+  </script>
+</body>
+</html>
