@@ -53,6 +53,7 @@
     { code: 'SH-1054', name: 'Corrente de Homenagem Personalizada', material: 'Ouro 18k', preco: 'R$ 6.670,00', foto: 'images/SH-1054.jpg', categoria: 'homenagem' },
     { code: 'SH-1055', name: 'Anel Exclusivo Cravejado', material: 'Anel personalizado · 10g · Todo cravejado com diamantes · Ouro 18k', preco: 'R$ 15.000,00', foto: 'images/SH-1055.jpg', categoria: 'aneis-exclusivos' },
     { code: 'SH-1056', name: 'Pulseira Exclusiva com Iniciais', material: 'Bracelete personalizado com iniciais · Ouro 18k', preco: 'R$ 14.400,00', foto: 'images/SH-1056.jpg', categoria: 'pulseiras-femininas' },
+    { code: 'SH-1057', name: 'Anel Solitário Infinito', material: 'Pedra central 4mm · Moissanite · Ouro 18k', preco: 'R$ 999,00', foto: 'images/SH-1057.jpg', categoria: 'solitarios' },
   ];
 
   function getProdutos() {

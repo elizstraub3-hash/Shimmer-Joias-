@@ -808,6 +808,12 @@ ul { list-style: none; }
   color: var(--gray);
   text-decoration: line-through;
 }
+.produto-preco-parcel {
+  font-size: 12px;
+  color: var(--gray);
+  font-weight: 400;
+  margin-top: 2px;
+}
 .ver-mais { text-align: center; margin-top: 50px; }
 .ver-mais .btn-outline {
   color: #654321;
