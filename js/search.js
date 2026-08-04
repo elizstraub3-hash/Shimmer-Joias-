@@ -63,6 +63,7 @@
     { code: 'SH-1064', name: 'Anel Solitário Cravejado', material: 'Pedra central · Haste cravejada com moissanites · Ouro 18k', preco: 'A consultar', foto: 'images/SH-1064.jpg', categoria: 'solitarios' },
     { code: 'SH-1065', name: 'Meia Aliança com Pedras', material: 'Meia aliança · Moissanites · Ouro 18k', preco: 'A consultar', foto: 'images/SH-1065.jpg', categoria: 'aparadores' },
     { code: 'SH-1066', name: 'Anel Solitário 6 Garras', material: 'Pedra central · 6 garras · Haste fina · Ouro 18k', preco: 'A consultar', foto: 'images/SH-1066.jpg', categoria: 'solitarios' },
+    { code: 'SH-1067', name: 'Anel Infinito com Pedras', material: 'Símbolo infinito · Moissanites · Ouro 18k', preco: 'A consultar', foto: 'images/SH-1067.jpg', categoria: 'solitarios' },
   ];
 
   function getProdutos() {
