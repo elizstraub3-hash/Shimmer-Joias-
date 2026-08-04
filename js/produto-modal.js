@@ -63,7 +63,7 @@
   }
 
   document.addEventListener('click', e => {
-    if (e.target.closest('.btn-sacola') || e.target.closest('.pm-overlay')) return;
+    if (e.target.closest('.pm-overlay')) return;
     const card = e.target.closest('.produto-card');
     if (!card) return;
 
@@ -136,7 +136,7 @@
 
     overlay.classList.add('pm-open');
     document.body.style.overflow = 'hidden';
-  });
+  }, true); // capture phase: fires before stopPropagation in card buttons
 
   // Make all cards show pointer cursor
   document.addEventListener('DOMContentLoaded', () => {
