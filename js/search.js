@@ -74,7 +74,7 @@
     { code: 'SH-1076', name: 'Anel Solitário Haste Cravejada Premium', material: 'Pedra central · Haste totalmente cravejada · Ouro 18k', preco: 'A consultar', foto: 'images/SH-1076.jpg', categoria: 'solitarios' },
     { code: 'SH-1077', name: 'Anel Solitário Oval Haste Lisa', material: 'Pedra oval · Haste fina lisa · Ouro 18k', preco: 'A consultar', foto: 'images/SH-1077.jpg', categoria: 'solitarios' },
     { code: 'SH-1078', name: 'Anel Solitário Clássico', material: 'Pedra central · Haste lisa fina · Ouro 18k', preco: 'A consultar', foto: 'images/SH-1078.jpg', categoria: 'solitarios' },
-    { code: 'SH-1079', name: 'Conjunto Solitário e Aliança', material: 'Anel solitário + aliança · Ouro 18k', preco: 'A consultar', foto: 'images/SH-1079.jpg', categoria: 'solitarios' },
+    { code: 'SH-1079', name: 'Conjunto Solitário e Aliança', material: 'Anel solitário + aliança · Ouro 18k', preco: 'A consultar', foto: 'images/SH-1079.jpg', categoria: 'casamento' },
   ];
 
   function getProdutos() {

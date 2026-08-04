@@ -890,7 +890,7 @@ const PRODUTOS_DEFAULT = [
   { code: 'SH-1076', name: 'Anel Solitário Haste Cravejada Premium', colecao: 'Shimmer Joias', material: 'Pedra central · Haste totalmente cravejada · Ouro 18k', preco: 'A consultar', precoOld: '', badge: 'Solitário', foto: 'images/SH-1076.jpg', fotos: ['images/SH-1076a.jpg', 'images/SH-1076b.jpg', 'images/SH-1076c.jpg', 'images/SH-1076d.jpg'], categoria: 'solitarios' },
   { code: 'SH-1077', name: 'Anel Solitário Oval Haste Lisa', colecao: 'Shimmer Joias', material: 'Pedra oval · Haste fina lisa · Ouro 18k', preco: 'A consultar', precoOld: '', badge: 'Solitário', foto: 'images/SH-1077.jpg', fotos: [], categoria: 'solitarios' },
   { code: 'SH-1078', name: 'Anel Solitário Clássico', colecao: 'Shimmer Joias', material: 'Pedra central · Haste lisa fina · Ouro 18k', preco: 'A consultar', precoOld: '', badge: 'Solitário', foto: 'images/SH-1078.jpg', fotos: [], categoria: 'solitarios' },
-  { code: 'SH-1079', name: 'Conjunto Solitário e Aliança', colecao: 'Shimmer Joias', material: 'Anel solitário + aliança · Ouro 18k', preco: 'A consultar', precoOld: '', badge: 'Conjunto', foto: 'images/SH-1079.jpg', fotos: ['images/SH-1079a.jpg'], categoria: 'solitarios' },
+  { code: 'SH-1079', name: 'Conjunto Solitário e Aliança', colecao: 'Shimmer Joias', material: 'Anel solitário + aliança · Ouro 18k', preco: 'A consultar', precoOld: '', badge: 'Casamento', foto: 'images/SH-1079.jpg', fotos: ['images/SH-1079a.jpg'], categoria: 'casamento' },
 ];
 
 function getProdutos() {
