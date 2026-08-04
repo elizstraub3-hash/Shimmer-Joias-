@@ -872,7 +872,7 @@ const PRODUTOS_DEFAULT = [
   { code: 'SH-1057', name: 'Anel Solitário Infinito', colecao: 'Shimmer Joias', material: 'Pedra central 4mm · Moissanite · Ouro 18k', preco: 'R$ 999,00', precoOld: '', badge: 'Solitário', foto: 'images/SH-1057.jpg', fotos: [], categoria: 'solitarios' },
   { code: 'SH-1058', name: 'Par de Alianças Tradicional Abaulada', colecao: 'Coleção 2026', material: '5g o par · 2,5mm de largura · Altura 1,30mm · Ouro 18k', preco: 'R$ 3.650,00', precoOld: '', badge: 'Coleção 2026', foto: 'images/SH-1058.png', fotos: [], categoria: 'casamento' },
   { code: 'SH-1059', name: 'Par de Alianças Chanfrada', colecao: 'Coleção 2026', material: '9g o par · 4,80mm de largura · Ouro 18k', preco: 'R$ 6.600,00', precoOld: '', badge: 'Coleção 2026', foto: 'images/SH-1059.png', fotos: [], categoria: 'casamento' },
-  { code: 'SH-1060', name: 'Anel Solitário Oval', colecao: 'Coleção 2026', material: 'Moissanite · Ouro 18k', preco: 'A consultar', precoOld: '', badge: 'Coleção 2026', foto: 'images/SH-1060.png', fotos: [], categoria: 'solitarios' },
+  { code: 'SH-1060', name: 'Anel Solitário Oval', colecao: 'Coleção 2026', material: 'Moissanite · Ouro 18k', preco: 'R$ 1.550,00', precoOld: '', badge: 'Coleção 2026', foto: 'images/SH-1060.png', fotos: [], categoria: 'solitarios' },
 ];
 
 function getProdutos() {
