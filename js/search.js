@@ -57,6 +57,12 @@
     { code: 'SH-1058', name: 'Par de Alianças Tradicional Abaulada', material: '5g o par · 2,5mm de largura · Ouro 18k', preco: 'R$ 3.650,00', foto: 'images/SH-1058.jpg', categoria: 'casamento' },
     { code: 'SH-1059', name: 'Par de Alianças Chanfrada', material: '9g o par · 4,80mm de largura · Ouro 18k', preco: 'R$ 6.600,00', foto: 'images/SH-1059.jpg', categoria: 'casamento' },
     { code: 'SH-1060', name: 'Anel Solitário Oval', material: 'Moissanite · Ouro 18k', preco: 'R$ 1.550,00', foto: 'images/SH-1060.jpg', categoria: 'solitarios' },
+    { code: 'SH-1061', name: 'Anel Solitário com Laterais', material: 'Pedra central · Moissanites laterais · Ouro 18k', preco: 'A consultar', foto: 'images/SH-1061.jpg', categoria: 'solitarios' },
+    { code: 'SH-1062', name: 'Anel Solitário com Laterais Cravejadas', material: 'Pedra central · Laterais cravejadas · Ouro 18k', preco: 'A consultar', foto: 'images/SH-1062.jpg', categoria: 'solitarios' },
+    { code: 'SH-1063', name: 'Anel Solitário Clássico Liso', material: 'Pedra central redonda · Haste lisa · Ouro 18k', preco: 'A consultar', foto: 'images/SH-1063.jpg', categoria: 'solitarios' },
+    { code: 'SH-1064', name: 'Anel Solitário Cravejado', material: 'Pedra central · Haste cravejada com moissanites · Ouro 18k', preco: 'A consultar', foto: 'images/SH-1064.jpg', categoria: 'solitarios' },
+    { code: 'SH-1065', name: 'Meia Aliança com Pedras', material: 'Meia aliança · Moissanites · Ouro 18k', preco: 'A consultar', foto: 'images/SH-1065.jpg', categoria: 'aparadores' },
+    { code: 'SH-1066', name: 'Anel Solitário 6 Garras', material: 'Pedra central · 6 garras · Haste fina · Ouro 18k', preco: 'A consultar', foto: 'images/SH-1066.jpg', categoria: 'solitarios' },
   ];
 
   function getProdutos() {
