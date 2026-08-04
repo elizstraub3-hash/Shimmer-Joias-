@@ -12,7 +12,6 @@
     { code: 'SH-1012', name: 'Meia Aliança Marquise', material: '5 navetes 2x5mm · 8 pedras 1,25mm · Moissanites', preco: 'R$ 3.400,00', foto: 'images/SH-1012.jpg', categoria: 'aparadores' },
     { code: 'SH-1013', name: 'Meia Aliança Esmeralda', material: 'Esmeraldas e moissanites · Ouro 18k', preco: 'R$ 2.160,00', foto: 'images/SH-1013.jpg', categoria: 'aparadores' },
     { code: 'SH-1014', name: 'Anel Solitário Clássico', material: 'Solitário · Pedra central 5mm · Moissanite', preco: 'R$ 999,00', foto: 'images/SH-1014.jpg', categoria: 'solitarios' },
-    { code: 'SH-1015', name: 'Par de Alianças Lisas', material: 'Ouro amarelo 18k polido · Design clássico', preco: 'R$ 2.200,00', foto: 'images/SH-1015.jpg', categoria: 'casamento' },
     { code: 'SH-1016', name: 'Colar Grumet Masculino', material: 'Ouro 18k · Elo grumet', preco: 'R$ 64.800,00', foto: 'images/SH-1016.jpg', categoria: 'correntes' },
     { code: 'SH-1017', name: 'Pulseira Grumet', material: 'Ouro 18k · Elo grumet · Fecho caixa', preco: 'R$ 27.000,00', foto: 'images/SH-1017a.jpg', categoria: 'pulseiras-masculinas' },
     { code: 'SH-1018', name: 'Anel Solitário 7 Pedras', material: '14 moissanites 1,25mm · Central 4mm', preco: 'R$ 1.550,00', foto: 'images/SH-1018.jpg', categoria: 'aneis' },
