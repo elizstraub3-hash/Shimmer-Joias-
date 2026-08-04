@@ -58,6 +58,58 @@
       color: var(--gold);
       font-weight: 500;
     }
+    .cat-search-wrap {
+      max-width: 460px;
+      margin: 28px auto 0;
+      position: relative;
+    }
+    .cat-search-input {
+      width: 100%;
+      padding: 12px 44px 12px 18px;
+      border: 1.5px solid rgba(201,168,76,0.35);
+      border-radius: 4px;
+      background: #fff;
+      font-family: 'Montserrat', sans-serif;
+      font-size: 14px;
+      color: #333;
+      outline: none;
+      box-sizing: border-box;
+      transition: border-color 0.2s, box-shadow 0.2s;
+    }
+    .cat-search-input:focus {
+      border-color: var(--gold);
+      box-shadow: 0 0 0 3px rgba(201,168,76,0.12);
+    }
+    .cat-search-input::placeholder { color: #bbb; }
+    .cat-search-icon {
+      position: absolute;
+      right: 14px;
+      top: 50%;
+      transform: translateY(-50%);
+      pointer-events: none;
+      color: #c9a84c;
+    }
+    .cat-search-clear {
+      position: absolute;
+      right: 12px;
+      top: 50%;
+      transform: translateY(-50%);
+      background: none;
+      border: none;
+      cursor: pointer;
+      font-size: 20px;
+      color: #bbb;
+      display: none;
+      line-height: 1;
+      padding: 2px 4px;
+    }
+    .cat-search-clear:hover { color: #888; }
+    .cat-search-hint {
+      font-size: 11px;
+      color: var(--gray);
+      letter-spacing: 0.05em;
+      margin-top: 8px;
+    }
   </style>
 </head>
 <body>
@@ -129,6 +181,12 @@
     <p class="cat-breadcrumb"><a href="index.html">Início</a> &nbsp;/&nbsp; <span id="cat-breadcrumb-name">Categoria</span></p>
     <h1 class="cat-page-title" id="cat-page-title">Joias</h1>
     <p class="cat-page-subtitle" id="cat-page-subtitle">Explore nossa coleção</p>
+    <div class="cat-search-wrap">
+      <input type="text" id="cat-code-input" class="cat-search-input" placeholder="Buscar por código: SH-1014, SH-1057..." autocomplete="off" spellcheck="false" />
+      <svg class="cat-search-icon" id="cat-search-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      <button class="cat-search-clear" id="cat-search-clear" aria-label="Limpar busca">×</button>
+    </div>
+    <p class="cat-search-hint">Digite o código ou nome da peça para encontrá-la rapidamente</p>
   </div>
 
   <!-- PRODUTOS -->
@@ -393,11 +451,16 @@
       ? getProdutos().filter(p => p.badge === 'Exclusivo')
       : getProdutos().filter(p => p.categoria === cat);
     const grid = document.getElementById('cat-produtos-grid');
+    const emptyEl = document.getElementById('cat-empty');
 
-    if (produtos.length === 0) {
-      document.getElementById('cat-empty').style.display = 'block';
-    } else {
-      grid.innerHTML = produtos.map(p => `
+    function renderProducts(list) {
+      if (list.length === 0) {
+        emptyEl.style.display = 'block';
+        grid.innerHTML = '';
+        return;
+      }
+      emptyEl.style.display = 'none';
+      grid.innerHTML = list.map(p => `
         <div class="produto-card" data-code="${p.code}" data-name="${p.name}" data-preco="${p.preco}">
           <div class="produto-img${p.foto ? ' produto-img-foto' : ''}"${p.fotos ? ` data-gallery="${p.fotos.join(',')}"` : (p.foto ? ` data-gallery="${p.foto}"` : '')}>
             <span class="produto-code-img">#${p.code}</span>
@@ -423,9 +486,41 @@
           </div>
         </div>
       `).join('');
-
-      // sacola buttons handled by produto-modal.js
     }
+
+    renderProducts(produtos);
+
+    // ===== SEARCH BY CODE =====
+    (function() {
+      const searchInput = document.getElementById('cat-code-input');
+      const clearBtn = document.getElementById('cat-search-clear');
+      const searchIcon = document.getElementById('cat-search-icon');
+      if (!searchInput) return;
+      const allProdutos = getProdutos();
+      function doSearch(q) {
+        if (!q) {
+          emptyEl.innerHTML = '<p>Nenhuma peça encontrada nesta categoria ainda.</p><p style="margin-top:8px"><a href="index.html">Voltar ao início</a> ou <a href="index.html#contato">falar pelo WhatsApp</a></p>';
+          renderProducts(produtos);
+          clearBtn.style.display = 'none';
+          if (searchIcon) searchIcon.style.display = '';
+          return;
+        }
+        clearBtn.style.display = 'block';
+        if (searchIcon) searchIcon.style.display = 'none';
+        const found = allProdutos.filter(p =>
+          p.code.toLowerCase().includes(q) || p.name.toLowerCase().includes(q)
+        );
+        if (found.length === 0) {
+          grid.innerHTML = '';
+          emptyEl.innerHTML = `<p>Nenhuma peça encontrada para "<strong>${q.toUpperCase()}</strong>".</p><p style="margin-top:8px"><a href="index.html#contato">Falar pelo WhatsApp</a></p>`;
+          emptyEl.style.display = 'block';
+        } else {
+          renderProducts(found);
+        }
+      }
+      searchInput.addEventListener('input', () => doSearch(searchInput.value.trim().toLowerCase()));
+      clearBtn.addEventListener('click', () => { searchInput.value = ''; doSearch(''); searchInput.focus(); });
+    })();
 
     // ===== TOAST =====
     function showToast(message, type = '') {
