@@ -48,10 +48,13 @@
     document.body.style.overflow = '';
   }
 
+  const PARCELAS_FIXAS = { 999: 'ou 10× de R$ 120,00' };
+
   function calcParcela(preco) {
     if (!preco || preco === 'A consultar') return '';
     const num = parseFloat(preco.replace('R$', '').replace(/\./g, '').replace(',', '.').trim());
     if (isNaN(num)) return '';
+    if (PARCELAS_FIXAS[num]) return PARCELAS_FIXAS[num];
     const p = (num / 10).toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
     return `ou 10× de R$ ${p} sem juros`;
   }
@@ -138,8 +141,30 @@
     document.body.style.overflow = 'hidden';
   }, true); // capture phase: fires before stopPropagation in card buttons
 
-  // Make all cards show pointer cursor
-  document.addEventListener('DOMContentLoaded', () => {
-    document.querySelectorAll('.produto-card').forEach(c => c.style.cursor = 'pointer');
-  });
+  const HOVER_ICON = `
+    <div class="pm-hover-circle">
+      <svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M9 11V6a2 2 0 0 1 4 0v5"/>
+        <path d="M13 10a2 2 0 0 1 4 0v3"/>
+        <path d="M17 13a2 2 0 0 1 4 0v2a6 6 0 0 1-6 6H9a6 6 0 0 1-6-6v-1a2 2 0 0 1 4 0"/>
+        <path d="M9 11a2 2 0 0 0-4 0v1"/>
+      </svg>
+    </div>
+    <span class="pm-hover-label">Clique e saiba mais</span>`;
+
+  function injectHoverIcons() {
+    document.querySelectorAll('.produto-hover-btn').forEach(el => {
+      el.innerHTML = HOVER_ICON;
+    });
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', injectHoverIcons);
+  } else {
+    injectHoverIcons();
+  }
+
+  // Re-inject when categoria.html renders dynamic cards
+  const observer = new MutationObserver(() => injectHoverIcons());
+  observer.observe(document.body, { childList: true, subtree: true });
 })();

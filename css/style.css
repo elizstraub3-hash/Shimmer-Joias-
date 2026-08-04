@@ -738,26 +738,40 @@ ul { list-style: none; }
 .produto-badge.sale { background: var(--gold-dark); }
 .produto-hover-btn {
   position: absolute;
-  bottom: 0; left: 0; right: 0;
-  background: rgba(26,26,26,0.88);
-  padding: 12px;
+  inset: 0;
+  background: rgba(0,0,0,0.42);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  padding: 0;
   text-align: center;
-}
-.produto-hover-btn button {
-  background: none;
-  border: 1px solid rgba(201,168,76,0.6);
-  color: var(--gold-light);
-  font-size: 10px;
-  letter-spacing: 0.15em;
-  text-transform: uppercase;
-  padding: 8px 20px;
   cursor: pointer;
-  font-family: 'Montserrat', sans-serif;
-  font-weight: 600;
-  transition: all var(--transition);
-  width: 100%;
 }
-.produto-hover-btn button:hover { background: var(--gold); border-color: var(--gold); color: var(--white); }
+.produto-card:hover .produto-hover-btn { opacity: 1; }
+.produto-hover-btn button { display: none; }
+.pm-hover-circle {
+  width: 58px;
+  height: 58px;
+  background: rgba(255,255,255,0.18);
+  border: 2px solid rgba(255,255,255,0.75);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.pm-hover-circle svg { width: 26px; height: 26px; }
+.pm-hover-label {
+  font-size: 10px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: #fff;
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 500;
+}
 .produto-colecao {
   font-size: 10px;
   color: var(--gold);
