@@ -153,7 +153,8 @@
     <span class="pm-hover-label">Clique e saiba mais</span>`;
 
   function injectHoverIcons() {
-    document.querySelectorAll('.produto-hover-btn').forEach(el => {
+    document.querySelectorAll('.produto-hover-btn:not([data-hi])').forEach(el => {
+      el.setAttribute('data-hi', '1');
       el.innerHTML = HOVER_ICON;
     });
   }
@@ -164,7 +165,7 @@
     injectHoverIcons();
   }
 
-  // Re-inject when categoria.html renders dynamic cards
-  const observer = new MutationObserver(() => injectHoverIcons());
-  observer.observe(document.body, { childList: true, subtree: true });
+  // Re-inject only for new cards added dynamically (categoria.html)
+  const observer = new MutationObserver(injectHoverIcons);
+  observer.observe(document.body, { childList: true, subtree: false });
 })();
