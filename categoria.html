@@ -406,24 +406,7 @@
         </div>
       `).join('');
 
-      // bind sacola buttons
-      document.querySelectorAll('.btn-sacola').forEach(btn => {
-        btn.addEventListener('click', () => {
-          const card = btn.closest('.produto-card');
-          _checkoutProduto = {
-            code: card.dataset.code || '',
-            name: card.dataset.name || '',
-            preco: card.dataset.preco || '',
-          };
-          document.getElementById('checkout-nome-produto').textContent = _checkoutProduto.name;
-          document.getElementById('checkout-preco-produto').textContent = _checkoutProduto.preco;
-          document.getElementById('checkout-code-produto').textContent = _checkoutProduto.code;
-          document.getElementById('checkout-step1').style.display = 'flex';
-          document.getElementById('checkout-info').style.display = 'none';
-          document.querySelectorAll('.checkout-opcao').forEach(o => o.classList.remove('selected'));
-          document.getElementById('modal-checkout').style.display = 'flex';
-        });
-      });
+      // sacola buttons handled by produto-modal.js
     }
 
     // ===== TOAST =====
