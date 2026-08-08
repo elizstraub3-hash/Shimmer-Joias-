@@ -149,6 +149,22 @@ input, textarea, select { font-family: 'Montserrat', sans-serif; }
   transition: all 0.2s;
 }
 .refresh-btn:hover { border-color: var(--gold); color: var(--gold); }
+.backup-btn {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 14px;
+  background: var(--gold);
+  border: 1px solid var(--gold);
+  font-size: 12px;
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 600;
+  color: #fff;
+  transition: all 0.2s;
+}
+.backup-btn:hover { background: var(--gold-dark); border-color: var(--gold-dark); }
+.backup-btn.restore { background: none; color: var(--gold); }
+.backup-btn.restore:hover { background: rgba(201,168,76,0.1); }
 .user-chip {
   display: flex;
   align-items: center;

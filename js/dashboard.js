@@ -990,3 +990,65 @@ loadRealData().then(() => {
   populateOverview();
 });
 renderProdutosAdmin();
+
+// ===== BACKUP & RESTORE =====
+function exportBackup() {
+  const data = {};
+  for (let i = 0; i < localStorage.length; i++) {
+    const key = localStorage.key(i);
+    if (key && key.startsWith('shimmer_')) {
+      try { data[key] = JSON.parse(localStorage.getItem(key)); }
+      catch { data[key] = localStorage.getItem(key); }
+    }
+  }
+  if (Object.keys(data).length === 0) {
+    alert('Nenhum dado encontrado para salvar. Use o painel para registrar configurações primeiro.');
+    return;
+  }
+  const payload = JSON.stringify({ version: 1, date: new Date().toISOString(), data }, null, 2);
+  const blob = new Blob([payload], { type: 'application/json' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = `shimmer-backup-${new Date().toISOString().slice(0, 10)}.json`;
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  URL.revokeObjectURL(url);
+  localStorage.setItem('shimmer_last_backup', new Date().toISOString());
+  const btn = document.getElementById('btn-export-backup');
+  if (btn) { const orig = btn.textContent; btn.textContent = '✓ Salvo!'; setTimeout(() => { btn.innerHTML = '<svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg> Backup'; }, 2500); }
+}
+
+function importBackup() {
+  const input = document.createElement('input');
+  input.type = 'file';
+  input.accept = '.json';
+  input.onchange = (e) => {
+    const file = e.target.files[0];
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onload = (ev) => {
+      try {
+        const backup = JSON.parse(ev.target.result);
+        if (!backup.data || typeof backup.data !== 'object') throw new Error('Formato inválido');
+        const keys = Object.keys(backup.data);
+        if (keys.length === 0) throw new Error('Backup vazio');
+        const dateStr = backup.date ? new Date(backup.date).toLocaleString('pt-BR') : 'desconhecida';
+        const ok = confirm(`Restaurar backup de ${dateStr}?\n(${keys.length} itens: ${keys.join(', ')})\n\nOs dados atuais serão substituídos.`);
+        if (!ok) return;
+        keys.forEach(key => {
+          localStorage.setItem(key, JSON.stringify(backup.data[key]));
+        });
+        alert('✅ Backup restaurado! A página será recarregada.');
+        location.reload();
+      } catch (err) {
+        alert('❌ Arquivo inválido: ' + err.message);
+      }
+    };
+    reader.readAsText(file);
+  };
+  document.body.appendChild(input);
+  input.click();
+  document.body.removeChild(input);
+}
