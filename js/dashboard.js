@@ -743,7 +743,8 @@ function saveToken(platform) {
 }
 
 // ===== REFRESH =====
-document.getElementById('refresh-btn').addEventListener('click', () => {
+const refreshBtn = document.getElementById('refresh-btn');
+if (refreshBtn) refreshBtn.addEventListener('click', () => {
   const active = document.querySelector('.panel.active');
   if (active) {
     const id = active.id.replace('panel-', '');
