@@ -888,6 +888,7 @@ const PRODUTOS_DEFAULT = [
   { code: 'SH-1077', name: 'Anel Solitário Oval Haste Lisa', colecao: 'Shimmer Joias', material: 'Pedra oval · Haste fina lisa · Ouro 18k', preco: 'A consultar', precoOld: '', badge: 'Solitário', foto: 'images/SH-1077.jpg', fotos: [], categoria: 'solitarios' },
   { code: 'SH-1078', name: 'Anel Solitário Clássico', colecao: 'Shimmer Joias', material: 'Pedra central · Haste lisa fina · Ouro 18k', preco: 'A consultar', precoOld: '', badge: 'Solitário', foto: 'images/SH-1078.jpg', fotos: [], categoria: 'solitarios' },
   { code: 'SH-1079', name: 'Conjunto Solitário e Aliança', colecao: 'Shimmer Joias', material: 'Anel solitário + aliança · Ouro 18k', preco: 'A consultar', precoOld: '', badge: 'Casamento', foto: 'images/SH-1079.jpg', fotos: ['images/SH-1079a.jpg'], categoria: 'casamento' },
+  { code: 'SH-1080', name: 'Par de Alianças Imperial', colecao: 'Shimmer Joias', material: '8g · 4mm de largura · 1 pedra de 1,25mm · Ouro 18k', preco: 'R$ 5.840,00', precoOld: '', badge: 'Aliança', foto: 'images/SH-1080.jpg', fotos: [], categoria: 'casamento' },
 ];
 
 function getProdutos() {
