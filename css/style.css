@@ -740,7 +740,8 @@ header.scrolled { box-shadow: 0 2px 20px rgba(74,52,36,0.1); }
   min-width: 100%;
   display: grid;
   grid-template-columns: 1fr 1fr;
-  min-height: 480px;
+  height: 420px;
+  max-height: 420px;
   background: var(--brown-darkest);
   overflow: hidden;
   position: relative;
