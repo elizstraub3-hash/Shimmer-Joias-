@@ -38,6 +38,8 @@ const revealObserver = new IntersectionObserver((entries) => {
   });
 }, { threshold: 0.12 });
 revealEls.forEach(el => revealObserver.observe(el));
+// Also observe elements that already have the reveal class in HTML (e.g. section headers, casamento cards)
+document.querySelectorAll('.reveal').forEach(el => revealObserver.observe(el));
 
 // ===== CONTACT FORM =====
 const formContato = document.getElementById('formContato');
