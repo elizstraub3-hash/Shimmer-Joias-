@@ -1,3 +1,26 @@
+// ===== HERO SLIDER =====
+(function() {
+  const slider = document.getElementById('heroSlider');
+  const dots = document.querySelectorAll('.hero-dot');
+  if (!slider) return;
+  const slides = slider.querySelectorAll('.hero-slide');
+  let cur = 0, timer;
+
+  function goTo(idx) {
+    slides[cur].classList.remove('active');
+    dots[cur].classList.remove('active');
+    cur = (idx + slides.length) % slides.length;
+    slides[cur].classList.add('active');
+    dots[cur].classList.add('active');
+  }
+
+  function start() { timer = setInterval(() => goTo(cur + 1), 5000); }
+  function restart() { clearInterval(timer); start(); }
+
+  dots.forEach(d => d.addEventListener('click', () => { goTo(+d.dataset.idx); restart(); }));
+  start();
+})();
+
 // ===== HEADER SCROLL =====
 const header = document.getElementById('header');
 window.addEventListener('scroll', () => {

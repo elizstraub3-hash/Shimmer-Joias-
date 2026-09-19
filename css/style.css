@@ -363,28 +363,53 @@ header.scrolled { box-shadow: 0 2px 20px rgba(74,52,36,0.1); }
 .mobile-search input::placeholder { color: var(--gray); }
 .mobile-search input:focus { border-color: var(--gold); }
 
-/* ===== HERO ===== */
-.hero {
-  min-height: 620px;
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  background: var(--cream);
-  overflow: hidden;
+/* ===== HERO SLIDER ===== */
+.hero-slider-wrap {
+  background: var(--cream-light);
+  padding: 24px 48px 20px;
 }
-.hero-text-side {
+.hero-slider {
+  position: relative;
+  width: 100%;
+  border-radius: 4px;
+  overflow: hidden;
+  height: 520px;
+}
+.hero-slide {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  transition: opacity 0.7s ease;
+  pointer-events: none;
+}
+.hero-slide.active {
+  opacity: 1;
+  pointer-events: auto;
+}
+.hero-slide img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  display: block;
+}
+.hero-slide-overlay {
+  position: absolute;
+  inset: 0;
   display: flex;
   flex-direction: column;
   justify-content: center;
-  padding: 80px 60px 80px 80px;
+  padding: 60px;
+  background: linear-gradient(to right, rgba(33,26,21,0.55) 0%, rgba(33,26,21,0.15) 60%, transparent 100%);
 }
 .hero-eyebrow {
   font-family: 'Montserrat', sans-serif;
   font-size: 10px;
   letter-spacing: 0.28em;
   text-transform: uppercase;
-  color: var(--gold);
+  color: var(--gold-light);
   font-weight: 600;
-  margin-bottom: 24px;
+  margin-bottom: 20px;
   display: flex;
   align-items: center;
   gap: 12px;
@@ -394,25 +419,18 @@ header.scrolled { box-shadow: 0 2px 20px rgba(74,52,36,0.1); }
   display: block;
   width: 30px;
   height: 1px;
-  background: var(--gold);
+  background: var(--gold-light);
 }
 .hero-title {
   font-family: 'Cormorant Garamond', serif;
-  font-size: clamp(44px, 5vw, 68px);
+  font-size: clamp(38px, 4.5vw, 60px);
   font-weight: 300;
-  line-height: 1.08;
-  color: var(--brown-deep);
-  margin-bottom: 28px;
+  line-height: 1.1;
+  color: #fff;
+  margin-bottom: 32px;
   letter-spacing: -0.01em;
 }
-.hero-title em { font-style: italic; color: var(--gold-dark); }
-.hero-subtitle {
-  font-size: 14px;
-  color: var(--gray);
-  line-height: 1.75;
-  max-width: 380px;
-  margin-bottom: 40px;
-}
+.hero-title em { font-style: italic; color: var(--gold-light); }
 .hero-ctas {
   display: flex;
   align-items: center;
@@ -424,58 +442,32 @@ header.scrolled { box-shadow: 0 2px 20px rgba(74,52,36,0.1); }
   font-size: 11px;
   font-weight: 600;
   letter-spacing: 0.12em;
-  color: var(--brown-text);
+  color: rgba(255,255,255,0.85);
   text-transform: uppercase;
-  border-bottom: 1px solid var(--beige);
+  border-bottom: 1px solid rgba(255,255,255,0.4);
   padding-bottom: 2px;
   transition: color 0.2s, border-color 0.2s;
 }
-.hero-link:hover { color: var(--gold); border-color: var(--gold); }
-
-.hero-image-side {
-  position: relative;
-  overflow: hidden;
-  background: var(--beige);
+.hero-link:hover { color: var(--gold-light); border-color: var(--gold-light); }
+.hero-dots {
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+  margin-top: 14px;
 }
-.hero-image-side img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  object-position: center top;
-  display: block;
-  transition: transform 0.8s ease;
+.hero-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  border: none;
+  background: rgba(165,122,62,0.3);
+  cursor: pointer;
+  padding: 0;
+  transition: background 0.3s, transform 0.2s;
 }
-.hero-image-side:hover img { transform: scale(1.03); }
-.hero-image-overlay {
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(to right, rgba(234,224,210,0.35), transparent 40%);
-  pointer-events: none;
-}
-.hero-badge {
-  position: absolute;
-  bottom: 32px;
-  right: 32px;
-  background: var(--white);
-  padding: 16px 20px;
-  text-align: center;
-  border: 1px solid rgba(165,122,62,0.2);
-  box-shadow: 0 4px 20px rgba(74,52,36,0.1);
-}
-.hero-badge-num {
-  font-family: 'Cormorant Garamond', serif;
-  font-size: 28px;
-  font-weight: 400;
-  color: var(--gold-dark);
-  line-height: 1;
-}
-.hero-badge-text {
-  font-size: 9px;
-  font-weight: 600;
-  letter-spacing: 0.15em;
-  text-transform: uppercase;
-  color: var(--gray);
-  margin-top: 4px;
+.hero-dot.active {
+  background: var(--gold);
+  transform: scale(1.25);
 }
 
 /* ===== BENEFITS BAR ===== */
@@ -1272,7 +1264,6 @@ header.scrolled { box-shadow: 0 2px 20px rgba(74,52,36,0.1); }
 
 /* ===== RESPONSIVE ===== */
 @media (max-width: 1200px) {
-  .hero-title { font-size: clamp(38px, 4.5vw, 58px); }
   .footer-grid { grid-template-columns: 1fr 1fr; gap: 40px; }
 }
 
@@ -1293,13 +1284,8 @@ header.scrolled { box-shadow: 0 2px 20px rgba(74,52,36,0.1); }
 }
 
 @media (max-width: 900px) {
-  .hero { grid-template-columns: 1fr; min-height: auto; }
-  .hero-text-side { padding: 60px 40px; order: 2; text-align: center; align-items: center; }
-  .hero-eyebrow { justify-content: center; }
-  .hero-subtitle { max-width: 100%; }
-  .hero-ctas { justify-content: center; }
-  .hero-image-side { min-height: 380px; order: 1; }
-  .hero-badge { display: none; }
+  .hero-slider-wrap { padding: 16px 20px 14px; }
+  .hero-slider { height: 380px; }
   .promo-slide { grid-template-columns: 1fr; }
   .promo-img-side { min-height: 280px; max-height: 320px; }
   .promo-text-side { padding: 40px 36px; }
@@ -1319,8 +1305,8 @@ header.scrolled { box-shadow: 0 2px 20px rgba(74,52,36,0.1); }
   .announcement-item { padding: 0 14px; }
   .announcement-item:nth-child(n+4) { display: none; }
 
-  .hero-text-side { padding: 48px 24px; }
-  .hero-title { font-size: clamp(34px, 7vw, 48px); }
+  .hero-slider { height: 320px; }
+  .hero-slide-overlay { padding: 32px; }
 
   .benefits-inner { grid-template-columns: repeat(2, 1fr); }
   .benefit-item { padding: 18px 16px; }
@@ -1366,9 +1352,10 @@ header.scrolled { box-shadow: 0 2px 20px rgba(74,52,36,0.1); }
   .nav-right { gap: 16px; }
   .container { padding: 0 16px; }
 
-  .hero-image-side { min-height: 280px; }
-  .hero-text-side { padding: 36px 16px; }
-  .hero-title { font-size: clamp(30px, 8vw, 44px); }
+  .hero-slider-wrap { padding: 12px 12px 10px; }
+  .hero-slider { height: 260px; border-radius: 2px; }
+  .hero-slide-overlay { padding: 20px; }
+  .hero-title { font-size: clamp(26px, 7vw, 40px); }
 
   .benefits-inner { grid-template-columns: 1fr; }
   .benefit-item { padding: 16px 20px; }
