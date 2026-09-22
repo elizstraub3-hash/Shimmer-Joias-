@@ -261,6 +261,11 @@ header.scrolled { box-shadow: 0 2px 20px rgba(74,52,36,0.1); }
   justify-content: flex-end;
   gap: 24px;
 }
+.nav-text-links {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+}
 .nav-icon-btn {
   background: none;
   border: none;
@@ -1301,6 +1306,8 @@ header.scrolled { box-shadow: 0 2px 20px rgba(74,52,36,0.1); }
   .hamburger { display: flex; }
   .mobile-menu { display: block; top: 121px; }
   header { height: 85px; }
+  .header-inner { padding: 0 20px; }
+  .nav-right { gap: 14px; }
 
   .announcement-item { padding: 0 14px; }
   .announcement-item:nth-child(n+4) { display: none; }
