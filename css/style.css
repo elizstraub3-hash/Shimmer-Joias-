@@ -1334,14 +1334,10 @@ header.scrolled { box-shadow: 0 2px 20px rgba(74,52,36,0.1); }
   .hamburger { display: flex; }
   .mobile-menu { display: block; top: 121px; }
   header { height: 85px; }
-  .header-inner { padding: 0 20px; position: relative; }
-  .nav-right { gap: 14px; }
-  .header-logo {
-    position: absolute;
-    left: 50%;
-    transform: translateX(-50%);
-    pointer-events: auto;
-  }
+  .header-inner { padding: 0 20px; display: flex; align-items: center; justify-content: space-between; }
+  .header-logo { flex: 1; display: flex; justify-content: center; }
+  .nav-right { gap: 14px; flex-shrink: 0; }
+  .nav-right .search-trigger { display: none; }
 
   .announcement-item { padding: 0 14px; }
   .announcement-item:nth-child(n+4) { display: none; }
