@@ -1601,10 +1601,44 @@ header.scrolled { box-shadow: 0 2px 20px rgba(74,52,36,0.1); }
   text-align: center;
 }
 @media (max-width: 640px) {
-  .pm-box { grid-template-columns: 1fr; max-height: 95vh; }
-  .pm-gallery { padding: 20px; min-height: 240px; }
-  .pm-img-main { min-height: 200px; }
-  .pm-info { padding: 20px; }
+  .pm-overlay { padding: 0; align-items: flex-end; }
+  .pm-box {
+    grid-template-columns: 1fr;
+    max-height: 92vh;
+    width: 100%;
+    border-radius: 18px 18px 0 0;
+    animation: pmSlideUp 0.32s ease;
+  }
+  .pm-gallery {
+    padding: 16px 16px 10px;
+    min-height: unset;
+    gap: 8px;
+  }
+  .pm-img-main { min-height: unset; }
+  .pm-img-main img { max-height: 34vh; }
+  .pm-thumbs { justify-content: center; }
+  .pm-thumb { width: 50px; height: 50px; }
+  .pm-info { padding: 18px 20px 24px; gap: 10px; }
+  .pm-name { font-size: 24px; }
+  .pm-preco { font-size: 26px; }
+  .pm-preco-wrap { margin-top: 2px; }
+  .pm-actions { margin-top: 6px; }
+  .pm-btn-sacola, .pm-btn-wpp { padding: 15px 24px; }
+  .pm-garantia { padding-top: 10px; }
+  .pm-close {
+    top: 12px;
+    right: 12px;
+    width: 38px;
+    height: 38px;
+    background: rgba(255,255,255,0.92);
+    border-radius: 50%;
+    color: var(--brown-deep);
+    box-shadow: 0 2px 8px rgba(33,26,21,0.18);
+  }
+}
+@keyframes pmSlideUp {
+  from { transform: translateY(30px); opacity: 0.6; }
+  to   { transform: translateY(0); opacity: 1; }
 }
 
 /* ===== UTILITY ===== */
