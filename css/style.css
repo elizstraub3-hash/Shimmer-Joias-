@@ -479,28 +479,57 @@ header.scrolled { box-shadow: 0 2px 20px rgba(74,52,36,0.1); }
 .benefits-bar {
   background: var(--brown-deep);
   padding: 0;
+  overflow: hidden;
 }
-.benefits-inner {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  border-left: 1px solid rgba(247,243,236,0.08);
+.benefits-ticker {
+  overflow: hidden;
+  width: 100%;
+  position: relative;
+}
+.benefits-ticker::before,
+.benefits-ticker::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 60px;
+  z-index: 1;
+  pointer-events: none;
+}
+.benefits-ticker::before { left: 0; background: linear-gradient(to right, var(--brown-deep), transparent); }
+.benefits-ticker::after  { right: 0; background: linear-gradient(to left,  var(--brown-deep), transparent); }
+.benefits-track {
+  display: flex;
+  align-items: center;
+  width: max-content;
+  animation: benefitScroll 32s linear infinite;
+}
+.benefits-track:hover { animation-play-state: paused; }
+@keyframes benefitScroll {
+  from { transform: translateX(0); }
+  to   { transform: translateX(-50%); }
 }
 .benefit-item {
   display: flex;
   align-items: center;
-  gap: 14px;
-  padding: 22px 28px;
-  border-right: 1px solid rgba(247,243,236,0.08);
-  transition: background 0.2s;
+  gap: 12px;
+  padding: 20px 32px;
+  white-space: nowrap;
+  flex-shrink: 0;
 }
-.benefit-item:hover { background: rgba(247,243,236,0.04); }
+.benefit-sep {
+  color: var(--gold);
+  font-size: 10px;
+  opacity: 0.5;
+  flex-shrink: 0;
+  padding: 0 4px;
+}
 .benefit-icon {
   flex-shrink: 0;
   color: var(--gold-light);
   display: flex;
   align-items: center;
 }
-.benefit-text {}
 .benefit-title {
   font-family: 'Montserrat', sans-serif;
   font-size: 11px;
@@ -1284,7 +1313,6 @@ header.scrolled { box-shadow: 0 2px 20px rgba(74,52,36,0.1); }
   .sobre-inner { grid-template-columns: 1fr; gap: 40px; }
   .contato-inner { grid-template-columns: 1fr; gap: 40px; }
   .dep-grid-home { grid-template-columns: 1fr 1fr; }
-  .benefits-inner { grid-template-columns: repeat(2, 1fr); }
   .personalizacao-inner { grid-template-columns: 1fr; gap: 48px; }
 }
 
@@ -1315,8 +1343,7 @@ header.scrolled { box-shadow: 0 2px 20px rgba(74,52,36,0.1); }
   .hero-slider { height: 320px; }
   .hero-slide-overlay { padding: 32px; }
 
-  .benefits-inner { grid-template-columns: repeat(2, 1fr); }
-  .benefit-item { padding: 18px 16px; }
+  .benefit-item { padding: 16px 20px; }
 
   .casamento-grid { grid-template-columns: repeat(2, 1fr); gap: 12px; }
   .casamento-card-img { height: 240px; }
@@ -1363,9 +1390,6 @@ header.scrolled { box-shadow: 0 2px 20px rgba(74,52,36,0.1); }
   .hero-slider { height: 260px; border-radius: 2px; }
   .hero-slide-overlay { padding: 20px; }
   .hero-title { font-size: clamp(26px, 7vw, 40px); }
-
-  .benefits-inner { grid-template-columns: 1fr; }
-  .benefit-item { padding: 16px 20px; }
 
   .casamento-grid { grid-template-columns: 1fr; }
   .produtos-grid, .mais-pedidos-grid { grid-template-columns: repeat(2, 1fr); column-gap: 12px; }
