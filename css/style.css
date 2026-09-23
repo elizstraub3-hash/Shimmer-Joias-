@@ -1366,9 +1366,11 @@ header.scrolled { box-shadow: 0 2px 20px rgba(74,52,36,0.1); }
 
   .dep-grid-home { grid-template-columns: 1fr; }
 
-  .footer-grid { grid-template-columns: 1fr; gap: 36px; }
-  .footer-top { padding: 48px 0 40px; }
+  .footer-grid { grid-template-columns: 1fr; gap: 30px; }
+  .footer-top { padding: 40px 0 32px; }
   .footer-bottom-inner { flex-direction: column; gap: 12px; text-align: center; }
+  #footer .container { padding-left: 26px; padding-right: 26px; }
+  .footer-links ul { gap: 8px; }
 
   .banner-content { padding: 48px 24px; }
   .banner-escolher-inner { padding: 48px 24px; }
@@ -1407,7 +1409,6 @@ header.scrolled { box-shadow: 0 2px 20px rgba(74,52,36,0.1); }
   .diferenciais-grid { grid-template-columns: 1fr; }
 
   .personalizacao-inner { padding: 0 16px; }
-  .footer-grid { padding: 0; }
   .colecao-casamento { padding: 48px 0; }
 }
 
