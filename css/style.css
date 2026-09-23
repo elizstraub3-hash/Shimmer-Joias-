@@ -1480,20 +1480,6 @@ header.scrolled { box-shadow: 0 2px 20px rgba(74,52,36,0.1); }
   transform: scale(2.4);
   transition: opacity 0.2s ease;
 }
-.pm-zoom-hint {
-  position: absolute;
-  bottom: 10px; right: 10px;
-  display: flex; align-items: center; gap: 5px;
-  background: rgba(255,255,255,0.85);
-  color: var(--brown-deep);
-  font-family: 'Montserrat', sans-serif;
-  font-size: 9px; font-weight: 600;
-  letter-spacing: 0.08em; text-transform: uppercase;
-  padding: 4px 8px; border-radius: 20px;
-  pointer-events: none;
-  transition: opacity 0.2s ease;
-}
-.pm-img-main.pm-zoomed .pm-zoom-hint { opacity: 0; }
 .pm-thumbs {
   display: flex;
   gap: 8px;
