@@ -140,8 +140,15 @@
     });
   }
 
+  function isHomePage() {
+    var p = location.pathname.split('/').pop();
+    return p === '' || p === 'index.html';
+  }
+
   document.addEventListener('DOMContentLoaded', function () {
-    injectSearchBtn();
+    // Lupa no cabeçalho apenas na home; nas demais páginas há a busca da
+    // categoria (na própria página) e a busca no rodapé.
+    if (isHomePage()) injectSearchBtn();
     injectOverlay();
     wireFooterSearch();
   });
