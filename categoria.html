@@ -465,14 +465,6 @@
       try { return JSON.parse(localStorage.getItem(PRODUTOS_KEY)) || PRODUTOS_DEFAULT; } catch { return PRODUTOS_DEFAULT; }
     }
 
-    const PARCELAS_FIXAS = { 999: 'R$ 120,00' };
-    function calcParcela(preco) {
-      if (!preco || preco === 'A consultar') return '';
-      const val = parseFloat(preco.replace(/[R$\s.]/g, '').replace(',', '.'));
-      if (isNaN(val) || val <= 0) return '';
-      const p = PARCELAS_FIXAS[val] || (val / 10).toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
-      return `<p class="produto-parcela">ou 10× de R$ ${p}</p>`;
-    }
 
     // ===== INIT CATEGORY PAGE =====
     const params = new URLSearchParams(location.search);
@@ -513,12 +505,11 @@
             </div>
           </div>
           <div class="produto-info">
-            <p class="produto-colecao">${p.colecao}</p>
             <h4>${p.name}</h4>
             <p class="produto-material">${p.material}</p>
             ${p.precoOld
-              ? `<div class="preco-grupo"><p class="produto-preco-old">${p.precoOld}</p><p class="produto-preco">${p.preco}</p></div>${calcParcela(p.preco)}`
-              : `<p class="produto-preco${p.preco === 'A consultar' ? ' sem-avista' : ''}">${p.preco}</p>${calcParcela(p.preco)}`
+              ? `<div class="preco-grupo"><p class="produto-preco-old">${p.precoOld}</p><p class="produto-preco">${p.preco}</p></div>`
+              : `<p class="produto-preco${p.preco === 'A consultar' ? ' sem-avista' : ''}">${p.preco}</p>`
             }
           </div>
         </div>

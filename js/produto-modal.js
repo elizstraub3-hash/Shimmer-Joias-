@@ -6,8 +6,9 @@
   <div class="pm-box">
     <button class="pm-close" id="pm-close" aria-label="Fechar">×</button>
     <div class="pm-gallery">
-      <div class="pm-img-main">
+      <div class="pm-img-main" id="pm-img-main">
         <img id="pm-img" src="" alt="" />
+        <span class="pm-zoom-hint"><svg viewBox="0 0 24 24" width="11" height="11" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4-4M11 8v6M8 11h6"/></svg> Zoom</span>
       </div>
       <div class="pm-thumbs" id="pm-thumbs"></div>
     </div>
@@ -43,23 +44,29 @@
   closeBtn.addEventListener('click', close);
   document.addEventListener('keydown', e => { if (e.key === 'Escape') close(); });
 
+  function resetZoom() {
+    const im = document.getElementById('pm-img-main');
+    const img = document.getElementById('pm-img');
+    if (im) im.classList.remove('pm-zoomed');
+    if (img) img.style.transformOrigin = 'center center';
+  }
+
   function close() {
     overlay.classList.remove('pm-open');
     document.body.style.overflow = '';
+    resetZoom();
   }
-
-  const PARCELAS_FIXAS = { 999: 'ou 10× de R$ 120,00' };
 
   function calcParcela(preco) {
     if (!preco || preco === 'A consultar') return '';
     const num = parseFloat(preco.replace('R$', '').replace(/\./g, '').replace(',', '.').trim());
-    if (isNaN(num)) return '';
-    if (PARCELAS_FIXAS[num]) return PARCELAS_FIXAS[num];
+    if (isNaN(num) || num <= 0) return '';
     const p = (num / 10).toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
-    return `ou 10× de R$ ${p} sem juros`;
+    return `ou em 10x de R$ ${p} sem juros`;
   }
 
   function setThumb(src) {
+    resetZoom();
     const img = document.getElementById('pm-img');
     img.style.opacity = '0';
     setTimeout(() => { img.src = src; img.style.opacity = '1'; }, 150);
@@ -79,9 +86,16 @@
     const colecao  = card.querySelector('.produto-colecao')?.textContent
                   || card.querySelector('.produto-badge')?.textContent || '';
 
-    // Build gallery: main image + any extra fotos from data-gallery (comma-separated)
+    // Build gallery: main image + any extra fotos, deduped by file name
+    // (mainImg is an absolute URL while extras are relative, so compare basenames)
+    const basename = u => (u || '').split('/').pop().split('?')[0];
     const extras = galleryAttr ? galleryAttr.split(',').map(s => s.trim()).filter(Boolean) : [];
-    const gallery = [mainImg, ...extras.filter(s => s !== mainImg)];
+    const seen = new Set();
+    const gallery = [];
+    [mainImg, ...extras].forEach(src => {
+      const b = basename(src);
+      if (b && !seen.has(b)) { seen.add(b); gallery.push(src); }
+    });
 
     // Main image
     const pmImg = document.getElementById('pm-img');
@@ -137,9 +151,25 @@
       setTimeout(() => { sacola.textContent = 'Adicionar à Sacola'; }, 1800);
     };
 
+    resetZoom();
     overlay.classList.add('pm-open');
     document.body.style.overflow = 'hidden';
   }, true); // capture phase: fires before stopPropagation in card buttons
+
+  // ===== ZOOM na imagem principal =====
+  (function () {
+    const imgMain = document.getElementById('pm-img-main');
+    if (!imgMain) return;
+    imgMain.addEventListener('click', () => imgMain.classList.toggle('pm-zoomed'));
+    imgMain.addEventListener('mousemove', e => {
+      if (!imgMain.classList.contains('pm-zoomed')) return;
+      const r = imgMain.getBoundingClientRect();
+      const x = ((e.clientX - r.left) / r.width) * 100;
+      const y = ((e.clientY - r.top) / r.height) * 100;
+      document.getElementById('pm-img').style.transformOrigin = `${x}% ${y}%`;
+    });
+    imgMain.addEventListener('mouseleave', () => imgMain.classList.remove('pm-zoomed'));
+  })();
 
   const HOVER_ICON = `
     <div class="pm-hover-circle">
@@ -159,13 +189,36 @@
     });
   }
 
-  if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', injectHoverIcons);
-  } else {
-    injectHoverIcons();
+  // Standard price block on every card: "ou em 10x de R$ X sem juros" + Pix line.
+  function enhanceCards() {
+    document.querySelectorAll('.produto-card').forEach(card => {
+      const info = card.querySelector('.produto-info');
+      if (!info || info.querySelector('.produto-parcela')) return;
+      const preco = card.dataset.preco || '';
+      if (!preco || preco === 'A consultar') return;
+      const val = parseFloat(preco.replace(/[R$\s.]/g, '').replace(',', '.'));
+      if (isNaN(val) || val <= 0) return;
+      const parcela = (val / 10).toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+      const p = document.createElement('p');
+      p.className = 'produto-parcela';
+      p.textContent = `ou em 10x de R$ ${parcela} sem juros`;
+      info.appendChild(p);
+      const pix = document.createElement('p');
+      pix.className = 'produto-pix';
+      pix.textContent = '10% de desconto no Pix';
+      info.appendChild(pix);
+    });
   }
 
-  // Re-inject only for new cards added dynamically (categoria.html)
-  const observer = new MutationObserver(injectHoverIcons);
-  observer.observe(document.body, { childList: true, subtree: false });
+  function refreshCards() { injectHoverIcons(); enhanceCards(); }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', refreshCards);
+  } else {
+    refreshCards();
+  }
+
+  // Re-run for cards added dynamically (categoria.html renders after load)
+  const observer = new MutationObserver(refreshCards);
+  observer.observe(document.body, { childList: true, subtree: true });
 })();
