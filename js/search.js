@@ -1,80 +1,7 @@
 (function () {
   'use strict';
 
-  const SEARCH_PRODUTOS = [
-    { code: 'SH-1001', name: 'Anel Solitário', material: 'Pedra central 6mm · 12 laterais 1,25mm · Moissanites', preco: 'R$ 2.260,00', foto: 'images/SH-1001.jpg', categoria: 'aneis' },
-    { code: 'SH-1005', name: 'Anel Esmeralda', material: 'Esmeraldas sintéticas · 14 pedras 1,25mm · Central 4mm', preco: 'R$ 1.550,00', foto: 'images/SH-1005.jpg', categoria: 'aneis' },
-    { code: 'SH-1006', name: 'Anel Topo Redondo', material: '14 moissanites 1,25mm · Central 5,5mm', preco: 'R$ 1.999,00', foto: 'images/SH-1006.jpg', categoria: 'aneis' },
-    { code: 'SH-1007', name: 'Par de Alianças', material: 'Feminina 5,5mm · 3 moissanites 1,25mm · Masculina 3mm', preco: 'R$ 5.700,00', foto: 'images/SH-1007.jpg', categoria: 'casamento' },
-    { code: 'SH-1009', name: 'Meia Aliança com Brilhantes', material: 'Meia aliança · Ouro 18k · Moissanites cravejadas', preco: 'R$ 1.526,00', foto: 'images/SH-1009.jpg', categoria: 'casamento' },
-    { code: 'SH-1010', name: 'Par de Alianças Clássico', material: 'Ouro amarelo 18k polido · Design atemporal', preco: 'R$ 6.300,00', foto: 'images/SH-1010.jpg', categoria: 'casamento' },
-    { code: 'SH-1011', name: 'Anel Maçom', material: 'Anel maçom · Ouro 18k', preco: 'R$ 13.600,00', foto: 'images/SH-1011.jpg', categoria: 'aneis-masculinos' },
-    { code: 'SH-1012', name: 'Meia Aliança Marquise', material: '5 navetes 2x5mm · 8 pedras 1,25mm · Moissanites', preco: 'R$ 3.400,00', foto: 'images/SH-1012.jpg', categoria: 'aparadores' },
-    { code: 'SH-1013', name: 'Meia Aliança Esmeralda', material: 'Esmeraldas e moissanites · Ouro 18k', preco: 'R$ 2.160,00', foto: 'images/SH-1013.jpg', categoria: 'aparadores' },
-    { code: 'SH-1014', name: 'Anel Solitário Clássico', material: 'Solitário · Pedra central 5mm · Moissanite', preco: 'R$ 999,00', foto: 'images/SH-1014.jpg', categoria: 'solitarios' },
-    { code: 'SH-1016', name: 'Colar Grumet Masculino', material: 'Ouro 18k · Elo grumet', preco: 'R$ 64.800,00', foto: 'images/SH-1016.jpg', categoria: 'correntes' },
-    { code: 'SH-1017', name: 'Pulseira Grumet', material: 'Ouro 18k · Elo grumet · Fecho caixa', preco: 'R$ 27.000,00', foto: 'images/SH-1017a.jpg', categoria: 'pulseiras-masculinas' },
-    { code: 'SH-1018', name: 'Anel Solitário 7 Pedras', material: '14 moissanites 1,25mm · Central 4mm', preco: 'R$ 1.550,00', foto: 'images/SH-1018.jpg', categoria: 'aneis' },
-    { code: 'SH-1019', name: 'Anel de Formatura', material: 'Formatura · 7 pedras 2mm · Pedra central personalizada por curso', preco: 'R$ 2.630,00', foto: 'images/SH-1019.jpg', categoria: 'aneis-formatura' },
-    { code: 'SH-1020', name: 'Corrente Elo Cadeado Grossa', material: 'Ouro 18k', preco: 'R$ 23.400,00', foto: 'images/SH-1020.jpg', categoria: 'correntes' },
-    { code: 'SH-1021', name: 'Corrente com Pingente Cruz', material: 'Ouro 18k', preco: 'R$ 12.000,00', foto: 'images/SH-1021.jpg', categoria: 'correntes' },
-    { code: 'SH-1022', name: 'Corrente Elo Cadeado Fina', material: 'Ouro 18k', preco: 'R$ 9.000,00', foto: 'images/SH-1022.jpg', categoria: 'correntes' },
-    { code: 'SH-1024', name: 'Pingente Gota Esmeralda', material: 'Ouro 18k', preco: 'A consultar', foto: 'images/SH-1024.jpg', categoria: 'pingentes' },
-    { code: 'SH-1025', name: 'Anel Solitário Delicado', material: 'Solitário · Pedra central 3mm · Moissanite', preco: 'R$ 999,00', foto: 'images/SH-1025.jpg', categoria: 'solitarios' },
-    { code: 'SH-1026', name: 'Anel com Topázio Azul', material: 'Solitário · Zircônia azul 5mm', preco: 'R$ 999,00', foto: 'images/SH-1026.jpg', categoria: 'solitarios' },
-    { code: 'SH-1027', name: 'Anel Solitário com Laterais', material: 'Pedra central 5mm · 2 laterais 1,25mm · Moissanites', preco: 'R$ 2.100,00', foto: 'images/SH-1027.jpg', categoria: 'aneis' },
-    { code: 'SH-1028', name: 'Anel com Safira Azul', material: '14 pedras 1,25mm · Central 4mm · Safira sintética', preco: 'R$ 1.550,00', foto: 'images/SH-1028.jpg', categoria: 'aneis' },
-    { code: 'SH-1029', name: 'Anel Chuveiro', material: 'Chuveiro · Ouro 18k · Diamantes', preco: 'R$ 3.390,00', foto: 'images/SH-1029.jpg', categoria: 'aneis' },
-    { code: 'SH-1030', name: 'Meia Aliança', material: '8 pedras 2,50mm · Moissanite', preco: 'R$ 2.200,00', foto: 'images/SH-1030.jpg', categoria: 'aparadores' },
-    { code: 'SH-1031', name: 'Anel Duplo com Rubi', material: 'Ruby natural 6x4mm · Ouro 18k', preco: 'R$ 1.500,00', foto: 'images/SH-1031.jpg', categoria: 'aneis' },
-    { code: 'SH-1032', name: 'Anel com Aquamarine', material: 'Turmalina Paraíba natural 5mm · 14 moissanites 1,25mm', preco: 'R$ 3.600,00', foto: 'images/SH-1032.jpg', categoria: 'aneis' },
-    { code: 'SH-1033', name: 'Aparador Trabalhado', material: 'Ouro 18k', preco: 'R$ 1.300,00', foto: 'images/SH-1033.jpg', categoria: 'aparadores' },
-    { code: 'SH-1034', name: 'Aparador Coração', material: 'Aparador formato coração · Ouro 18k', preco: 'R$ 1.400,00', foto: 'images/SH-1034.jpg', categoria: 'aparadores' },
-    { code: 'SH-1035', name: 'Par de Alianças Largas Texturizadas', material: 'Ouro 18k', preco: 'R$ 7.000,00', foto: 'images/SH-1035.jpg', categoria: 'casamento' },
-    { code: 'SH-1036', name: 'Conjunto Noivado (Solitário + Aliança)', material: 'Ouro 18k', preco: 'R$ 3.380,00', foto: 'images/SH-1036.jpg', categoria: 'casamento' },
-    { code: 'SH-1037', name: 'Par de Alianças com Pedras', material: 'Ouro 18k', preco: 'R$ 19.480,00', foto: 'images/SH-1037.jpg', categoria: 'casamento' },
-    { code: 'SH-1038', name: 'Pulseira Personalizada com Letras', material: 'Ouro 18k', preco: 'R$ 1.650,00', foto: 'images/SH-1038.jpg', categoria: 'pulseiras-femininas' },
-    { code: 'SH-1039', name: 'Anel Solitário Oval', material: 'Pedra oval 5x7mm · Moissanite', preco: 'R$ 1.550,00', foto: 'images/SH-1039.jpg', categoria: 'solitarios' },
-    { code: 'SH-1040', name: 'Par de Alianças Infinito', material: 'Ouro 18k', preco: 'R$ 2.920,00', foto: 'images/SH-1040.jpg', categoria: 'casamento' },
-    { code: 'SH-1041', name: 'Colar Pingente Coração', material: 'Ouro 18k', preco: 'R$ 3.000,00', foto: 'images/SH-1041.jpg', categoria: 'correntes-femininas' },
-    { code: 'SH-1042', name: 'Colar Pingente Solitário', material: 'Ouro 18k', preco: 'R$ 2.000,00', foto: 'images/SH-1042.jpg', categoria: 'correntes-femininas' },
-    { code: 'SH-1043', name: 'Colar Pingente Rosa com Halo', material: 'Ouro 18k', preco: 'R$ 2.859,00', foto: 'images/SH-1043.jpg', categoria: 'correntes-femininas' },
-    { code: 'SH-1044', name: 'Anel com Topázio Azul e Laterais', material: 'Topázio sintético 6x8mm · 6 moissanites 2mm nas laterais', preco: 'R$ 2.550,00', foto: 'images/SH-1044.jpg', categoria: 'aneis' },
-    { code: 'SH-1045', name: 'Anel Sinete Personalizado', material: 'Anel personalizado · Ouro 18k', preco: 'R$ 5.100,00', foto: 'images/SH-1045.jpg', categoria: 'aneis-masculinos' },
-    { code: 'SH-1046', name: 'Anel São Bento', material: 'Ouro 18k', preco: 'R$ 15.300,00', foto: 'images/SH-1046.jpg', categoria: 'aneis-masculinos' },
-    { code: 'SH-1047', name: 'Anel de Formatura', material: 'Formatura · Pedra central 6mm', preco: 'R$ 7.000,00', foto: 'images/SH-1047.jpg', categoria: 'aneis-formatura' },
-    { code: 'SH-1048', name: 'Anel Oval com Laterais', material: 'Pedra oval 5x7mm · 2 laterais 1,25mm · Moissanite', preco: 'R$ 1.750,00', foto: 'images/SH-1048.jpg', categoria: 'aneis' },
-    { code: 'SH-1049', name: 'Pingente Nossa Senhora Aparecida', material: 'Ouro 18k', preco: 'R$ 3.950,00', foto: 'images/SH-1049.jpg', categoria: 'correntes-femininas' },
-    { code: 'SH-1050', name: 'Anel de Formatura', material: 'Formatura · Pedra central 3mm · 6 laterais 1,75mm', preco: 'R$ 2.550,00', foto: 'images/SH-1050.jpg', categoria: 'aneis-formatura' },
-    { code: 'SH-1051', name: 'Par de Alianças Modernas', material: 'Ouro 18k', preco: 'R$ 7.350,00', foto: 'images/SH-1051.jpg', categoria: 'casamento' },
-    { code: 'SH-1052', name: 'Par de Alianças Trabalhadas com Pedras', material: 'Ouro 18k', preco: 'R$ 7.560,00', foto: 'images/SH-1052.jpg', categoria: 'casamento' },
-    { code: 'SH-1053', name: 'Brinco Pérola', material: 'Ouro 18k', preco: 'R$ 1.500,00', foto: 'images/SH-1053.jpg', categoria: 'brincos' },
-    { code: 'SH-1054', name: 'Corrente de Homenagem Personalizada', material: 'Ouro 18k', preco: 'R$ 6.670,00', foto: 'images/SH-1054.jpg', categoria: 'homenagem' },
-    { code: 'SH-1055', name: 'Anel Exclusivo Cravejado', material: 'Anel personalizado · 10g · Todo cravejado com diamantes · Ouro 18k', preco: 'R$ 15.000,00', foto: 'images/SH-1055.jpg', categoria: 'aneis-exclusivos' },
-    { code: 'SH-1056', name: 'Pulseira Exclusiva com Iniciais', material: 'Bracelete personalizado com iniciais · Ouro 18k', preco: 'R$ 14.400,00', foto: 'images/SH-1056.jpg', categoria: 'pulseiras-femininas' },
-    { code: 'SH-1057', name: 'Anel Solitário Infinito', material: 'Pedra central 4mm · Moissanite · Ouro 18k', preco: 'R$ 999,00', foto: 'images/SH-1057.jpg', categoria: 'solitarios' },
-    { code: 'SH-1058', name: 'Par de Alianças Tradicional Abaulada', material: '5g o par · 2,5mm de largura · Ouro 18k', preco: 'R$ 3.650,00', foto: 'images/SH-1058.jpg', categoria: 'casamento' },
-    { code: 'SH-1059', name: 'Par de Alianças Chanfrada', material: '9g o par · 4,80mm de largura · Ouro 18k', preco: 'R$ 6.600,00', foto: 'images/SH-1059.jpg', categoria: 'casamento' },
-    { code: 'SH-1060', name: 'Anel Solitário Oval', material: 'Moissanite · Ouro 18k', preco: 'R$ 1.550,00', foto: 'images/SH-1060.jpg', categoria: 'solitarios' },
-    { code: 'SH-1061', name: 'Anel Solitário com Laterais', material: 'Pedra central · Moissanites laterais · Ouro 18k', preco: 'A consultar', foto: 'images/SH-1061.jpg', categoria: 'solitarios' },
-    { code: 'SH-1062', name: 'Anel Solitário com Laterais Cravejadas', material: 'Pedra central · Laterais cravejadas · Ouro 18k', preco: 'A consultar', foto: 'images/SH-1062.jpg', categoria: 'solitarios' },
-    { code: 'SH-1063', name: 'Anel Solitário Clássico Liso', material: 'Pedra central redonda · Haste lisa · Ouro 18k', preco: 'A consultar', foto: 'images/SH-1063.jpg', categoria: 'solitarios' },
-    { code: 'SH-1064', name: 'Anel Solitário Cravejado', material: 'Pedra central · Haste cravejada com moissanites · Ouro 18k', preco: 'A consultar', foto: 'images/SH-1064.jpg', categoria: 'solitarios' },
-    { code: 'SH-1065', name: 'Meia Aliança com Pedras', material: 'Meia aliança · Moissanites · Ouro 18k', preco: 'A consultar', foto: 'images/SH-1065.jpg', categoria: 'aparadores' },
-    { code: 'SH-1066', name: 'Anel Solitário 6 Garras', material: 'Pedra central · 6 garras · Haste fina · Ouro 18k', preco: 'A consultar', foto: 'images/SH-1066.jpg', categoria: 'solitarios' },
-    { code: 'SH-1067', name: 'Anel Infinito com Pedras', material: 'Símbolo infinito · Moissanites · Ouro 18k', preco: 'A consultar', foto: 'images/SH-1067.jpg', categoria: 'solitarios' },
-    { code: 'SH-1068', name: 'Anel Solitário Haste Cravejada', material: 'Pedra central · Haste cravejada com moissanites · Ouro 18k', preco: 'A consultar', foto: 'images/SH-1068.jpg', categoria: 'solitarios' },
-{ code: 'SH-1070', name: 'Par Alianças Texturizadas com Pedras', material: 'Aliança texturizada · Moissanites · Ouro 18k', preco: 'A consultar', foto: 'images/SH-1070.jpg', categoria: 'casamento' },
-    { code: 'SH-1071', name: 'Par Alianças Finas Lisas', material: 'Aliança abaulada · Haste fina · Ouro 18k', preco: 'A consultar', foto: 'images/SH-1071.jpg', categoria: 'casamento' },
-    { code: 'SH-1072', name: 'Par Alianças Lisa e com Estrelas', material: 'Aliança lisa · Aliança com estrelas cravejadas · Ouro 18k', preco: 'A consultar', foto: 'images/SH-1072.jpg', categoria: 'casamento' },
-    { code: 'SH-1073', name: 'Par Alianças Chanfradas Lisas', material: 'Aliança chanfrada · Lisa · Ouro 18k', preco: 'A consultar', foto: 'images/SH-1073.jpg', categoria: 'casamento' },
-    { code: 'SH-1074', name: 'Par Alianças Clássicas', material: 'Aliança abaulada · Acabamento polido · Ouro 18k', preco: 'A consultar', foto: 'images/SH-1074.jpg', categoria: 'casamento' },
-    { code: 'SH-1075', name: 'Anel Solitário Oval Grande', material: 'Pedra oval · Haste lisa · Ouro 18k', preco: 'A consultar', foto: 'images/SH-1075.jpg', categoria: 'solitarios' },
-    { code: 'SH-1076', name: 'Anel Solitário Haste Cravejada Premium', material: 'Pedra central · Haste totalmente cravejada · Ouro 18k', preco: 'A consultar', foto: 'images/SH-1076.jpg', categoria: 'solitarios' },
-    { code: 'SH-1077', name: 'Anel Solitário Oval Haste Lisa', material: 'Pedra oval · Haste fina lisa · Ouro 18k', preco: 'A consultar', foto: 'images/SH-1077.jpg', categoria: 'solitarios' },
-    { code: 'SH-1078', name: 'Anel Solitário Clássico', material: 'Pedra central · Haste lisa fina · Ouro 18k', preco: 'A consultar', foto: 'images/SH-1078.jpg', categoria: 'solitarios' },
-    { code: 'SH-1079', name: 'Conjunto Solitário e Aliança', material: 'Anel solitário + aliança · Ouro 18k', preco: 'A consultar', foto: 'images/SH-1079.jpg', categoria: 'casamento' },
-  ];
+  var SEARCH_PRODUTOS = (window.SHIMMER_PRODUTOS || []);
 
   function getProdutos() {
     try {
@@ -200,9 +127,23 @@
     }
   }
 
+  // Allow other UI (footer bar, etc.) to open the site-wide search
+  window.shimmerOpenSearch = openSearch;
+
+  function wireFooterSearch() {
+    document.querySelectorAll('.footer-search[data-search-trigger]').forEach(function (el) {
+      if (el.dataset.wired) return;
+      el.dataset.wired = '1';
+      el.addEventListener('click', openSearch);
+      var inp = el.querySelector('input');
+      if (inp) inp.addEventListener('focus', openSearch);
+    });
+  }
+
   document.addEventListener('DOMContentLoaded', function () {
     injectSearchBtn();
     injectOverlay();
+    wireFooterSearch();
   });
 
   document.addEventListener('keydown', function (e) {
