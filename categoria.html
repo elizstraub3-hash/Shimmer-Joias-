@@ -513,7 +513,7 @@
                    <svg viewBox="0 0 100 100" width="60"><polygon points="50,10 90,35 90,65 50,90 10,65 10,35" fill="none" stroke="rgba(201,168,76,0.6)" stroke-width="2"/><polygon points="50,25 75,40 75,60 50,75 25,60 25,40" fill="rgba(201,168,76,0.1)" stroke="rgba(201,168,76,0.4)" stroke-width="1.5"/></svg>
                  </div>`
             }
-            ${p.badge ? `<div class="produto-badge${p.badge.startsWith('-') ? ' sale' : ''}">${p.badge}</div>` : ''}
+            ${p.badge && !['Solitário','Casamento','Aliança'].includes(p.badge) ? `<div class="produto-badge${p.badge.startsWith('-') ? ' sale' : ''}">${p.badge}</div>` : ''}
             <div class="produto-hover-btn">
               <button class="btn-sacola">Adicionar à Sacola</button>
             </div>
