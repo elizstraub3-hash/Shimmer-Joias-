@@ -770,7 +770,7 @@ header.scrolled { box-shadow: 0 2px 20px rgba(74,52,36,0.1); }
   position: relative;
 }
 .promo-img-side { position: relative; overflow: hidden; background: var(--brown-deep); }
-.promo-img-side img { width: 100%; height: 100%; object-fit: cover; object-position: center top; display: block; opacity: 0.88; }
+.promo-img-side img { width: 100%; height: 100%; object-fit: cover; object-position: center center; display: block; opacity: 0.88; }
 .promo-img-overlay { position: absolute; inset: 0; background: linear-gradient(to right, transparent 40%, rgba(33,26,21,0.5)); pointer-events: none; }
 .promo-text-side {
   display: flex;
