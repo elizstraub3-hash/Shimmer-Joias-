@@ -830,8 +830,8 @@ function renderProdutosAdmin() {
   const produtos = getProdutos();
   lista.innerHTML = produtos.map(p => `
     <div class="produto-admin-item" data-code="${p.code}">
-      <div class="produto-admin-img">
-        ${p.foto ? `<img src="${p.foto}" alt="${p.name}" style="width:100%;height:100%;object-fit:cover;border-radius:8px">` : `<div style="width:100%;height:100%;background:linear-gradient(135deg,#f5f0e8,#e8dcc8);border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:24px">💎</div>`}
+      <div class="produto-admin-img${p.foto ? ' has-foto' : ''}"${p.foto ? ` onclick="abrirZoomProduto('${p.code}')" title="Ver foto ampliada"` : ''}>
+        ${p.foto ? `<img src="${p.foto}" alt="${p.name}" loading="lazy" style="width:100%;height:100%;object-fit:cover;border-radius:8px"><span class="produto-admin-zoom-ico" aria-hidden="true"><svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.2"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/><line x1="11" y1="8" x2="11" y2="14"/><line x1="8" y1="11" x2="14" y2="11"/></svg></span>` : `<div style="width:100%;height:100%;background:linear-gradient(135deg,#f5f0e8,#e8dcc8);border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:24px">💎</div>`}
       </div>
       <div class="produto-admin-info">
         <span class="produto-admin-code">${p.code}</span>
@@ -871,6 +871,7 @@ function abrirModalProduto(code = null) {
     ['edit-code','edit-name','edit-colecao','edit-material','edit-preco','edit-preco-old','edit-badge','edit-foto','edit-categoria'].forEach(id => { document.getElementById(id).value = ''; });
     document.getElementById('edit-categoria').value = 'aneis';
   }
+  atualizarPreviewFoto();
   modal.style.display = 'flex';
 }
 
@@ -902,11 +903,221 @@ function salvarProduto() {
   if (!novo.code || !novo.name || !novo.preco) { alert('Preencha código, nome e preço.'); return; }
   let produtos = getProdutos();
   const idx = produtos.findIndex(p => p.code === (_editCode || novo.code));
-  if (idx >= 0) { produtos[idx] = novo; } else { produtos.push(novo); }
+  if (idx >= 0) {
+    // mantém campos extras (ex.: galeria "fotos") que o formulário não edita
+    const anterior = produtos[idx];
+    if (anterior.foto !== novo.foto && Array.isArray(anterior.fotos) && anterior.fotos.length) {
+      novo.fotos = [novo.foto, ...anterior.fotos.filter(f => f !== anterior.foto && f !== novo.foto)].filter(Boolean);
+    }
+    produtos[idx] = { ...anterior, ...novo };
+  } else { produtos.push(novo); }
   saveProdutos(produtos);
   fecharModalProduto();
   renderProdutosAdmin();
   alert('✅ Produto salvo! As alterações aparecem no site ao recarregar.');
+}
+
+
+// ===== ZOOM DE FOTO (painel) =====
+function atualizarPreviewFoto() {
+  const box = document.getElementById('edit-foto-preview');
+  if (!box) return;
+  const url = document.getElementById('edit-foto').value.trim();
+  if (url) {
+    box.innerHTML = `<img src="${url}" alt="Foto do produto" onerror="this.parentNode.classList.add('erro')"><span class="edit-foto-preview-hint">Toque para ampliar</span>`;
+    box.classList.remove('erro');
+    box.style.display = 'block';
+  } else {
+    box.innerHTML = '';
+    box.style.display = 'none';
+  }
+}
+document.addEventListener('input', e => { if (e.target && e.target.id === 'edit-foto') atualizarPreviewFoto(); });
+
+function abrirZoomDoModal() {
+  const url = document.getElementById('edit-foto').value.trim();
+  if (!url) return;
+  const code = document.getElementById('edit-code').value.trim();
+  const p = getProdutos().find(x => x.code === (_editCode || code));
+  const fotos = p && p.foto === url && Array.isArray(p.fotos) && p.fotos.length ? p.fotos : [url];
+  abrirZoom({ fotos, titulo: document.getElementById('edit-name').value.trim(), code, info: '', podeEditar: false });
+}
+
+function abrirZoomProduto(code) {
+  const p = getProdutos().find(x => x.code === code);
+  if (!p || !p.foto) return;
+  const fotos = Array.isArray(p.fotos) && p.fotos.length ? p.fotos : [p.foto];
+  abrirZoom({
+    fotos, code: p.code, titulo: p.name,
+    info: [p.material, p.preco].filter(Boolean).join(' · '),
+    podeEditar: true,
+  });
+}
+
+const _zoom = { fotos: [], i: 0, scale: 1, x: 0, y: 0, code: null, pointers: new Map(), startDist: 0, startScale: 1, lastTap: 0, dragStart: null };
+
+function montarZoomDom() {
+  let el = document.getElementById('foto-zoom');
+  if (el) return el;
+  el = document.createElement('div');
+  el.id = 'foto-zoom';
+  el.className = 'foto-zoom';
+  el.innerHTML = `
+    <div class="foto-zoom-top">
+      <div class="foto-zoom-titulo"><span id="fz-code"></span><strong id="fz-nome"></strong><small id="fz-info"></small></div>
+      <button class="foto-zoom-btn" onclick="fecharZoom()" aria-label="Fechar">✕</button>
+    </div>
+    <div class="foto-zoom-stage" id="fz-stage">
+      <img id="fz-img" alt="" draggable="false" />
+      <button class="foto-zoom-nav prev" id="fz-prev" onclick="zoomNav(-1)" aria-label="Foto anterior">‹</button>
+      <button class="foto-zoom-nav next" id="fz-next" onclick="zoomNav(1)" aria-label="Próxima foto">›</button>
+    </div>
+    <div class="foto-zoom-bottom">
+      <div class="foto-zoom-dots" id="fz-dots"></div>
+      <div class="foto-zoom-ctrls">
+        <button class="foto-zoom-btn" onclick="zoomPor(-0.5)" aria-label="Diminuir zoom">−</button>
+        <button class="foto-zoom-btn" onclick="zoomReset()" aria-label="Tamanho original">1:1</button>
+        <button class="foto-zoom-btn" onclick="zoomPor(0.5)" aria-label="Aumentar zoom">+</button>
+        <button class="foto-zoom-editar" id="fz-editar" onclick="zoomEditar()">Editar produto</button>
+      </div>
+      <p class="foto-zoom-dica">Pinça ou toque duplo para ampliar · arraste para mover</p>
+    </div>`;
+  document.body.appendChild(el);
+
+  const stage = el.querySelector('#fz-stage');
+  stage.addEventListener('pointerdown', zoomPointerDown);
+  stage.addEventListener('pointermove', zoomPointerMove);
+  ['pointerup', 'pointercancel', 'pointerleave'].forEach(t => stage.addEventListener(t, zoomPointerUp));
+  stage.addEventListener('wheel', e => { e.preventDefault(); zoomPor(e.deltaY < 0 ? 0.25 : -0.25); }, { passive: false });
+  stage.addEventListener('click', e => { if (e.target === stage && _zoom.scale === 1) fecharZoom(); });
+  document.addEventListener('keydown', e => {
+    if (!el.classList.contains('open')) return;
+    if (e.key === 'Escape') fecharZoom();
+    if (e.key === 'ArrowLeft') zoomNav(-1);
+    if (e.key === 'ArrowRight') zoomNav(1);
+  });
+  return el;
+}
+
+function abrirZoom({ fotos, code, titulo, info, podeEditar }) {
+  const el = montarZoomDom();
+  _zoom.fotos = fotos; _zoom.i = 0; _zoom.code = code;
+  document.getElementById('fz-code').textContent = code || '';
+  document.getElementById('fz-nome').textContent = titulo || '';
+  document.getElementById('fz-info').textContent = info || '';
+  document.getElementById('fz-editar').style.display = podeEditar ? '' : 'none';
+  mostrarFotoZoom();
+  el.classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+
+function fecharZoom() {
+  const el = document.getElementById('foto-zoom');
+  if (!el) return;
+  el.classList.remove('open');
+  if (document.getElementById('modal-produto').style.display !== 'flex') document.body.style.overflow = '';
+}
+
+function zoomEditar() {
+  const code = _zoom.code;
+  fecharZoom();
+  abrirModalProduto(code);
+}
+
+function mostrarFotoZoom() {
+  const img = document.getElementById('fz-img');
+  img.src = _zoom.fotos[_zoom.i];
+  img.alt = document.getElementById('fz-nome').textContent;
+  const multi = _zoom.fotos.length > 1;
+  document.getElementById('fz-prev').style.display = multi ? '' : 'none';
+  document.getElementById('fz-next').style.display = multi ? '' : 'none';
+  document.getElementById('fz-dots').innerHTML = multi
+    ? _zoom.fotos.map((_, k) => `<span class="${k === _zoom.i ? 'on' : ''}"></span>`).join('') + `<em>${_zoom.i + 1}/${_zoom.fotos.length}</em>`
+    : '';
+  zoomReset();
+}
+
+function zoomNav(d) {
+  if (_zoom.fotos.length < 2) return;
+  _zoom.i = (_zoom.i + d + _zoom.fotos.length) % _zoom.fotos.length;
+  mostrarFotoZoom();
+}
+
+function aplicarZoom() {
+  const img = document.getElementById('fz-img');
+  if (_zoom.scale <= 1) { _zoom.scale = 1; _zoom.x = 0; _zoom.y = 0; }
+  // limita o arraste para a foto não sumir da tela
+  const stage = document.getElementById('fz-stage');
+  const maxX = (img.offsetWidth * _zoom.scale - stage.clientWidth) / 2;
+  const maxY = (img.offsetHeight * _zoom.scale - stage.clientHeight) / 2;
+  _zoom.x = Math.max(-Math.max(maxX, 0), Math.min(Math.max(maxX, 0), _zoom.x));
+  _zoom.y = Math.max(-Math.max(maxY, 0), Math.min(Math.max(maxY, 0), _zoom.y));
+  img.style.transform = `translate(${_zoom.x}px, ${_zoom.y}px) scale(${_zoom.scale})`;
+  img.classList.toggle('zoomed', _zoom.scale > 1);
+}
+
+function zoomPor(delta) {
+  _zoom.scale = Math.min(5, Math.max(1, _zoom.scale + delta));
+  aplicarZoom();
+}
+
+function zoomReset() {
+  _zoom.scale = 1; _zoom.x = 0; _zoom.y = 0;
+  aplicarZoom();
+}
+
+function zoomPointerDown(e) {
+  if (e.target.closest('button')) return;
+  e.currentTarget.setPointerCapture(e.pointerId);
+  _zoom.pointers.set(e.pointerId, { x: e.clientX, y: e.clientY });
+  if (_zoom.pointers.size === 2) {
+    const [a, b] = [..._zoom.pointers.values()];
+    _zoom.startDist = Math.hypot(a.x - b.x, a.y - b.y);
+    _zoom.startScale = _zoom.scale;
+    _zoom.dragStart = null;
+  } else if (_zoom.pointers.size === 1) {
+    _zoom.dragStart = { x: e.clientX, y: e.clientY, ox: _zoom.x, oy: _zoom.y, t: Date.now() };
+    const agora = Date.now();
+    if (agora - _zoom.lastTap < 300) {
+      // toque duplo: alterna entre 1x e 2.5x
+      if (_zoom.scale > 1) zoomReset(); else { _zoom.scale = 2.5; aplicarZoom(); }
+      _zoom.lastTap = 0;
+    } else {
+      _zoom.lastTap = agora;
+    }
+  }
+}
+
+function zoomPointerMove(e) {
+  if (!_zoom.pointers.has(e.pointerId)) return;
+  _zoom.pointers.set(e.pointerId, { x: e.clientX, y: e.clientY });
+  if (_zoom.pointers.size === 2 && _zoom.startDist) {
+    const [a, b] = [..._zoom.pointers.values()];
+    const dist = Math.hypot(a.x - b.x, a.y - b.y);
+    _zoom.scale = Math.min(5, Math.max(1, _zoom.startScale * dist / _zoom.startDist));
+    aplicarZoom();
+  } else if (_zoom.pointers.size === 1 && _zoom.dragStart && _zoom.scale > 1) {
+    _zoom.x = _zoom.dragStart.ox + (e.clientX - _zoom.dragStart.x);
+    _zoom.y = _zoom.dragStart.oy + (e.clientY - _zoom.dragStart.y);
+    aplicarZoom();
+  }
+}
+
+function zoomPointerUp(e) {
+  if (!_zoom.pointers.has(e.pointerId)) return;
+  _zoom.pointers.delete(e.pointerId);
+  // deslizar para o lado troca de foto quando não está ampliado
+  if (_zoom.pointers.size === 0 && _zoom.dragStart && _zoom.scale === 1) {
+    const dx = e.clientX - _zoom.dragStart.x;
+    if (Math.abs(dx) > 60 && Date.now() - _zoom.dragStart.t < 600) zoomNav(dx < 0 ? 1 : -1);
+  }
+  if (_zoom.pointers.size < 2) _zoom.startDist = 0;
+  if (_zoom.pointers.size === 1) {
+    const [p] = [..._zoom.pointers.values()];
+    _zoom.dragStart = { x: p.x, y: p.y, ox: _zoom.x, oy: _zoom.y, t: Date.now() };
+  } else if (_zoom.pointers.size === 0) {
+    _zoom.dragStart = null;
+  }
 }
 
 // ===== INIT =====
