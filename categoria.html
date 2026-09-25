@@ -407,7 +407,7 @@
 
     const produtos = cat === 'aneis-exclusivos'
       ? getProdutos().filter(p => p.badge === 'Exclusivo')
-      : getProdutos().filter(p => p.categoria === cat);
+      : getProdutos().filter(p => (p.categoria || '').split(',').map(s => s.trim()).includes(cat));
     const grid = document.getElementById('cat-produtos-grid');
     const emptyEl = document.getElementById('cat-empty');
 

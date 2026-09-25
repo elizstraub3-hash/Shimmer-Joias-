@@ -62,7 +62,7 @@
         ? '<img src="' + p.foto + '" alt="' + p.name + '" loading="lazy" />'
         : '';
       return (
-        '<a href="categoria.html?cat=' + p.categoria + '" class="search-result-item" onclick="document.getElementById(\'search-overlay\').classList.remove(\'active\');document.body.style.overflow=\'\';">' +
+        '<a href="categoria.html?cat=' + (p.categoria || '').split(',')[0].trim() + '" class="search-result-item" onclick="document.getElementById(\'search-overlay\').classList.remove(\'active\');document.body.style.overflow=\'\';">' +
           '<div class="search-result-img">' + imgHtml + '</div>' +
           '<div class="search-result-info">' +
             '<span class="search-result-code">#' + p.code + '</span>' +
