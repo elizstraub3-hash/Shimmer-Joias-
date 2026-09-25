@@ -226,6 +226,15 @@ header.scrolled { box-shadow: 0 2px 20px rgba(74,52,36,0.1); }
   transition: opacity 0.2s, transform 0.2s;
   transform: translateX(-50%) translateY(-8px);
 }
+/* Invisible bridge over the 16px gap so the menu stays open while the
+   cursor travels from the nav item down to the menu items */
+.dropdown-menu::before {
+  content: '';
+  position: absolute;
+  left: 0; right: 0;
+  top: -18px;
+  height: 18px;
+}
 .nav-dropdown:hover .dropdown-menu {
   opacity: 1;
   pointer-events: all;
