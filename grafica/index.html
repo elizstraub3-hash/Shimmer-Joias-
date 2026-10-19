@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Painel da Gráfica</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="grafica.css" />
+</head>
+<body>
+
+  <!-- SIDEBAR -->
+  <aside class="sidebar" id="sidebar">
+    <div class="brand">
+      <div class="brand-mark" aria-hidden="true"><i></i><i></i><i></i><i></i></div>
+      <div>
+        <strong id="brand-nome">Minha Gráfica</strong>
+        <small>Painel de controle</small>
+      </div>
+    </div>
+    <nav class="nav">
+      <button class="nav-item active" data-panel="inicio">
+        <svg viewBox="0 0 24 24"><path d="M3 11l9-8 9 8"/><path d="M5 10v10h14V10"/></svg><span>Início</span>
+      </button>
+      <button class="nav-item" data-panel="vendas">
+        <svg viewBox="0 0 24 24"><path d="M6 2h12v20l-3-2-3 2-3-2-3 2z"/><line x1="9" y1="7" x2="15" y2="7"/><line x1="9" y1="11" x2="15" y2="11"/></svg><span>Vendas</span>
+      </button>
+      <button class="nav-item" data-panel="clientes">
+        <svg viewBox="0 0 24 24"><circle cx="9" cy="8" r="4"/><path d="M2 21c0-4 3-6 7-6s7 2 7 6"/><path d="M17 4a4 4 0 010 8M22 21c0-3-2-5-4-5.5"/></svg><span>Clientes</span>
+      </button>
+      <button class="nav-item" data-panel="produtos">
+        <svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 21V9"/></svg><span>Produtos</span>
+      </button>
+      <button class="nav-item" data-panel="estoque">
+        <svg viewBox="0 0 24 24"><path d="M21 8l-9-5-9 5 9 5 9-5z"/><path d="M3 8v8l9 5 9-5V8"/><path d="M12 13v8"/></svg><span>Estoque</span>
+      </button>
+      <button class="nav-item" data-panel="fechamento">
+        <svg viewBox="0 0 24 24"><rect x="2" y="6" width="20" height="13" rx="2"/><circle cx="12" cy="12.5" r="2.5"/><path d="M6 6V4h12v2"/></svg><span>Fechamento</span>
+      </button>
+      <button class="nav-item" data-panel="config">
+        <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 00.3 1.8l.1.1a2 2 0 11-2.8 2.8l-.1-.1a1.7 1.7 0 00-1.8-.3 1.7 1.7 0 00-1 1.5V21a2 2 0 11-4 0v-.1a1.7 1.7 0 00-1.1-1.5 1.7 1.7 0 00-1.8.3l-.1.1a2 2 0 11-2.8-2.8l.1-.1a1.7 1.7 0 00.3-1.8 1.7 1.7 0 00-1.5-1H3a2 2 0 110-4h.1a1.7 1.7 0 001.5-1.1 1.7 1.7 0 00-.3-1.8l-.1-.1a2 2 0 112.8-2.8l.1.1a1.7 1.7 0 001.8.3H9a1.7 1.7 0 001-1.5V3a2 2 0 114 0v.1a1.7 1.7 0 001 1.5 1.7 1.7 0 001.8-.3l.1-.1a2 2 0 112.8 2.8l-.1.1a1.7 1.7 0 00-.3 1.8V9a1.7 1.7 0 001.5 1H21a2 2 0 110 4h-.1a1.7 1.7 0 00-1.5 1z"/></svg><span>Configurações</span>
+      </button>
+    </nav>
+    <div class="sidebar-foot">
+      <button class="btn btn-ghost btn-block" onclick="exportBackup()">⬇ Fazer backup</button>
+      <small id="backup-info" class="muted"></small>
+    </div>
+  </aside>
+
+  <main class="main">
+    <header class="topbar">
+      <button class="icon-btn menu-btn" id="menu-btn" aria-label="Abrir menu">
+        <svg viewBox="0 0 24 24"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+      </button>
+      <div class="topbar-title">
+        <h1 id="page-title">Início</h1>
+        <span id="topbar-date" class="muted"></span>
+      </div>
+      <button class="btn btn-primary" onclick="abrirVenda()">+ Nova venda</button>
+    </header>
+
+    <div id="backup-alert" class="alert" hidden></div>
+
+    <!-- INÍCIO -->
+    <section class="panel active" id="panel-inicio">
+      <div class="kpis" id="kpis"></div>
+      <div class="grid-2">
+        <div class="card">
+          <div class="card-head"><h3>Vendas dos últimos 7 dias</h3><span class="muted small">valor vendido</span></div>
+          <div id="chart-7d" class="chart"></div>
+        </div>
+        <div class="card">
+          <div class="card-head"><h3>Pedidos para entregar</h3><button class="link" onclick="irPara('vendas')">ver todos</button></div>
+          <div id="lista-entregas"></div>
+        </div>
+      </div>
+      <div class="grid-2">
+        <div class="card">
+          <div class="card-head"><h3>Estoque baixo</h3><button class="link" onclick="irPara('estoque')">ver estoque</button></div>
+          <div id="lista-estoque-baixo"></div>
+        </div>
+        <div class="card">
+          <div class="card-head"><h3>Contas a receber</h3><button class="link" onclick="filtrarAReceber()">ver todas</button></div>
+          <div id="lista-receber"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- VENDAS -->
+    <section class="panel" id="panel-vendas">
+      <div class="card">
+        <div class="toolbar">
+          <input type="search" id="f-venda-busca" placeholder="Buscar por nº, cliente ou produto…" />
+          <select id="f-venda-pag">
+            <option value="">Pagamento: todos</option>
+            <option value="aberto">A receber</option>
+            <option value="pago">Pago</option>
+          </select>
+          <select id="f-venda-status">
+            <option value="">Produção: todos</option>
+          </select>
+          <input type="date" id="f-venda-de" title="De" />
+          <input type="date" id="f-venda-ate" title="Até" />
+          <button class="btn btn-ghost" onclick="limparFiltrosVenda()">Limpar</button>
+        </div>
+        <div class="table-wrap"><table class="table" id="tabela-vendas"></table></div>
+        <div id="vendas-rodape" class="table-foot"></div>
+      </div>
+    </section>
+
+    <!-- CLIENTES -->
+    <section class="panel" id="panel-clientes">
+      <div class="card">
+        <div class="toolbar">
+          <input type="search" id="f-cli-busca" placeholder="Buscar por nome, documento, telefone…" />
+          <select id="f-cli-origem">
+            <option value="">Origem: todas</option>
+          </select>
+          <span class="spacer"></span>
+          <button class="btn btn-primary" onclick="abrirCliente()">+ Novo cliente</button>
+        </div>
+        <div class="table-wrap"><table class="table" id="tabela-clientes"></table></div>
+      </div>
+    </section>
+
+    <!-- PRODUTOS -->
+    <section class="panel" id="panel-produtos">
+      <div class="card">
+        <div class="toolbar">
+          <input type="search" id="f-prod-busca" placeholder="Buscar produto…" />
+          <select id="f-prod-cat"><option value="">Categoria: todas</option></select>
+          <span class="spacer"></span>
+          <button class="btn btn-primary" onclick="abrirProduto()">+ Novo produto</button>
+        </div>
+        <p class="hint">A <b>margem</b> mostra quanto do preço de venda sobra depois do custo. Abaixo de 30% fica em vermelho — vale revisar o preço.</p>
+        <div class="table-wrap"><table class="table" id="tabela-produtos"></table></div>
+      </div>
+    </section>
+
+    <!-- ESTOQUE -->
+    <section class="panel" id="panel-estoque">
+      <div class="kpis kpis-3" id="kpis-estoque"></div>
+      <div class="card">
+        <div class="toolbar">
+          <input type="search" id="f-est-busca" placeholder="Buscar item…" />
+          <select id="f-est-cat"><option value="">Categoria: todas</option></select>
+          <label class="check"><input type="checkbox" id="f-est-baixo" /> Só estoque baixo</label>
+          <span class="spacer"></span>
+          <button class="btn btn-primary" onclick="abrirItemEstoque()">+ Novo item</button>
+        </div>
+        <div class="table-wrap"><table class="table" id="tabela-estoque"></table></div>
+      </div>
+    </section>
+
+    <!-- FECHAMENTO -->
+    <section class="panel" id="panel-fechamento">
+      <div class="card">
+        <div class="toolbar">
+          <label class="field-inline">Dia <input type="date" id="fech-data" /></label>
+          <span id="fech-status"></span>
+          <span class="spacer"></span>
+          <button class="btn btn-ghost" onclick="abrirLancamento()">+ Despesa / Sangria / Suprimento</button>
+          <button class="btn btn-ghost" onclick="window.print()">🖨 Imprimir</button>
+        </div>
+        <div id="fech-conteudo"></div>
+      </div>
+      <div class="card">
+        <div class="card-head"><h3>Histórico de fechamentos</h3></div>
+        <div class="table-wrap"><table class="table" id="tabela-fechamentos"></table></div>
+      </div>
+    </section>
+
+    <!-- CONFIG -->
+    <section class="panel" id="panel-config">
+      <div class="grid-2">
+        <div class="card">
+          <div class="card-head"><h3>Dados da gráfica</h3></div>
+          <form id="form-config" class="form">
+            <label>Nome da gráfica<input name="nome" required /></label>
+            <label>Telefone / WhatsApp<input name="telefone" /></label>
+            <label>Endereço<input name="endereco" /></label>
+            <label>Fundo de caixa padrão (troco inicial)<input name="fundoCaixa" type="number" step="0.01" min="0" /></label>
+            <label>Status de produção (um por linha)<textarea name="statusProducao" rows="5"></textarea></label>
+            <div class="form-actions"><button class="btn btn-primary" type="submit">Salvar</button></div>
+          </form>
+        </div>
+        <div class="card">
+          <div class="card-head"><h3>Backup e dados</h3></div>
+          <p class="hint">Os dados ficam salvos <b>neste navegador, neste computador</b>. Faça backup com frequência (sugestão: todo fechamento de caixa) e guarde o arquivo no Google Drive ou num pendrive. Para usar em outro computador, é só restaurar o backup lá.</p>
+          <div class="stack">
+            <button class="btn btn-primary" onclick="exportBackup()">⬇ Baixar backup (.json)</button>
+            <button class="btn btn-ghost" onclick="document.getElementById('input-restore').click()">⬆ Restaurar backup</button>
+            <input type="file" id="input-restore" accept="application/json,.json" hidden />
+            <button class="btn btn-ghost" onclick="exportCSV('vendas')">Exportar vendas (planilha .csv)</button>
+            <button class="btn btn-ghost" onclick="exportCSV('clientes')">Exportar clientes (planilha .csv)</button>
+            <hr />
+            <button class="btn btn-ghost" onclick="carregarExemplos()">Carregar dados de exemplo</button>
+            <button class="btn btn-danger" onclick="apagarTudo()">Apagar todos os dados</button>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- MODAL GENÉRICO -->
+  <div class="modal-bg" id="modal" hidden>
+    <div class="modal" role="dialog" aria-modal="true" aria-labelledby="modal-title">
+      <div class="modal-head">
+        <h2 id="modal-title"></h2>
+        <button class="icon-btn" onclick="fecharModal()" aria-label="Fechar">✕</button>
+      </div>
+      <div class="modal-body" id="modal-body"></div>
+    </div>
+  </div>
+
+  <div id="toast" class="toast" hidden></div>
+  <div id="tooltip" class="tooltip" hidden></div>
+
+  <script src="grafica.js"></script>
+</body>
+</html>
