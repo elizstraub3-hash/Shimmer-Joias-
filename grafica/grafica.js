@@ -110,6 +110,14 @@ const getItem = id => db.estoque.find(i => i.id === id);
 function totalPago(v) { return r2((v.pagamentos || []).reduce((s, p) => s + num(p.valor), 0)); }
 function saldoVenda(v) { return r2(v.total - totalPago(v)); }
 function statusFinal() { const s = db.config.statusProducao; return s[s.length - 1]; }
+const ehOrc = v => v.tipo === 'orcamento';
+const pedidos = () => db.vendas.filter(v => !ehOrc(v));
+/* orcamento | recusado | andamento | feito */
+function situacao(v) {
+  if (ehOrc(v)) return v.recusado ? 'recusado' : 'orcamento';
+  return v.status === statusFinal() ? 'feito' : 'andamento';
+}
+function atualizarFeito(v) { v.feitoEm = !ehOrc(v) && v.status === statusFinal() ? (v.feitoEm || hoje()) : null; }
 function nomeCliente(v) { const c = getCliente(v.clienteId); return c ? c.nome : (v.clienteNome || 'Balcão'); }
 
 /* Estoque: cada movimento guarda o delta (+ entrada, − saída). */
@@ -120,6 +128,7 @@ function movimentar(itemId, delta, motivo, extra = {}) {
   db.movimentos.push({ id: uid(), itemId, delta: r2(delta), motivo, data: hoje(), criadoEm: new Date().toISOString(), ...extra });
 }
 function baixarEstoqueVenda(v) {
+  if (ehOrc(v)) return;
   v.itens.forEach(it => {
     const p = getProduto(it.produtoId);
     if (p && p.estoqueItemId && getItem(p.estoqueItemId)) {
@@ -142,10 +151,10 @@ function nivelEstoque(i) {
 
 /* Fechamento de um dia */
 function resumoDia(data) {
-  const vendas = db.vendas.filter(v => v.data === data);
+  const vendas = pedidos().filter(v => v.data === data);
   const faturado = r2(vendas.reduce((s, v) => s + v.total, 0));
   const porForma = {}; let recebido = 0;
-  db.vendas.forEach(v => (v.pagamentos || []).forEach(p => {
+  pedidos().forEach(v => (v.pagamentos || []).forEach(p => {
     if (p.data === data) { porForma[p.forma] = r2((porForma[p.forma] || 0) + num(p.valor)); recebido = r2(recebido + num(p.valor)); }
   }));
   const porCanal = {};
@@ -165,7 +174,7 @@ function resumoDia(data) {
 
 /* ---------------------------- NAVEGAÇÃO ---------------------------- */
 
-const TITULOS = { inicio: 'Início', vendas: 'Vendas', clientes: 'Clientes', produtos: 'Produtos', estoque: 'Estoque', fechamento: 'Fechamento de caixa', config: 'Configurações' };
+const TITULOS = { inicio: 'Início', vendas: 'Pedidos e orçamentos', semanal: 'Relatório semanal', clientes: 'Clientes', produtos: 'Produtos', estoque: 'Estoque', fechamento: 'Fechamento de caixa', config: 'Configurações' };
 let painelAtual = 'inicio';
 
 function irPara(p) {
@@ -183,7 +192,7 @@ function render() {
   $('#brand-nome').textContent = db.config.nome || 'Minha Gráfica';
   document.title = `Painel — ${db.config.nome || 'Gráfica'}`;
   renderBackupInfo();
-  ({ inicio: renderInicio, vendas: renderVendas, clientes: renderClientes, produtos: renderProdutos, estoque: renderEstoque, fechamento: renderFechamento, config: renderConfig })[painelAtual]();
+  ({ inicio: renderInicio, vendas: renderVendas, semanal: renderSemanal, clientes: renderClientes, produtos: renderProdutos, estoque: renderEstoque, fechamento: renderFechamento, config: renderConfig })[painelAtual]();
 }
 
 /* ------------------------------ INÍCIO ------------------------------ */
@@ -191,17 +200,18 @@ function render() {
 function renderInicio() {
   const h = hoje();
   const r = resumoDia(h);
-  const abertas = db.vendas.filter(v => saldoVenda(v) > 0.009);
+  const abertas = pedidos().filter(v => saldoVenda(v) > 0.009);
+  const orcAbertos = db.vendas.filter(v => situacao(v) === 'orcamento');
   const aReceber = r2(abertas.reduce((s, v) => s + saldoVenda(v), 0));
   const fim = statusFinal();
-  const emAndamento = db.vendas.filter(v => v.status !== fim);
+  const emAndamento = pedidos().filter(v => v.status !== fim);
   const baixos = db.estoque.filter(i => nivelEstoque(i) !== 'ok');
 
   $('#kpis').innerHTML = `
     <div class="kpi"><span>Vendido hoje</span><strong>${brl(r.faturado)}</strong><small>${r.qtdVendas} venda(s) · ticket ${brl(r.ticket)}</small></div>
     <div class="kpi"><span>Recebido hoje</span><strong>${brl(r.recebido)}</strong><small>entrou no caixa</small></div>
     <div class="kpi ${aReceber > 0 ? 'is-warn' : ''}"><span>A receber</span><strong>${brl(aReceber)}</strong><small>${abertas.length} pedido(s) em aberto</small></div>
-    <div class="kpi"><span>Pedidos em andamento</span><strong>${emAndamento.length}</strong><small>ainda não entregues</small></div>
+    <div class="kpi clicavel" onclick="abrirAba('andamento')" title="Ver pedidos em andamento"><span>Pedidos em andamento</span><strong>${emAndamento.length}</strong><small>${orcAbertos.length} orçamento(s) aguardando resposta</small></div>
     <div class="kpi ${baixos.length ? 'is-bad' : ''}"><span>Estoque baixo</span><strong>${baixos.length}</strong><small>item(ns) para repor</small></div>`;
 
   renderChart7d();
@@ -239,7 +249,7 @@ function resumoItens(v) {
 function renderChart7d() {
   const h = hoje();
   const dias = [...Array(7)].map((_, i) => addDias(h, i - 6));
-  const vals = dias.map(d => r2(db.vendas.filter(v => v.data === d).reduce((s, v) => s + v.total, 0)));
+  const vals = dias.map(d => r2(pedidos().filter(v => v.data === d).reduce((s, v) => s + v.total, 0)));
   const max = Math.max(...vals, 1);
   const iMax = vals.indexOf(Math.max(...vals));
   $('#chart-7d').innerHTML = `
@@ -262,6 +272,18 @@ function ligarTooltips(root) {
 
 /* ------------------------------ VENDAS ------------------------------ */
 
+let abaPedidos = 'todos';
+const ABAS = [
+  ['todos', 'Todos'],
+  ['orcamento', 'Orçamentos'],
+  ['andamento', 'Em andamento'],
+  ['feito', 'Feitos'],
+];
+function abrirAba(aba) {
+  abaPedidos = aba;
+  if (painelAtual !== 'vendas') irPara('vendas'); else renderVendas();
+}
+
 function renderVendas() {
   const selStatus = $('#f-venda-status');
   const atual = selStatus.value;
@@ -269,47 +291,104 @@ function renderVendas() {
 
   const q = norm($('#f-venda-busca').value);
   const fp = $('#f-venda-pag').value, fs = selStatus.value, de = $('#f-venda-de').value, ate = $('#f-venda-ate').value;
-  const lista = db.vendas.filter(v => {
+  const filtrados = db.vendas.filter(v => {
     if (q && !norm(`${v.numero} ${nomeCliente(v)} ${resumoItens(v)} ${v.obs || ''}`).includes(q)) return false;
-    if (fp === 'aberto' && saldoVenda(v) <= 0.009) return false;
-    if (fp === 'pago' && saldoVenda(v) > 0.009) return false;
-    if (fs && v.status !== fs) return false;
+    if (fp === 'aberto' && (ehOrc(v) || saldoVenda(v) <= 0.009)) return false;
+    if (fp === 'pago' && (ehOrc(v) || saldoVenda(v) > 0.009)) return false;
+    if (fs && (ehOrc(v) || v.status !== fs)) return false;
     if (de && v.data < de) return false;
     if (ate && v.data > ate) return false;
     return true;
-  }).sort((a, b) => b.data.localeCompare(a.data) || b.numero - a.numero);
+  });
+  const naAba = (v, aba) => aba === 'todos' || situacao(v) === aba || (aba === 'orcamento' && situacao(v) === 'recusado');
+  $('#tabs-pedidos').innerHTML = ABAS.map(([k, t]) =>
+    `<button class="tab${abaPedidos === k ? ' active' : ''}" role="tab" aria-selected="${abaPedidos === k}" onclick="abrirAba('${k}')">${t}<span class="count">${filtrados.filter(v => naAba(v, k)).length}</span></button>`).join('');
+  const lista = filtrados.filter(v => naAba(v, abaPedidos))
+    .sort((a, b) => abaPedidos === 'andamento'
+      ? (a.entrega || '9999').localeCompare(b.entrega || '9999') || a.numero - b.numero
+      : b.data.localeCompare(a.data) || b.numero - a.numero);
 
   const t = $('#tabela-vendas');
   if (!lista.length) {
-    t.innerHTML = `<tbody><tr><td class="empty">${db.vendas.length ? 'Nenhuma venda encontrada com esses filtros.' : 'Nenhuma venda registrada ainda. Clique em <b>+ Nova venda</b>.'}</td></tr></tbody>`;
+    const vazio = { todos: 'Nenhum pedido registrado ainda. Clique em <b>+ Nova venda</b> ou <b>+ Orçamento</b>.', orcamento: 'Nenhum orçamento. Clique em <b>+ Orçamento</b> para criar um.', andamento: 'Nenhum pedido em andamento 🎉', feito: 'Nenhum pedido concluído ainda.' }[abaPedidos];
+    t.innerHTML = `<tbody><tr><td class="empty">${filtrados.length || abaPedidos !== 'todos' ? (db.vendas.length ? 'Nada aqui com esses filtros.' : vazio) : vazio}</td></tr></tbody>`;
     $('#vendas-rodape').innerHTML = '';
     return;
   }
   const status = db.config.statusProducao;
-  t.innerHTML = `<thead><tr><th>Nº</th><th>Data</th><th>Cliente</th><th>Itens</th><th>Canal</th><th class="num">Total</th><th class="num">Saldo</th><th>Produção</th><th></th></tr></thead>
+  const h = hoje();
+  t.innerHTML = `<thead><tr><th>Nº</th><th>Data</th><th>Cliente</th><th>Itens</th><th class="num">Total</th><th class="num">Saldo</th><th>Situação</th><th></th></tr></thead>
   <tbody>${lista.map(v => {
+    const sit = situacao(v);
     const saldo = saldoVenda(v);
-    const idx = status.indexOf(v.status);
-    const cls = v.status === statusFinal() ? 'good' : idx <= 0 ? '' : 'info';
+    let situacaoHtml, acoes = '';
+    if (sit === 'orcamento' || sit === 'recusado') {
+      const vencido = sit === 'orcamento' && v.validade && v.validade < h;
+      situacaoHtml = sit === 'recusado'
+        ? '<span class="badge bad">Orçamento recusado</span>'
+        : `<span class="badge orc">Orçamento</span>${v.validade ? `<span class="sub-line">${vencido ? 'venceu' : 'válido até'} ${fmtData(v.validade)}</span>` : ''}`;
+      if (sit === 'orcamento') acoes = `<button class="btn btn-primary btn-sm" title="Cliente aprovou: virar pedido" onclick="aprovarOrcamento('${v.id}')">Aprovar</button>
+        <button class="icon-btn" title="Cliente recusou" onclick="recusarOrcamento('${v.id}')">✕</button>`;
+      else acoes = `<button class="btn btn-ghost btn-sm" title="Reabrir orçamento" onclick="recusarOrcamento('${v.id}', true)">Reabrir</button>`;
+    } else {
+      const idx = status.indexOf(v.status);
+      const cls = sit === 'feito' ? 'good' : idx <= 0 ? '' : 'info';
+      const atrasado = sit === 'andamento' && v.entrega && v.entrega < h;
+      situacaoHtml = `<button class="badge ${cls}" title="Clique para avançar a etapa" onclick="avancarStatus('${v.id}')">${sit === 'feito' ? '✓ ' : ''}${esc(v.status)} ›</button>
+        ${sit === 'feito' && v.feitoEm ? `<span class="sub-line">feito em ${fmtData(v.feitoEm)}</span>` : ''}${atrasado ? '<span class="sub-line" style="color:var(--bad)">entrega atrasada</span>' : ''}`;
+      if (sit === 'andamento') acoes = `<button class="icon-btn" title="Marcar como feito" onclick="concluirPedido('${v.id}')">✓</button>`;
+      if (saldo > 0.009) acoes += `<button class="icon-btn" title="Registrar pagamento" onclick="abrirPagamento('${v.id}')">${ICON.pay}</button>`;
+    }
     return `<tr>
       <td class="strong">${v.numero}</td>
-      <td>${fmtData(v.data)}${v.entrega ? `<span class="sub-line">entrega ${fmtData(v.entrega)}</span>` : ''}</td>
-      <td>${esc(nomeCliente(v))}</td>
+      <td>${fmtData(v.data)}${!ehOrc(v) && v.entrega ? `<span class="sub-line">entrega ${fmtData(v.entrega)}</span>` : ''}</td>
+      <td>${esc(nomeCliente(v))}<span class="sub-line">${esc(v.canal)}</span></td>
       <td style="max-width:260px">${esc(resumoItens(v))}</td>
-      <td>${esc(v.canal)}</td>
       <td class="num strong">${brl(v.total)}</td>
-      <td class="num">${saldo > 0.009 ? `<span class="badge bad">${brl(saldo)}</span>` : '<span class="badge good">Pago</span>'}</td>
-      <td><button class="badge ${cls}" title="Clique para avançar a etapa" onclick="avancarStatus('${v.id}')">${esc(v.status)} ›</button></td>
+      <td class="num">${ehOrc(v) ? '<span class="muted">—</span>' : saldo > 0.009 ? `<span class="badge bad">${brl(saldo)}</span>` : '<span class="badge good">Pago</span>'}</td>
+      <td>${situacaoHtml}</td>
       <td><div class="actions">
-        ${saldo > 0.009 ? `<button class="icon-btn" title="Registrar pagamento" onclick="abrirPagamento('${v.id}')">${ICON.pay}</button>` : ''}
-        <button class="icon-btn" title="Imprimir pedido" onclick="imprimirPedido('${v.id}')">${ICON.print}</button>
+        ${acoes}
+        <button class="icon-btn" title="Imprimir ${ehOrc(v) ? 'orçamento' : 'pedido'}" onclick="imprimirPedido('${v.id}')">${ICON.print}</button>
         <button class="icon-btn" title="Editar" onclick="abrirVenda('${v.id}')">${ICON.edit}</button>
         <button class="icon-btn" title="Excluir" onclick="excluirVenda('${v.id}')">${ICON.del}</button>
       </div></td></tr>`;
   }).join('')}</tbody>`;
-  const tot = r2(lista.reduce((s, v) => s + v.total, 0));
-  const sal = r2(lista.reduce((s, v) => s + Math.max(0, saldoVenda(v)), 0));
-  $('#vendas-rodape').innerHTML = `<span>${lista.length} venda(s)</span><span>Total: <b>${brl(tot)}</b></span><span>Em aberto: <b>${brl(sal)}</b></span>`;
+  const peds = lista.filter(v => !ehOrc(v)), orcs = lista.filter(ehOrc);
+  const tot = r2(peds.reduce((s, v) => s + v.total, 0));
+  const sal = r2(peds.reduce((s, v) => s + Math.max(0, saldoVenda(v)), 0));
+  $('#vendas-rodape').innerHTML = (peds.length ? `<span>${peds.length} pedido(s)</span><span>Total: <b>${brl(tot)}</b></span><span>Em aberto: <b>${brl(sal)}</b></span>` : '') +
+    (orcs.some(v => !v.recusado) ? `<span>Orçamentos em aberto: <b>${brl(orcs.filter(v => !v.recusado).reduce((s, v) => s + v.total, 0))}</b></span>` : '');
+}
+function concluirPedido(id) {
+  const v = db.vendas.find(x => x.id === id);
+  v.status = statusFinal();
+  atualizarFeito(v);
+  salvar(); render();
+  toast(`Pedido nº ${v.numero} marcado como feito ✓`);
+}
+function aprovarOrcamento(id) {
+  const v = db.vendas.find(x => x.id === id);
+  if (!confirm(`Aprovar o orçamento nº ${v.numero} (${brl(v.total)})?\nEle vira um pedido com data de hoje, entra nas vendas e dá baixa no estoque.`)) return;
+  v.tipo = 'pedido';
+  v.dataOrcamento = v.data;
+  v.data = hoje();
+  v.status = db.config.statusProducao[0];
+  v.recusado = false;
+  const prazo = Math.max(0, ...v.itens.map(i => num(getProduto(i.produtoId)?.prazo)));
+  if (!v.entrega && prazo) v.entrega = addDias(hoje(), prazo);
+  baixarEstoqueVenda(v);
+  salvar();
+  abaPedidos = 'andamento';
+  render();
+  toast(`Orçamento aprovado → pedido nº ${v.numero}`);
+  if (confirm('Deseja registrar um pagamento (sinal) agora?')) abrirPagamento(v.id);
+}
+function recusarOrcamento(id, reabrir) {
+  const v = db.vendas.find(x => x.id === id);
+  v.recusado = !reabrir;
+  salvar(); render();
+  toast(reabrir ? 'Orçamento reaberto' : 'Orçamento marcado como recusado');
 }
 function limparFiltrosVenda() {
   ['#f-venda-busca', '#f-venda-pag', '#f-venda-status', '#f-venda-de', '#f-venda-ate'].forEach(s => $(s).value = '');
@@ -318,6 +397,7 @@ function limparFiltrosVenda() {
 function filtrarAReceber() {
   limparFiltrosVenda();
   $('#f-venda-pag').value = 'aberto';
+  abaPedidos = 'todos';
   irPara('vendas');
 }
 function avancarStatus(id) {
@@ -325,23 +405,29 @@ function avancarStatus(id) {
   const s = db.config.statusProducao;
   const i = s.indexOf(v.status);
   v.status = s[(i + 1) % s.length];
+  atualizarFeito(v);
   salvar(); render();
   toast(`Pedido nº ${v.numero}: ${v.status}`);
 }
 function excluirVenda(id) {
   const v = db.vendas.find(x => x.id === id);
-  if (!confirm(`Excluir a venda nº ${v.numero}? O estoque consumido será devolvido.`)) return;
+  if (!confirm(ehOrc(v) ? `Excluir o orçamento nº ${v.numero}?` : `Excluir a venda nº ${v.numero}? O estoque consumido será devolvido.`)) return;
   estornarEstoqueVenda(id);
   db.vendas = db.vendas.filter(x => x.id !== id);
   salvar(); render(); toast('Venda excluída');
 }
 
-function abrirVenda(id) {
+function abrirVenda(id, tipoInicial) {
   const v = id ? db.vendas.find(x => x.id === id) : null;
+  const tipoAtual = v ? (v.tipo || 'pedido') : (tipoInicial || 'pedido');
   const ativos = db.produtos.filter(p => p.ativo !== false).sort((a, b) => a.nome.localeCompare(b.nome));
   const cli = v ? getCliente(v.clienteId) : null;
-  abrirModal(v ? `Editar venda nº ${v.numero}` : 'Nova venda', `
+  abrirModal('', `
     <form id="form-venda" class="form">
+      ${v && !ehOrc(v) ? '' : `<div class="seg" role="radiogroup" aria-label="Tipo">
+        <label><input type="radio" name="tipo" value="orcamento" ${tipoAtual === 'orcamento' ? 'checked' : ''} /><span>Orçamento</span></label>
+        <label><input type="radio" name="tipo" value="pedido" ${tipoAtual === 'pedido' ? 'checked' : ''} /><span>Venda / pedido</span></label>
+      </div>`}
       <div class="row">
         <label>Cliente
           <input name="cliente" list="dl-clientes" placeholder="Digite o nome ou deixe vazio (balcão)" value="${esc(cli ? cli.nome : (v?.clienteNome || ''))}" autocomplete="off" />
@@ -350,16 +436,17 @@ function abrirVenda(id) {
         <label>Canal<select name="canal">${opts(CANAIS, v?.canal || 'Loja física')}</select></label>
       </div>
       <div class="row">
-        <label>Data da venda<input type="date" name="data" value="${v?.data || hoje()}" required /></label>
-        <label>Prazo de entrega<input type="date" name="entrega" value="${v?.entrega || ''}" /></label>
-        <label>Produção<select name="status">${opts(db.config.statusProducao, v?.status || db.config.statusProducao[0])}</select></label>
+        <label><span id="lbl-data">Data da venda</span><input type="date" name="data" value="${v?.data || hoje()}" required /></label>
+        <label class="so-orc">Válido até<input type="date" name="validade" value="${v?.validade || addDias(hoje(), 7)}" /></label>
+        <label class="so-ped">Prazo de entrega<input type="date" name="entrega" value="${v?.entrega || ''}" /></label>
+        <label class="so-ped">Produção<select name="status">${opts(db.config.statusProducao, v?.status || db.config.statusProducao[0])}</select></label>
       </div>
       <fieldset><legend>Itens</legend>
         <div class="item-row item-head"><span>Produto</span><span>Descrição</span><span>Qtd</span><span>Preço un.</span><span style="text-align:right">Subtotal</span><span></span></div>
         <div class="itens" id="venda-itens"></div>
         <div><button type="button" class="btn btn-ghost btn-sm" id="add-item">+ Adicionar item</button></div>
       </fieldset>
-      <fieldset><legend>Pagamentos recebidos</legend>
+      <fieldset class="so-ped"><legend>Pagamentos recebidos</legend>
         <div class="itens" id="venda-pags"></div>
         <div style="display:flex;gap:8px;flex-wrap:wrap">
           <button type="button" class="btn btn-ghost btn-sm" id="add-pag">+ Adicionar pagamento</button>
@@ -374,12 +461,25 @@ function abrirVenda(id) {
       <label>Observações (arte, acabamento, cores…)<textarea name="obs" rows="2">${esc(v?.obs || '')}</textarea></label>
       <div class="form-actions">
         <button type="button" class="btn btn-ghost" onclick="fecharModal()">Cancelar</button>
-        <button type="submit" class="btn btn-primary">${v ? 'Salvar alterações' : 'Registrar venda'}</button>
+        <button type="submit" class="btn btn-primary" id="btn-salvar-venda"></button>
       </div>
     </form>`, true);
 
   const f = $('#form-venda');
   const boxItens = $('#venda-itens'), boxPags = $('#venda-pags');
+  const tipoForm = () => f.querySelector('input[name=tipo]:checked')?.value || tipoAtual;
+  function aplicarTipo() {
+    const orc = tipoForm() === 'orcamento';
+    $$('.so-orc', f).forEach(el => el.hidden = !orc);
+    $$('.so-ped', f).forEach(el => el.hidden = orc);
+    $('#lbl-data').textContent = orc ? 'Data do orçamento' : 'Data da venda';
+    $('#modal-title').textContent = v
+      ? `Editar ${ehOrc(v) ? 'orçamento' : 'pedido'} nº ${v.numero}${ehOrc(v) && !orc ? ' → aprovar como pedido' : ''}`
+      : (orc ? 'Novo orçamento' : 'Nova venda');
+    $('#btn-salvar-venda').textContent = v ? (ehOrc(v) && !orc ? 'Aprovar e salvar pedido' : 'Salvar alterações') : (orc ? 'Salvar orçamento' : 'Registrar venda');
+    calc();
+  }
+  $$('input[name=tipo]', f).forEach(r => r.addEventListener('change', aplicarTipo));
 
   function addItem(it = {}) {
     const row = document.createElement('div');
@@ -428,8 +528,8 @@ function abrirVenda(id) {
     $('#venda-totais').innerHTML = `
       <div><span>Subtotal</span><span>${brl(bruto)}</span></div>
       <div class="total"><span>Total</span><span>${brl(total)}</span></div>
-      <div><span>Pago</span><span>${brl(pago)}</span></div>
-      <div class="${saldo > 0.009 ? 'saldo-aberto' : ''}"><span>${saldo < -0.009 ? 'Troco / excedente' : 'Falta receber'}</span><span>${brl(Math.abs(saldo))}</span></div>`;
+      ${tipoForm() === 'orcamento' ? '' : `<div><span>Pago</span><span>${brl(pago)}</span></div>
+      <div class="${saldo > 0.009 ? 'saldo-aberto' : ''}"><span>${saldo < -0.009 ? 'Troco / excedente' : 'Falta receber'}</span><span>${brl(Math.abs(saldo))}</span></div>`}`;
   }
   function preencherPag(valor) {
     // usa uma linha vazia (ou cria) e completa até o pago somar "valor"
@@ -446,7 +546,7 @@ function abrirVenda(id) {
   $('#pag-total').onclick = () => preencherPag(totalAtual());
   $('#pag-50').onclick = () => preencherPag(r2(totalAtual() / 2));
   f.desconto.addEventListener('input', calc);
-  calc();
+  aplicarTipo();
 
   f.addEventListener('submit', e => {
     e.preventDefault();
@@ -457,7 +557,8 @@ function abrirVenda(id) {
       preco: num($('.i-preco', r).value),
     })).filter(i => i.descricao && i.qtd > 0);
     if (!itens.length) return alert('Adicione pelo menos um item.');
-    const pagamentos = $$('.pag-row', boxPags).map(r => ({
+    const orc = tipoForm() === 'orcamento';
+    const pagamentos = orc ? [] : $$('.pag-row', boxPags).map(r => ({
       id: uid(), data: $('.p-data', r).value || hoje(), forma: $('.p-forma', r).value, valor: num($('.p-valor', r).value),
     })).filter(p => p.valor > 0);
     const total = totalAtual();
@@ -478,20 +579,28 @@ function abrirVenda(id) {
     }
 
     const dados = {
-      clienteId, clienteNome, canal: f.canal.value, data: f.data.value, entrega: f.entrega.value, status: f.status.value,
+      tipo: orc ? 'orcamento' : 'pedido',
+      clienteId, clienteNome, canal: f.canal.value, data: f.data.value, entrega: orc ? '' : f.entrega.value,
+      validade: orc ? f.validade.value : (v?.validade || ''),
+      status: orc ? db.config.statusProducao[0] : f.status.value,
       itens, desconto: num(f.desconto.value), total, pagamentos, obs: f.obs.value.trim(),
     };
+    const aprovando = v && ehOrc(v) && !orc;
+    if (aprovando) { dados.dataOrcamento = v.data; dados.recusado = false; }
     if (v) {
       estornarEstoqueVenda(v.id);
       Object.assign(v, dados);
+      atualizarFeito(v);
       baixarEstoqueVenda(v);
     } else {
       const nova = { id: uid(), numero: db.seq.venda++, criadoEm: new Date().toISOString(), ...dados };
+      atualizarFeito(nova);
       db.vendas.push(nova);
       baixarEstoqueVenda(nova);
     }
+    if (!v) abaPedidos = orc ? 'orcamento' : abaPedidos;
     salvar(); fecharModal(); render();
-    toast(v ? 'Venda atualizada' : 'Venda registrada');
+    toast(aprovando ? 'Orçamento aprovado e virou pedido' : v ? 'Alterações salvas' : orc ? 'Orçamento salvo' : 'Venda registrada');
   });
 }
 
@@ -528,25 +637,28 @@ function imprimirPedido(id) {
   const v = db.vendas.find(x => x.id === id);
   const c = getCliente(v.clienteId);
   const cfg = db.config;
+  const orc = ehOrc(v);
+  const nomeDoc = orc ? 'ORÇAMENTO' : 'PEDIDO';
   const w = window.open('', '_blank');
   if (!w) return alert('Permita pop-ups para imprimir.');
-  w.document.write(`<!DOCTYPE html><html lang="pt-BR"><head><meta charset="utf-8"><title>Pedido ${v.numero}</title>
+  w.document.write(`<!DOCTYPE html><html lang="pt-BR"><head><meta charset="utf-8"><title>${orc ? 'Orçamento' : 'Pedido'} ${v.numero}</title>
   <style>body{font-family:Inter,Arial,sans-serif;max-width:720px;margin:24px auto;padding:0 16px;color:#111;font-size:13px}
   h1{font-size:18px;margin:0}table{width:100%;border-collapse:collapse;margin:14px 0}th,td{padding:7px;border-bottom:1px solid #ddd;text-align:left}
   .r{text-align:right}.head{display:flex;justify-content:space-between;border-bottom:2px solid #111;padding-bottom:10px;margin-bottom:12px}
   .tot td{font-weight:700;font-size:15px;border:0}.box{border:1px solid #ddd;border-radius:6px;padding:10px;margin-top:10px}
   .ass{margin-top:50px;display:flex;gap:40px}.ass div{flex:1;border-top:1px solid #111;text-align:center;padding-top:4px}</style></head><body>
   <div class="head"><div><h1>${esc(cfg.nome)}</h1><div>${esc(cfg.telefone)}</div><div>${esc(cfg.endereco)}</div></div>
-  <div style="text-align:right"><h1>PEDIDO Nº ${v.numero}</h1><div>Data: ${fmtData(v.data)}</div>${v.entrega ? `<div>Entrega: <b>${fmtData(v.entrega)}</b></div>` : ''}</div></div>
+  <div style="text-align:right"><h1>${nomeDoc} Nº ${v.numero}</h1><div>Data: ${fmtData(v.data)}</div>${orc && v.validade ? `<div>Válido até: <b>${fmtData(v.validade)}</b></div>` : ''}${!orc && v.entrega ? `<div>Entrega: <b>${fmtData(v.entrega)}</b></div>` : ''}</div></div>
   <div><b>Cliente:</b> ${esc(nomeCliente(v))}${c?.doc ? ` · ${esc(c.doc)}` : ''}${c?.whatsapp ? ` · ${esc(c.whatsapp)}` : ''}</div>
   <table><thead><tr><th>Descrição</th><th class="r">Qtd</th><th class="r">Unit.</th><th class="r">Subtotal</th></tr></thead><tbody>
   ${v.itens.map(i => `<tr><td>${esc(i.descricao)}</td><td class="r">${fmtQtd(i.qtd)}</td><td class="r">${brl(i.preco)}</td><td class="r">${brl(i.qtd * i.preco)}</td></tr>`).join('')}
   ${v.desconto ? `<tr><td colspan="3" class="r">Desconto</td><td class="r">− ${brl(v.desconto)}</td></tr>` : ''}
   <tr class="tot"><td colspan="3" class="r">TOTAL</td><td class="r">${brl(v.total)}</td></tr>
-  <tr><td colspan="3" class="r">Pago</td><td class="r">${brl(totalPago(v))}</td></tr>
-  <tr><td colspan="3" class="r"><b>Falta pagar</b></td><td class="r"><b>${brl(Math.max(0, saldoVenda(v)))}</b></td></tr></tbody></table>
+  ${orc ? '' : `<tr><td colspan="3" class="r">Pago</td><td class="r">${brl(totalPago(v))}</td></tr>
+  <tr><td colspan="3" class="r"><b>Falta pagar</b></td><td class="r"><b>${brl(Math.max(0, saldoVenda(v)))}</b></td></tr>`}</tbody></table>
   ${v.obs ? `<div class="box"><b>Observações:</b> ${esc(v.obs)}</div>` : ''}
-  <div class="ass"><div>${esc(cfg.nome)}</div><div>Cliente</div></div>
+  ${orc ? `<div class="box">Prazo de produção a partir da aprovação da arte e do pagamento do sinal.${v.validade ? ` Valores válidos até ${fmtData(v.validade)}.` : ''}</div>` : ''}
+  <div class="ass"><div>${esc(cfg.nome)}</div><div>${orc ? 'De acordo — cliente' : 'Cliente'}</div></div>
   <script>window.onload=()=>window.print()<\/script></body></html>`);
   w.document.close();
 }
@@ -554,8 +666,9 @@ function imprimirPedido(id) {
 /* ----------------------------- CLIENTES ----------------------------- */
 
 function statsCliente(id) {
-  const vs = db.vendas.filter(v => v.clienteId === id);
+  const vs = pedidos().filter(v => v.clienteId === id);
   return {
+    orcamentos: db.vendas.filter(v => v.clienteId === id && ehOrc(v)).length,
     qtd: vs.length,
     total: r2(vs.reduce((s, v) => s + v.total, 0)),
     devendo: r2(vs.reduce((s, v) => s + Math.max(0, saldoVenda(v)), 0)),
@@ -631,7 +744,7 @@ function verCliente(id) {
   const wa = linkWhats(c.whatsapp);
   abrirModal(c.nome, `
     <div class="kpis kpis-3" style="margin-bottom:16px">
-      <div class="kpi"><span>Pedidos</span><strong>${s.qtd}</strong></div>
+      <div class="kpi"><span>Pedidos</span><strong>${s.qtd}</strong><small>${s.orcamentos} orçamento(s) pedido(s)</small></div>
       <div class="kpi"><span>Total comprado</span><strong>${brl(s.total)}</strong><small>ticket médio ${brl(s.qtd ? s.total / s.qtd : 0)}</small></div>
       <div class="kpi ${s.devendo ? 'is-bad' : ''}"><span>Em aberto</span><strong>${brl(s.devendo)}</strong></div>
     </div>
@@ -669,7 +782,7 @@ function renderProdutos() {
   const t = $('#tabela-produtos');
   if (!lista.length) { t.innerHTML = `<tbody><tr><td class="empty">${db.produtos.length ? 'Nenhum produto encontrado.' : 'Nenhum produto cadastrado ainda.'}</td></tr></tbody>`; return; }
   const vendidos = {};
-  db.vendas.forEach(v => v.itens.forEach(i => { if (i.produtoId) vendidos[i.produtoId] = (vendidos[i.produtoId] || 0) + num(i.qtd); }));
+  pedidos().forEach(v => v.itens.forEach(i => { if (i.produtoId) vendidos[i.produtoId] = (vendidos[i.produtoId] || 0) + num(i.qtd); }));
   t.innerHTML = `<thead><tr><th>Produto</th><th>Categoria</th><th class="num">Custo</th><th class="num">Preço</th><th class="num">Margem</th><th>Prazo</th><th>Baixa no estoque</th><th class="num">Vendidos</th><th></th></tr></thead>
   <tbody>${lista.map(p => {
     const m = margem(p);
@@ -885,6 +998,124 @@ function excluirItemEstoque(id) {
   salvar(); render(); toast('Item excluído');
 }
 
+/* ------------------------------ SEMANAL ------------------------------ */
+
+let semanaInicio = null; // segunda-feira da semana aberta
+
+function inicioSemana(iso) {
+  const [y, m, d] = iso.split('-').map(Number);
+  const dow = (new Date(y, m - 1, d).getDay() + 6) % 7; // segunda = 0
+  return addDias(iso, -dow);
+}
+function mudarSemana(n) {
+  semanaInicio = n === 0 ? inicioSemana(hoje()) : addDias(semanaInicio || inicioSemana(hoje()), 7 * n);
+  renderSemanal();
+}
+function resumoSemana(ini, nDias = 7) {
+  const fim = addDias(ini, nDias - 1);
+  const dentro = d => d && d >= ini && d <= fim;
+  const peds = pedidos().filter(v => dentro(v.data));
+  const vendido = r2(peds.reduce((s, v) => s + v.total, 0));
+  let recebido = 0;
+  pedidos().forEach(v => (v.pagamentos || []).forEach(p => { if (dentro(p.data)) recebido += num(p.valor); }));
+  recebido = r2(recebido);
+  const despesas = r2(db.caixa.filter(c => c.tipo === 'despesa' && dentro(c.data)).reduce((s, c) => s + num(c.valor), 0));
+  // orçamentos criados na semana (inclusive os que já viraram pedido)
+  const orcs = db.vendas.filter(v => dentro(ehOrc(v) ? v.data : v.dataOrcamento));
+  const aprovados = orcs.filter(v => !ehOrc(v)).length;
+  const recusados = orcs.filter(v => ehOrc(v) && v.recusado).length;
+  const feitos = pedidos().filter(v => dentro(v.feitoEm)).length;
+  const produtos = {};
+  peds.forEach(v => v.itens.forEach(i => {
+    const k = i.descricao;
+    produtos[k] = produtos[k] || { nome: k, qtd: 0, valor: 0 };
+    produtos[k].qtd += num(i.qtd); produtos[k].valor += num(i.qtd) * num(i.preco);
+  }));
+  return {
+    ini, fim, peds, vendido, recebido, despesas, saldo: r2(recebido - despesas),
+    ticket: peds.length ? r2(vendido / peds.length) : 0,
+    orcs: orcs.length, aprovados, recusados,
+    conversao: orcs.length ? aprovados / orcs.length : null,
+    feitos,
+    top: Object.values(produtos).sort((a, b) => b.valor - a.valor).slice(0, 5),
+  };
+}
+function variacao(atual, anterior, parcial) {
+  const ref = parcial ? 'mesmo período da semana passada' : 'semana anterior';
+  if (!anterior) return atual ? `<span class="delta">sem vendas no ${ref}</span>` : '';
+  const p = (atual - anterior) / anterior * 100;
+  return `<span class="delta">${p >= 0 ? '▲' : '▼'} ${Math.abs(p).toFixed(0)}% vs ${ref}</span>`;
+}
+function fmtSemana(ini) {
+  const fim = addDias(ini, 6);
+  return `${fmtData(ini).slice(0, 5)} a ${fmtData(fim)}`;
+}
+
+function renderSemanal() {
+  if (!semanaInicio) semanaInicio = inicioSemana(hoje());
+  const ini = semanaInicio;
+  const atualSemana = inicioSemana(hoje());
+  const s = resumoSemana(ini);
+  // semana em curso: compara com os mesmos dias da semana passada (seg→hoje)
+  const parcial = ini === atualSemana;
+  const diasCorridos = parcial ? (new Date().getDay() + 6) % 7 + 1 : 7;
+  const ant = resumoSemana(addDias(ini, -7), diasCorridos);
+  $('#semana-titulo').textContent = `Semana de ${fmtSemana(ini)}${ini === atualSemana ? ' (atual)' : ''}`;
+
+  const dias = [...Array(7)].map((_, i) => addDias(ini, i));
+  const linhas = dias.map(d => {
+    const r = resumoDia(d);
+    return { d, n: r.qtdVendas, vendido: r.faturado, recebido: r.recebido, despesas: r.despesas, fechado: !!r.fech, futuro: d > hoje() };
+  });
+
+  $('#semana-conteudo').innerHTML = `
+    <div class="kpis kpis-4" style="margin-bottom:14px">
+      <div class="kpi"><span>Vendido na semana</span><strong>${brl(s.vendido)}</strong>${variacao(s.vendido, ant.vendido, parcial)}</div>
+      <div class="kpi"><span>Recebido</span><strong>${brl(s.recebido)}</strong><small>entrou no caixa</small></div>
+      <div class="kpi"><span>Despesas</span><strong>${brl(s.despesas)}</strong><small>lançadas no fechamento</small></div>
+      <div class="kpi ${s.saldo < 0 ? 'is-bad' : ''}"><span>Saldo da semana</span><strong>${brl(s.saldo)}</strong><small>recebido − despesas</small></div>
+    </div>
+    <div class="kpis kpis-4" style="margin-bottom:18px">
+      <div class="kpi"><span>Pedidos fechados</span><strong>${s.peds.length}</strong><small>ticket médio ${brl(s.ticket)}</small></div>
+      <div class="kpi"><span>Orçamentos feitos</span><strong>${s.orcs}</strong><small>${s.aprovados} aprovado(s) · ${s.recusados} recusado(s)</small></div>
+      <div class="kpi ${s.conversao !== null && s.conversao < .3 ? 'is-warn' : ''}"><span>Conversão de orçamentos</span><strong>${s.conversao === null ? '—' : (s.conversao * 100).toFixed(0) + '%'}</strong><small>orçamentos que viraram pedido</small></div>
+      <div class="kpi"><span>Pedidos feitos</span><strong>${s.feitos}</strong><small>concluídos nesta semana</small></div>
+    </div>
+    <div class="grid-2">
+      <div class="box">
+        <h4>Dia a dia</h4>
+        <div class="table-wrap" style="margin:0;padding:0"><table class="table">
+          <thead><tr><th>Dia</th><th class="num">Pedidos</th><th class="num">Vendido</th><th class="num">Recebido</th><th class="num">Despesas</th><th>Caixa</th></tr></thead>
+          <tbody>${linhas.map(l => `<tr class="clicavel" title="Abrir fechamento do dia" onclick="abrirFechamento('${l.d}')">
+            <td class="strong">${diaSemana(l.d)} <span class="muted">${fmtData(l.d).slice(0, 5)}</span></td>
+            <td class="num">${l.n || '<span class="muted">—</span>'}</td>
+            <td class="num">${l.vendido ? brl(l.vendido) : '<span class="muted">—</span>'}</td>
+            <td class="num">${l.recebido ? brl(l.recebido) : '<span class="muted">—</span>'}</td>
+            <td class="num">${l.despesas ? brl(l.despesas) : '<span class="muted">—</span>'}</td>
+            <td>${l.fechado ? '<span class="badge good">✓ Fechado</span>' : l.futuro ? '' : (l.n || l.recebido) ? '<span class="badge warn">Aberto</span>' : '<span class="muted small">sem movimento</span>'}</td>
+          </tr>`).join('')}</tbody>
+          <tfoot><tr><td>Total</td><td class="num">${s.peds.length}</td><td class="num">${brl(s.vendido)}</td><td class="num">${brl(s.recebido)}</td><td class="num">${brl(s.despesas)}</td><td></td></tr></tfoot>
+        </table></div>
+      </div>
+      <div class="box">
+        <h4>Mais vendidos da semana</h4>
+        ${s.top.length ? s.top.map((p, i) => `<div class="line"><span>${i + 1}. ${esc(p.nome)}<span class="sub-line">${fmtQtd(p.qtd)} vendido(s)</span></span><span>${brl(p.valor)}</span></div>`).join('')
+          : '<div class="muted">Nenhuma venda nesta semana.</div>'}
+      </div>
+    </div>`;
+
+  const semanas = [...Array(8)].map((_, i) => resumoSemana(addDias(atualSemana, -7 * i)));
+  $('#tabela-semanas').innerHTML = `<thead><tr><th>Semana</th><th class="num">Pedidos</th><th class="num">Vendido</th><th class="num">Recebido</th><th class="num">Saldo</th><th class="num">Orçamentos</th><th class="num">Conversão</th><th class="num">Feitos</th></tr></thead>
+    <tbody>${semanas.map(w => `<tr class="clicavel${w.ini === ini ? ' atual' : ''}" onclick="semanaInicio='${w.ini}';renderSemanal();window.scrollTo(0,0)">
+      <td class="strong nowrap">${fmtSemana(w.ini)}${w.ini === atualSemana ? ' <span class="badge info">atual</span>' : ''}</td>
+      <td class="num">${w.peds.length}</td><td class="num">${brl(w.vendido)}</td><td class="num">${brl(w.recebido)}</td><td class="num">${brl(w.saldo)}</td>
+      <td class="num">${w.orcs}</td><td class="num">${w.conversao === null ? '—' : (w.conversao * 100).toFixed(0) + '%'}</td><td class="num">${w.feitos}</td></tr>`).join('')}</tbody>`;
+}
+function abrirFechamento(data) {
+  $('#fech-data').value = data;
+  irPara('fechamento');
+}
+
 /* ---------------------------- FECHAMENTO ---------------------------- */
 
 function renderFechamento() {
@@ -1092,8 +1323,8 @@ function exportCSV(tipo) {
   const q = v => `"${String(v ?? '').replace(/"/g, '""')}"`;
   const n = v => (v || 0).toFixed(2).replace('.', ',');
   if (tipo === 'vendas') {
-    linhas.push(['Nº', 'Data', 'Cliente', 'Canal', 'Itens', 'Desconto', 'Total', 'Pago', 'Saldo', 'Produção', 'Entrega'].map(q).join(';'));
-    db.vendas.slice().sort((a, b) => a.numero - b.numero).forEach(v => linhas.push([v.numero, fmtData(v.data), nomeCliente(v), v.canal, resumoItens(v), n(v.desconto), n(v.total), n(totalPago(v)), n(saldoVenda(v)), v.status, fmtData(v.entrega)].map(q).join(';')));
+    linhas.push(['Nº', 'Tipo', 'Data', 'Cliente', 'Canal', 'Itens', 'Desconto', 'Total', 'Pago', 'Saldo', 'Produção', 'Entrega'].map(q).join(';'));
+    db.vendas.slice().sort((a, b) => a.numero - b.numero).forEach(v => linhas.push([v.numero, { orcamento: 'Orçamento', recusado: 'Orçamento recusado', andamento: 'Em andamento', feito: 'Feito' }[situacao(v)], fmtData(v.data), nomeCliente(v), v.canal, resumoItens(v), n(v.desconto), n(v.total), n(totalPago(v)), n(saldoVenda(v)), v.status, fmtData(v.entrega)].map(q).join(';')));
   } else {
     linhas.push(['Nome', 'Tipo', 'CPF/CNPJ', 'WhatsApp', 'E-mail', 'Endereço', 'Origem', 'Pedidos', 'Total comprado', 'Última compra', 'Obs'].map(q).join(';'));
     db.clientes.forEach(c => { const s = statsCliente(c.id); linhas.push([c.nome, c.tipo, c.doc, c.whatsapp, c.email, c.endereco, c.origem, s.qtd, n(s.total), fmtData(s.ultima), c.obs].map(q).join(';')); });
@@ -1114,9 +1345,9 @@ function carregarExemplos() {
   db = dbVazio(); db.config = cfg;
   const est = (nome, categoria, unidade, qtd, minimo, custo, fornecedor) => { const i = { id: uid(), nome, categoria, unidade, qtd, minimo, custo, fornecedor }; db.estoque.push(i); return i; };
   const papel = est('Papel couchê 300g SRA3', 'Papéis', 'folha', 420, 200, 0.85, 'Distribuidora Papel Bom');
-  const lona = est('Lona 440g fosca (rolo 1,40m)', 'Lonas e vinis', 'm²', 18, 25, 9.5, 'Lonas Sul');
+  const lona = est('Lona 440g fosca (rolo 1,40m)', 'Lonas e vinis', 'm²', 26, 25, 9.5, 'Lonas Sul');
   const vinil = est('Vinil adesivo branco brilho', 'Lonas e vinis', 'm²', 32, 15, 7.2, 'Lonas Sul');
-  const caneca = est('Caneca branca cerâmica 325ml', 'Blanks (canecas, camisetas…)', 'un', 18, 12, 6.9, 'Sublima Mais');
+  const caneca = est('Caneca branca cerâmica 325ml', 'Blanks (canecas, camisetas…)', 'un', 24, 12, 6.9, 'Sublima Mais');
   const camiseta = est('Camiseta poliéster branca M', 'Blanks (canecas, camisetas…)', 'un', 23, 10, 14.5, 'Sublima Mais');
   est('Toner preto', 'Tintas e toners', 'un', 2, 1, 189, 'Office Supri');
 
@@ -1136,23 +1367,43 @@ function carregarExemplos() {
   const c3 = cli('Studio Bella Estética', 'PJ', '98.765.432/0001-10', '(11) 96666-3333', 'WhatsApp');
   const c4 = cli('Carlos Mendes', 'PF', '', '(11) 95555-4444', 'Indicação');
 
-  const st = db.config.statusProducao;
-  const venda = (diasAtras, c, canal, itens, pagos, status, entregaDias) => {
+  const st = db.config.statusProducao, FEITO = st[st.length - 1];
+  // [diasAtrás, cliente, canal, itens, pagamentos[[fração, forma, diasAtrásDoPagamento?]], etapa, prazoDias, extra]
+  const venda = (diasAtras, c, canal, itens, pagos, status, entregaDias, extra = {}) => {
     const data = addDias(hoje(), -diasAtras);
     const total = r2(itens.reduce((s, [p, q]) => s + p.preco * q, 0));
-    const v = { id: uid(), numero: db.seq.venda++, criadoEm: new Date().toISOString(), clienteId: c?.id || null, clienteNome: c?.nome || '', canal, data,
+    const v = { id: uid(), numero: db.seq.venda++, criadoEm: new Date().toISOString(), tipo: 'pedido', clienteId: c?.id || null, clienteNome: c?.nome || '', canal, data,
       entrega: entregaDias != null ? addDias(data, entregaDias) : '', status, itens: itens.map(([p, q]) => ({ produtoId: p.id, descricao: p.nome, qtd: q, preco: p.preco })),
-      desconto: 0, total, pagamentos: pagos.map(([frac, forma, d]) => ({ id: uid(), data: d != null ? addDias(hoje(), -d) : data, forma, valor: r2(total * frac) })), obs: '' };
+      desconto: 0, total, pagamentos: pagos.map(([frac, forma, d]) => ({ id: uid(), data: d != null ? addDias(hoje(), -d) : data, forma, valor: r2(total * frac) })), obs: '', ...extra };
+    if (v.status === FEITO) v.feitoEm = v.entrega && v.entrega < hoje() ? v.entrega : data;
     db.vendas.push(v); baixarEstoqueVenda(v);
+    return v;
   };
-  venda(6, c1, 'Loja física', [[flyer, 2]], [[1, 'Pix']], st[st.length - 1], 4);
-  venda(5, c2, 'Instagram', [[canecaP, 6], [arte, 1]], [[1, 'Cartão de crédito']], st[st.length - 1], 2);
-  venda(4, null, 'Loja física', [[adesivo, 1.5]], [[1, 'Dinheiro']], st[st.length - 1], 0);
+  const orcamento = (diasAtras, c, canal, itens, extra = {}) => venda(diasAtras, c, canal, itens, [], st[0], null,
+    { tipo: 'orcamento', validade: addDias(hoje(), 7 - diasAtras), ...extra });
+  // semanas anteriores
+  venda(20, c3, 'WhatsApp', [[cartao, 1]], [[1, 'Pix']], FEITO, 3);
+  venda(18, c1, 'Loja física', [[flyer, 2]], [[1, 'Pix']], FEITO, 4);
+  orcamento(17, c4, 'Indicação', [[banner, 4]], { recusado: true });
+  venda(15, null, 'Loja física', [[adesivo, 2]], [[1, 'Dinheiro']], FEITO, 1);
+  venda(13, c2, 'Instagram', [[canecaP, 4]], [[1, 'Pix']], FEITO, 2, { dataOrcamento: addDias(hoje(), -14) });
+  venda(11, c3, 'WhatsApp', [[banner, 2], [arte, 1]], [[1, 'Cartão de crédito']], FEITO, 2);
+  orcamento(10, c1, 'WhatsApp', [[cartao, 2]], { recusado: true });
+  venda(9, null, 'Loja física', [[cartao, 0.5]], [[1, 'Cartão de débito']], FEITO, 3);
+  // esta semana / últimos dias
+  venda(6, c1, 'Loja física', [[flyer, 2]], [[1, 'Pix']], FEITO, 4);
+  venda(5, c2, 'Instagram', [[canecaP, 6], [arte, 1]], [[1, 'Cartão de crédito']], FEITO, 2, { dataOrcamento: addDias(hoje(), -6) });
+  venda(4, null, 'Loja física', [[adesivo, 1.5]], [[1, 'Dinheiro']], FEITO, 0);
   venda(3, c3, 'WhatsApp', [[cartao, 1], [banner, 2]], [[0.5, 'Pix'], [0.5, 'Pix', 0]], st[2], 3);
-  venda(2, c4, 'Indicação', [[camisetaP, 12]], [[0.5, 'Pix']], st[2], 5);
+  venda(2, c4, 'Indicação', [[camisetaP, 12]], [[0.5, 'Pix']], st[2], 5, { dataOrcamento: addDias(hoje(), -3) });
   venda(1, c1, 'WhatsApp', [[banner, 3]], [], st[1], 2);
   venda(0, c2, 'Loja física', [[canecaP, 2]], [[1, 'Dinheiro']], st[0], 2);
   venda(0, null, 'Loja física', [[cartao, 0.5]], [[1, 'Cartão de débito']], st[0], 3);
+  orcamento(2, c3, 'WhatsApp', [[adesivo, 3], [arte, 1]]);
+  orcamento(1, null, 'Instagram', [[camisetaP, 30]], { clienteNome: 'Igreja Nova Vida' });
+  orcamento(0, c4, 'WhatsApp', [[flyer, 5]]);
+  db.caixa.push({ id: uid(), data: addDias(hoje(), -8), tipo: 'despesa', valor: 380, forma: 'Pix', descricao: 'Compra de lona' });
+  db.caixa.push({ id: uid(), data: addDias(hoje(), -3), tipo: 'despesa', valor: 120, forma: 'Pix', descricao: 'Conta de internet' });
   db.caixa.push({ id: uid(), data: hoje(), tipo: 'despesa', valor: 25, forma: 'Dinheiro', descricao: 'Motoboy entrega' });
   salvar(); irPara('inicio'); toast('Dados de exemplo carregados');
 }
