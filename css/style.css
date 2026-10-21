@@ -382,6 +382,8 @@ header.scrolled { box-shadow: 0 2px 20px rgba(74,52,36,0.1); }
 
 /* ===== HERO SLIDER ===== */
 .hero-slider-wrap {
+  /* Banners ocultos temporariamente — remover 'display:none' quando as novas imagens forem adicionadas */
+  display: none;
   background: var(--cream-light);
   padding: 24px 48px 20px;
 }
