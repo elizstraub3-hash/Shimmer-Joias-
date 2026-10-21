@@ -403,6 +403,7 @@ header.scrolled { box-shadow: 0 2px 20px rgba(74,52,36,0.1); }
   opacity: 1;
   pointer-events: auto;
 }
+.hero-slide picture { display: block; width: 100%; height: 100%; }
 .hero-slide img {
   width: 100%;
   height: 100%;
