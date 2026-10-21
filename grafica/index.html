@@ -205,6 +205,10 @@
           <form id="form-config" class="form">
             <label>Nome da gráfica<input name="nome" required /></label>
             <label>Telefone / WhatsApp<input name="telefone" /></label>
+            <div class="row">
+              <label>CNPJ<input name="cnpj" placeholder="00.000.000/0000-00" inputmode="numeric" /></label>
+              <label>Chave Pix (vai nas cobranças)<input name="chavePix" placeholder="CNPJ, e-mail, telefone ou aleatória" /></label>
+            </div>
             <label>Endereço<input name="endereco" /></label>
             <label>Fundo de caixa padrão (troco inicial)<input name="fundoCaixa" type="number" step="0.01" min="0" /></label>
             <label>Status de produção (um por linha)<textarea name="statusProducao" rows="5"></textarea></label>

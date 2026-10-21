@@ -16,7 +16,7 @@ const STATUS_PADRAO = ['Aguardando arte', 'Arte em aprovação', 'Em produção'
 function dbVazio() {
   return {
     versao: 1,
-    config: { nome: 'Minha Gráfica', telefone: '', endereco: '', fundoCaixa: 100, statusProducao: STATUS_PADRAO.slice() },
+    config: { nome: 'Minha Gráfica', telefone: '', endereco: '', cnpj: '', chavePix: '', fundoCaixa: 100, statusProducao: STATUS_PADRAO.slice() },
     clientes: [], produtos: [], estoque: [], movimentos: [], vendas: [], caixa: [], fechamentos: [],
     seq: { venda: 1 },
     ultimoBackup: null,
@@ -99,6 +99,7 @@ const ICON = {
   out: '<svg viewBox="0 0 24 24"><path d="M5 12h14"/></svg>',
   hist: '<svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>',
   wa: '<svg viewBox="0 0 24 24"><path d="M21 12a9 9 0 01-13.5 7.8L3 21l1.2-4.4A9 9 0 1121 12z"/></svg>',
+  boleto: '<svg viewBox="0 0 24 24"><path d="M3 5v14M6 5v14M9 5v14M13 5v14M15 5v14M18 5v14M21 5v14"/></svg>',
 };
 
 /* ------------------------- REGRAS DE NEGÓCIO ------------------------- */
@@ -203,6 +204,7 @@ function renderInicio() {
   const abertas = pedidos().filter(v => saldoVenda(v) > 0.009);
   const orcAbertos = db.vendas.filter(v => situacao(v) === 'orcamento');
   const aReceber = r2(abertas.reduce((s, v) => s + saldoVenda(v), 0));
+  const boletosVencidos = abertas.flatMap(boletosAbertos).filter(b => statusBoleto(b) === 'vencido').length;
   const fim = statusFinal();
   const emAndamento = pedidos().filter(v => v.status !== fim);
   const baixos = db.estoque.filter(i => nivelEstoque(i) !== 'ok');
@@ -210,7 +212,7 @@ function renderInicio() {
   $('#kpis').innerHTML = `
     <div class="kpi"><span>Vendido hoje</span><strong>${brl(r.faturado)}</strong><small>${r.qtdVendas} venda(s) · ticket ${brl(r.ticket)}</small></div>
     <div class="kpi"><span>Recebido hoje</span><strong>${brl(r.recebido)}</strong><small>entrou no caixa</small></div>
-    <div class="kpi ${aReceber > 0 ? 'is-warn' : ''}"><span>A receber</span><strong>${brl(aReceber)}</strong><small>${abertas.length} pedido(s) em aberto</small></div>
+    <div class="kpi ${aReceber > 0 ? 'is-warn' : ''}"><span>A receber</span><strong>${brl(aReceber)}</strong><small>${abertas.length} pedido(s) em aberto${boletosVencidos ? ` · <b style="color:var(--bad)">${boletosVencidos} boleto(s) vencido(s)</b>` : ''}</small></div>
     <div class="kpi clicavel" onclick="abrirAba('andamento')" title="Ver pedidos em andamento"><span>Pedidos em andamento</span><strong>${emAndamento.length}</strong><small>${orcAbertos.length} orçamento(s) aguardando resposta</small></div>
     <div class="kpi ${baixos.length ? 'is-bad' : ''}"><span>Estoque baixo</span><strong>${baixos.length}</strong><small>item(ns) para repor</small></div>`;
 
@@ -229,10 +231,14 @@ function renderInicio() {
      <span class="badge ${nivelEstoque(i) === 'zerado' ? 'bad' : 'warn'}">${fmtQtd(i.qtd)} ${esc(i.unidade)}</span></div>`).join('')}</div>`
     : `<div class="empty">Estoque em dia</div>`;
 
-  const rec = abertas.slice().sort((a, b) => a.data.localeCompare(b.data)).slice(0, 6);
+  // boletos vencidos e que vencem hoje primeiro
+  const prioridade = v => { const s = boletosAbertos(v).map(statusBoleto); return s.includes('vencido') ? 0 : s.includes('hoje') ? 1 : s.length ? 2 : 3; };
+  const rec = abertas.slice().sort((a, b) => prioridade(a) - prioridade(b) || a.data.localeCompare(b.data)).slice(0, 6);
   $('#lista-receber').innerHTML = rec.length ? `<div class="mini-list">${rec.map(v =>
-    `<div class="mi"><div><b>nº ${v.numero} · ${esc(nomeCliente(v))}</b><small>venda em ${fmtData(v.data)} · pago ${brl(totalPago(v))} de ${brl(v.total)}</small></div>
-     <button class="btn btn-ghost btn-sm" onclick="abrirPagamento('${v.id}')">Receber ${brl(saldoVenda(v))}</button></div>`).join('')}</div>`
+    `<div class="mi"><div><b>nº ${v.numero} · ${esc(nomeCliente(v))}</b><small>venda em ${fmtData(v.data)} · pago ${brl(totalPago(v))} de ${brl(v.total)}</small>
+       ${boletosAbertos(v).map(b => badgeBoleto(b, v.id)).join(' ')}</div>
+     <div class="actions"><button class="icon-btn" title="Cobrar no WhatsApp" onclick="cobrarWhats('${v.id}')">${ICON.wa}</button>
+     <button class="btn btn-ghost btn-sm" onclick="abrirPagamento('${v.id}')">Receber ${brl(saldoVenda(v))}</button></div></div>`).join('')}</div>`
     : `<div class="empty">Nada a receber</div>`;
 
   if (!db.vendas.length && !db.produtos.length && !db.clientes.length) {
@@ -337,7 +343,9 @@ function renderVendas() {
       situacaoHtml = `<button class="badge ${cls}" title="Clique para avançar a etapa" onclick="avancarStatus('${v.id}')">${sit === 'feito' ? '✓ ' : ''}${esc(v.status)} ›</button>
         ${sit === 'feito' && v.feitoEm ? `<span class="sub-line">feito em ${fmtData(v.feitoEm)}</span>` : ''}${atrasado ? '<span class="sub-line" style="color:var(--bad)">entrega atrasada</span>' : ''}`;
       if (sit === 'andamento') acoes = `<button class="icon-btn" title="Marcar como feito" onclick="concluirPedido('${v.id}')">✓</button>`;
-      if (saldo > 0.009) acoes += `<button class="icon-btn" title="Registrar pagamento" onclick="abrirPagamento('${v.id}')">${ICON.pay}</button>`;
+      if (saldo > 0.009) acoes += `<button class="icon-btn" title="Registrar pagamento" onclick="abrirPagamento('${v.id}')">${ICON.pay}</button>
+        <button class="icon-btn" title="Boleto" onclick="abrirBoletos('${v.id}')">${ICON.boleto}</button>
+        <button class="icon-btn" title="Cobrar no WhatsApp" onclick="cobrarWhats('${v.id}')">${ICON.wa}</button>`;
     }
     return `<tr>
       <td class="strong">${v.numero}</td>
@@ -345,7 +353,7 @@ function renderVendas() {
       <td>${esc(nomeCliente(v))}<span class="sub-line">${esc(v.canal)}</span></td>
       <td style="max-width:260px">${esc(resumoItens(v))}</td>
       <td class="num strong">${brl(v.total)}</td>
-      <td class="num">${ehOrc(v) ? '<span class="muted">—</span>' : saldo > 0.009 ? `<span class="badge bad">${brl(saldo)}</span>` : '<span class="badge good">Pago</span>'}</td>
+      <td class="num">${ehOrc(v) ? '<span class="muted">—</span>' : saldo > 0.009 ? `<span class="badge bad">${brl(saldo)}</span>` : '<span class="badge good">Pago</span>'}${boletosAbertos(v).map(b => `<br>${badgeBoleto(b, v.id)}`).join('')}</td>
       <td>${situacaoHtml}</td>
       <td><div class="actions">
         ${acoes}
@@ -647,7 +655,7 @@ function imprimirPedido(id) {
   .r{text-align:right}.head{display:flex;justify-content:space-between;border-bottom:2px solid #111;padding-bottom:10px;margin-bottom:12px}
   .tot td{font-weight:700;font-size:15px;border:0}.box{border:1px solid #ddd;border-radius:6px;padding:10px;margin-top:10px}
   .ass{margin-top:50px;display:flex;gap:40px}.ass div{flex:1;border-top:1px solid #111;text-align:center;padding-top:4px}</style></head><body>
-  <div class="head"><div><h1>${esc(cfg.nome)}</h1><div>${esc(cfg.telefone)}</div><div>${esc(cfg.endereco)}</div></div>
+  <div class="head"><div><h1>${esc(cfg.nome)}</h1>${cfg.cnpj ? `<div>CNPJ ${esc(cfg.cnpj)}</div>` : ''}<div>${esc(cfg.telefone)}</div><div>${esc(cfg.endereco)}</div></div>
   <div style="text-align:right"><h1>${nomeDoc} Nº ${v.numero}</h1><div>Data: ${fmtData(v.data)}</div>${orc && v.validade ? `<div>Válido até: <b>${fmtData(v.validade)}</b></div>` : ''}${!orc && v.entrega ? `<div>Entrega: <b>${fmtData(v.entrega)}</b></div>` : ''}</div></div>
   <div><b>Cliente:</b> ${esc(nomeCliente(v))}${c?.doc ? ` · ${esc(c.doc)}` : ''}${c?.whatsapp ? ` · ${esc(c.whatsapp)}` : ''}</div>
   <table><thead><tr><th>Descrição</th><th class="r">Qtd</th><th class="r">Unit.</th><th class="r">Subtotal</th></tr></thead><tbody>
@@ -658,9 +666,130 @@ function imprimirPedido(id) {
   <tr><td colspan="3" class="r"><b>Falta pagar</b></td><td class="r"><b>${brl(Math.max(0, saldoVenda(v)))}</b></td></tr>`}</tbody></table>
   ${v.obs ? `<div class="box"><b>Observações:</b> ${esc(v.obs)}</div>` : ''}
   ${orc ? `<div class="box">Prazo de produção a partir da aprovação da arte e do pagamento do sinal.${v.validade ? ` Valores válidos até ${fmtData(v.validade)}.` : ''}</div>` : ''}
+  ${!orc && saldoVenda(v) > 0.009 && cfg.chavePix ? `<div class="box"><b>Pagamento por Pix:</b> chave ${esc(cfg.chavePix)}</div>` : ''}
   <div class="ass"><div>${esc(cfg.nome)}</div><div>${orc ? 'De acordo — cliente' : 'Cliente'}</div></div>
   <script>window.onload=()=>window.print()<\/script></body></html>`);
   w.document.close();
+}
+
+/* ------------------------- BOLETOS E COBRANÇA ------------------------- */
+// O boleto é emitido no app do banco; aqui fica registrado para controlar
+// vencimento, cobrança e baixa.
+
+const boletosAbertos = v => (v.boletos || []).filter(b => !b.pago);
+function statusBoleto(b) {
+  if (b.pago) return 'pago';
+  const h = hoje();
+  return b.vencimento < h ? 'vencido' : b.vencimento === h ? 'hoje' : 'aberto';
+}
+function badgeBoleto(b, vendaId) {
+  const s = statusBoleto(b);
+  const cls = { vencido: 'bad', hoje: 'warn', aberto: 'info', pago: 'good' }[s];
+  const txt = { vencido: `Boleto vencido ${fmtData(b.vencimento).slice(0, 5)}`, hoje: 'Boleto vence hoje', aberto: `Boleto vence ${fmtData(b.vencimento).slice(0, 5)}`, pago: 'Boleto pago' }[s];
+  return `<button class="badge ${cls}" title="Ver boleto" onclick="abrirBoletos('${vendaId}')">${txt}</button>`;
+}
+
+function abrirBoletos(id) {
+  const v = db.vendas.find(x => x.id === id);
+  v.boletos = v.boletos || [];
+  const saldo = saldoVenda(v);
+  const emAberto = r2(boletosAbertos(v).reduce((s, b) => s + num(b.valor), 0));
+  const sugerido = Math.max(0, r2(saldo - emAberto));
+  abrirModal(`Boletos — pedido nº ${v.numero}`, `
+    <div class="totais" style="margin-bottom:14px">
+      <div><span>Cliente</span><span>${esc(nomeCliente(v))}</span></div>
+      <div><span>Falta receber</span><span>${brl(saldo)}</span></div>
+      <div><span>Em boletos abertos</span><span>${brl(emAberto)}</span></div>
+    </div>
+    ${v.boletos.length ? `<div class="mini-list" style="margin-bottom:16px">${v.boletos.map(b => `
+      <div class="mi"><div>
+        <b>${brl(num(b.valor))} · vence ${fmtData(b.vencimento)}</b>
+        <small>${b.pago ? `pago em ${fmtData(b.pagoEm)}` : esc(b.banco || '')}${b.codigo ? ` · <span class="nowrap">${esc(b.codigo.length > 40 ? b.codigo.slice(0, 40) + '…' : b.codigo)}</span>` : ''}</small>
+      </div><div class="actions">
+        ${badgeBoleto(b, v.id).replace(/onclick="[^"]*"/, '')}
+        ${b.pago ? '' : `
+          <button class="btn btn-primary btn-sm" onclick="boletoPago('${v.id}','${b.id}')">Pago</button>
+          <button class="icon-btn" title="Cobrar no WhatsApp" onclick="cobrarWhats('${v.id}','${b.id}')">${ICON.wa}</button>
+          ${b.codigo ? `<button class="icon-btn" title="Copiar link / linha digitável" onclick="copiarCodigo('${v.id}','${b.id}')">⧉</button>` : ''}`}
+        <button class="icon-btn" title="Excluir registro" onclick="excluirBoleto('${v.id}','${b.id}')">${ICON.del}</button>
+      </div></div>`).join('')}</div>` : ''}
+    ${saldo > 0.009 ? `
+    <form id="form-boleto" class="form">
+      <h3 style="font-size:14px">Registrar boleto emitido</h3>
+      <p class="hint" style="margin:0">Emita o boleto no app do seu banco e cole aqui o link ou a linha digitável. O painel avisa no vencimento e monta a mensagem de cobrança.</p>
+      <div class="row">
+        <label>Valor (R$)<input name="valor" type="number" step="0.01" min="0.01" value="${(sugerido || saldo).toFixed(2)}" required /></label>
+        <label>Vencimento<input name="vencimento" type="date" value="${addDias(hoje(), 3)}" required /></label>
+        <label>Banco / conta<input name="banco" value="${esc(db.config.bancoBoleto || '')}" placeholder="Ex.: Inter, Cora, Asaas" /></label>
+      </div>
+      <label>Link do boleto ou linha digitável<textarea name="codigo" rows="2" placeholder="Cole aqui o link ou o código de barras"></textarea></label>
+      <label class="check"><input type="checkbox" name="enviar" checked /> Abrir o WhatsApp para enviar ao cliente</label>
+      <div class="form-actions">
+        <button type="button" class="btn btn-ghost" onclick="fecharModal()">Fechar</button>
+        <button class="btn btn-primary" type="submit">Salvar boleto</button>
+      </div>
+    </form>` : '<div class="form-actions"><button class="btn btn-ghost" onclick="fecharModal()">Fechar</button></div>'}`, true);
+  const f = $('#form-boleto');
+  if (f) f.addEventListener('submit', e => {
+    e.preventDefault();
+    const b = { id: uid(), valor: num(f.valor.value), vencimento: f.vencimento.value, banco: f.banco.value.trim(), codigo: f.codigo.value.trim(), criadoEm: hoje(), pago: false };
+    v.boletos.push(b);
+    if (b.banco) db.config.bancoBoleto = b.banco;
+    salvar(); render();
+    if (f.enviar.checked) cobrarWhats(v.id, b.id);
+    abrirBoletos(v.id);
+    toast('Boleto registrado');
+  });
+}
+function boletoPago(vid, bid) {
+  const v = db.vendas.find(x => x.id === vid);
+  const b = v.boletos.find(x => x.id === bid);
+  const data = prompt('Data do pagamento (dd/mm/aaaa):', fmtData(hoje()));
+  if (data === null) return;
+  const m = data.trim().match(/^(\d{1,2})\/(\d{1,2})\/(\d{4})$/);
+  const iso = m ? `${m[3]}-${m[2].padStart(2, '0')}-${m[1].padStart(2, '0')}` : hoje();
+  b.pago = true; b.pagoEm = iso;
+  v.pagamentos.push({ id: uid(), data: iso, forma: 'Boleto', valor: num(b.valor), boletoId: b.id });
+  salvar(); render(); abrirBoletos(vid);
+  toast(`Boleto de ${brl(num(b.valor))} baixado como pago`);
+}
+function excluirBoleto(vid, bid) {
+  const v = db.vendas.find(x => x.id === vid);
+  const b = v.boletos.find(x => x.id === bid);
+  if (!confirm(b.pago ? 'Excluir este boleto? O pagamento lançado por ele também será removido.' : 'Excluir o registro deste boleto? (Lembre de cancelar no banco também.)')) return;
+  v.pagamentos = v.pagamentos.filter(p => p.boletoId !== bid);
+  v.boletos = v.boletos.filter(x => x.id !== bid);
+  salvar(); render(); abrirBoletos(vid);
+}
+function copiarCodigo(vid, bid) {
+  const b = db.vendas.find(x => x.id === vid).boletos.find(x => x.id === bid);
+  navigator.clipboard?.writeText(b.codigo).then(() => toast('Copiado!'), () => prompt('Copie o código:', b.codigo));
+}
+
+function mensagemCobranca(v, b) {
+  const cfg = db.config;
+  const c = getCliente(v.clienteId);
+  const nome = c?.tipo === 'PJ' ? c.nome : (nomeCliente(v) || '').split(' ')[0]; // empresa: nome completo
+  const ola = nome && nome !== 'Balcão' ? `Olá, ${nome}! Tudo bem?` : 'Olá! Tudo bem?';
+  const de = `Aqui é da ${cfg.nome || 'gráfica'}.`;
+  const pix = cfg.chavePix ? `\n\nSe preferir, pode pagar por Pix — chave: ${cfg.chavePix}` : '';
+  if (b) {
+    const s = statusBoleto(b);
+    const corpo = s === 'vencido'
+      ? `Passando para lembrar que o boleto do pedido nº ${v.numero}, no valor de ${brl(num(b.valor))}, venceu em ${fmtData(b.vencimento)}.`
+      : s === 'hoje'
+        ? `Passando para lembrar que o boleto do pedido nº ${v.numero}, no valor de ${brl(num(b.valor))}, vence hoje.`
+        : `Segue o boleto do pedido nº ${v.numero}, no valor de ${brl(num(b.valor))}, com vencimento em ${fmtData(b.vencimento)}.`;
+    return `${ola} ${de}\n\n${corpo}${b.codigo ? `\n\n${b.codigo}` : ''}${pix}${s === 'vencido' ? '\n\nSe já pagou, por favor desconsidere esta mensagem. Obrigada!' : '\n\nQualquer dúvida, estou à disposição. Obrigada!'}`;
+  }
+  return `${ola} ${de}\n\nO pedido nº ${v.numero} (${resumoItens(v)}) está com saldo de ${brl(saldoVenda(v))} em aberto.${cfg.chavePix ? `\n\nPode pagar por Pix — chave: ${cfg.chavePix}` : '\n\nMe avisa a melhor forma de pagamento pra você?'}\n\nObrigada!`;
+}
+function cobrarWhats(vid, bid) {
+  const v = db.vendas.find(x => x.id === vid);
+  const b = bid ? (v.boletos || []).find(x => x.id === bid) : boletosAbertos(v)[0];
+  const tel = linkWhats(getCliente(v.clienteId)?.whatsapp);
+  const texto = encodeURIComponent(mensagemCobranca(v, b));
+  window.open(tel ? `${tel}?text=${texto}` : `https://wa.me/?text=${texto}`, '_blank', 'noopener');
 }
 
 /* ----------------------------- CLIENTES ----------------------------- */
@@ -1262,6 +1391,8 @@ function renderConfig() {
   f.nome.value = db.config.nome || '';
   f.telefone.value = db.config.telefone || '';
   f.endereco.value = db.config.endereco || '';
+  f.cnpj.value = db.config.cnpj || '';
+  f.chavePix.value = db.config.chavePix || '';
   f.fundoCaixa.value = db.config.fundoCaixa ?? '';
   f.statusProducao.value = db.config.statusProducao.join('\n');
 }
@@ -1271,7 +1402,7 @@ function salvarConfig(e) {
   const status = f.statusProducao.value.split('\n').map(s => s.trim()).filter(Boolean);
   if (status.length < 2) return alert('Informe pelo menos 2 etapas de produção.');
   const antigos = db.config.statusProducao;
-  Object.assign(db.config, { nome: f.nome.value.trim(), telefone: f.telefone.value.trim(), endereco: f.endereco.value.trim(), fundoCaixa: num(f.fundoCaixa.value), statusProducao: status });
+  Object.assign(db.config, { nome: f.nome.value.trim(), telefone: f.telefone.value.trim(), endereco: f.endereco.value.trim(), cnpj: f.cnpj.value.trim(), chavePix: f.chavePix.value.trim(), fundoCaixa: num(f.fundoCaixa.value), statusProducao: status });
   db.vendas.forEach(v => { if (!status.includes(v.status)) v.status = antigos.indexOf(v.status) === antigos.length - 1 ? status[status.length - 1] : status[0]; });
   salvar(); render(); toast('Configurações salvas');
 }
@@ -1395,8 +1526,10 @@ function carregarExemplos() {
   venda(5, c2, 'Instagram', [[canecaP, 6], [arte, 1]], [[1, 'Cartão de crédito']], FEITO, 2, { dataOrcamento: addDias(hoje(), -6) });
   venda(4, null, 'Loja física', [[adesivo, 1.5]], [[1, 'Dinheiro']], FEITO, 0);
   venda(3, c3, 'WhatsApp', [[cartao, 1], [banner, 2]], [[0.5, 'Pix'], [0.5, 'Pix', 0]], st[2], 3);
-  venda(2, c4, 'Indicação', [[camisetaP, 12]], [[0.5, 'Pix']], st[2], 5, { dataOrcamento: addDias(hoje(), -3) });
-  venda(1, c1, 'WhatsApp', [[banner, 3]], [], st[1], 2);
+  venda(2, c4, 'Indicação', [[camisetaP, 12]], [[0.5, 'Pix']], st[2], 5, { dataOrcamento: addDias(hoje(), -3),
+    boletos: [{ id: uid(), valor: 270, vencimento: addDias(hoje(), 3), banco: 'Inter', codigo: '', criadoEm: addDias(hoje(), -2), pago: false }] });
+  venda(1, c1, 'WhatsApp', [[banner, 3]], [], st[1], 2, {
+    boletos: [{ id: uid(), valor: 195, vencimento: addDias(hoje(), -1), banco: 'Inter', codigo: '', criadoEm: addDias(hoje(), -1), pago: false }] });
   venda(0, c2, 'Loja física', [[canecaP, 2]], [[1, 'Dinheiro']], st[0], 2);
   venda(0, null, 'Loja física', [[cartao, 0.5]], [[1, 'Cartão de débito']], st[0], 3);
   orcamento(2, c3, 'WhatsApp', [[adesivo, 3], [arte, 1]]);
