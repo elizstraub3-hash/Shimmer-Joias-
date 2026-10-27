@@ -120,7 +120,27 @@
   <!-- ===== HERO SLIDER ===== -->
   <section class="hero-slider-wrap">
     <div class="hero-slider" id="heroSlider">
-      <div class="hero-slide active">
+      <!-- Carro-chefe: Solitário Serena (SH-1061) -->
+      <div class="hero-slide hero-slide-serena active">
+        <div class="serena-text">
+          <p class="hero-eyebrow">O solitário mais desejado da Shimmer</p>
+          <h1 class="hero-title">Solitário <em>Serena</em></h1>
+          <p class="serena-spec">Pedra central 5mm · 12 moissanites laterais · Ouro 18k</p>
+          <div class="serena-preco">
+            <span class="serena-preco-valor">R$ 1.999,00</span>
+            <span class="serena-preco-parcela">ou 10x de R$ 199,90 sem juros</span>
+          </div>
+          <div class="hero-ctas">
+            <a href="#mais-pedidos" class="btn-gold" onclick="var c=document.querySelector('#mais-pedidos .produto-card[data-code=&quot;SH-1061&quot;]');if(c){c.click();return false;}">Quero o meu</a>
+            <a href="https://wa.me/554199441433?text=Ol%C3%A1!%20Tenho%20interesse%20no%20*Solit%C3%A1rio%20Serena*%20(SH-1061)." target="_blank" class="hero-link">Falar com uma consultora</a>
+          </div>
+        </div>
+        <div class="serena-foto">
+          <img src="images/SH-1061.jpg" alt="Solitário Serena em ouro 18k com moissanites laterais — Shimmer Joias" />
+        </div>
+      </div>
+      <!-- Banners antigos pausados (reativar junto com os dots abaixo):
+      <div class="hero-slide">
         <picture>
           <source media="(max-width: 768px)" srcset="images/hero-slide-1-mobile.jpg" />
           <img src="images/hero-slide-1.jpg" alt="Para Momentos Únicos — Shimmer Joias" />
@@ -132,11 +152,11 @@
       <div class="hero-slide">
         <img src="images/hero-slide-3.jpg" alt="Anel de Formatura de Fisioterapia — Shimmer Joias" />
       </div>
+      -->
     </div>
-    <div class="hero-dots" id="heroDots">
+    <!-- Dots ocultos enquanto houver um único banner -->
+    <div class="hero-dots" id="heroDots" hidden>
       <button class="hero-dot active" data-idx="0" aria-label="Slide 1"></button>
-      <button class="hero-dot" data-idx="1" aria-label="Slide 2"></button>
-      <button class="hero-dot" data-idx="2" aria-label="Slide 3"></button>
     </div>
   </section>
 

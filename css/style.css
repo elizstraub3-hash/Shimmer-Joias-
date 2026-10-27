@@ -382,8 +382,6 @@ header.scrolled { box-shadow: 0 2px 20px rgba(74,52,36,0.1); }
 
 /* ===== HERO SLIDER ===== */
 .hero-slider-wrap {
-  /* Banners ocultos temporariamente — remover 'display:none' quando as novas imagens forem adicionadas */
-  display: none;
   background: var(--cream-light);
   padding: 24px 48px 20px;
 }
@@ -422,6 +420,56 @@ header.scrolled { box-shadow: 0 2px 20px rgba(74,52,36,0.1); }
   padding: 60px;
   background: linear-gradient(to right, rgba(33,26,21,0.55) 0%, rgba(33,26,21,0.15) 60%, transparent 100%);
 }
+/* Banner do carro-chefe: Solitário Serena */
+.hero-slide-serena {
+  display: grid;
+  grid-template-columns: 1.15fr 0.85fr;
+  background: var(--cream);
+}
+.serena-text {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 56px 64px;
+}
+.hero-slide-serena .hero-eyebrow { color: var(--gold); margin-bottom: 16px; }
+.hero-slide-serena .hero-eyebrow::before { background: var(--gold); }
+.hero-slide-serena .hero-title { color: var(--brown-darkest); margin-bottom: 14px; }
+.hero-slide-serena .hero-title em { color: var(--gold); }
+.serena-spec {
+  font-size: 13px;
+  letter-spacing: 0.04em;
+  color: var(--brown-mid);
+  margin-bottom: 28px;
+}
+.serena-preco {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  margin-bottom: 32px;
+  padding-left: 16px;
+  border-left: 1px solid var(--gold-light);
+}
+.serena-preco-valor {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 34px;
+  font-weight: 500;
+  line-height: 1.1;
+  color: var(--brown-darkest);
+}
+.serena-preco-parcela {
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--gold-dark);
+}
+.hero-slide-serena .hero-link {
+  color: var(--brown-deep);
+  border-bottom-color: var(--gold-light);
+}
+.hero-slide-serena .hero-link:hover { color: var(--gold-dark); }
+.serena-foto { position: relative; overflow: hidden; }
+.serena-foto img { object-position: center 35%; }
+
 .hero-eyebrow {
   font-family: 'Montserrat', sans-serif;
   font-size: 10px;
@@ -1728,3 +1776,23 @@ header.scrolled { box-shadow: 0 2px 20px rgba(74,52,36,0.1); }
 .text-brown { color: var(--brown-text); }
 .uppercase { text-transform: uppercase; }
 .italic { font-style: italic; }
+
+/* Serena no mobile: foto em cima, texto embaixo (a pedra fica sempre visível) */
+.hero-dots[hidden] { display: none; }
+@media (max-width: 768px) {
+  .hero-slider:has(.hero-slide-serena) { height: auto; }
+  .hero-slide-serena { position: relative; display: flex; flex-direction: column; }
+  .serena-foto { aspect-ratio: 4 / 3; }
+  .serena-foto img { object-position: center 40%; }
+  .serena-text { padding: 24px 22px 28px; }
+  .hero-slide-serena .hero-eyebrow { font-size: 9px; letter-spacing: 0.22em; margin-bottom: 10px; }
+  .hero-slide-serena .hero-eyebrow::before { width: 20px; }
+  .hero-slide-serena .hero-title { font-size: 36px; margin-bottom: 6px; }
+  .serena-spec { font-size: 11px; margin-bottom: 18px; }
+  .serena-preco { margin-bottom: 22px; padding-left: 12px; }
+  .serena-preco-valor { font-size: 28px; }
+  .serena-preco-parcela { font-size: 11px; }
+  .hero-slide-serena .btn-gold { padding: 13px 24px; }
+  .hero-slide-serena .hero-ctas { gap: 18px; }
+  .serena-foto { order: -1; }
+}
