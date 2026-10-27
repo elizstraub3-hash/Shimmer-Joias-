@@ -4,6 +4,8 @@
 // Todas as páginas (home, categorias, busca, painel) leem daqui.
 // ====================================================================
 window.SHIMMER_PRODUTOS = [
+  // Carro-chefe da marca: manter sempre no topo da lista.
+  { code: 'SH-1061', name: 'Solitário Serena', colecao: 'Shimmer Joias', material: 'Pedra central 5mm · 12 moissanites laterais · Ouro 18k', preco: 'R$ 1.999,00', precoOld: '', badge: 'Mais Desejado', foto: 'images/SH-1061.jpg', fotos: [], categoria: 'solitarios' },
   { code: 'SH-1001', name: 'Anel Solitário', colecao: 'Shimmer Joias', material: 'Pedra central 6mm · 12 laterais 1,25mm · Moissanites', preco: 'R$ 2.260,00', precoOld: 'R$ 2.909,00', badge: '-22%', foto: 'images/SH-1001.jpg', categoria: 'aneis' },
   { code: 'SH-1005', name: 'Anel Esmeralda', colecao: 'Shimmer Joias', material: 'Esmeraldas sintéticas · 14 pedras 1,25mm · Central 4mm', preco: 'R$ 1.550,00', precoOld: '', badge: 'Novo', foto: 'images/SH-1005.jpg', fotos: ['images/SH-1005.jpg', 'images/SH-1005b.jpg'], categoria: 'aneis' },
   { code: 'SH-1006', name: 'Anel Topo Redondo', colecao: 'Shimmer Joias', material: '14 moissanites 1,25mm · Central 5,5mm', preco: 'R$ 1.999,00', precoOld: '', badge: '', foto: 'images/SH-1006.jpg', categoria: 'aneis' },
@@ -58,7 +60,6 @@ window.SHIMMER_PRODUTOS = [
   { code: 'SH-1058', name: 'Par de Alianças Tradicional Abaulada', colecao: 'Tendências 2026', material: '5g o par · 2,5mm de largura · Altura 1,30mm · Ouro 18k', preco: 'R$ 3.650,00', precoOld: '', badge: 'Tendências 2026', foto: 'images/SH-1058.jpg', fotos: [], categoria: 'casamento' },
   { code: 'SH-1059', name: 'Par de Alianças Chanfrada', colecao: 'Tendências 2026', material: '9g o par · 4,80mm de largura · Ouro 18k', preco: 'R$ 6.600,00', precoOld: '', badge: 'Tendências 2026', foto: 'images/SH-1059.jpg', fotos: [], categoria: 'casamento' },
   { code: 'SH-1060', name: 'Anel Solitário Oval', colecao: 'Tendências 2026', material: 'Moissanite · Ouro 18k', preco: 'R$ 1.550,00', precoOld: '', badge: 'Tendências 2026', foto: 'images/SH-1060.jpg', fotos: [], categoria: 'solitarios' },
-  { code: 'SH-1061', name: 'Anel Solitário com Laterais', colecao: 'Shimmer Joias', material: 'Pedra central · 12 moissanites laterais · Ouro 18k', preco: 'R$ 1.799,00', precoOld: '', badge: 'Solitário', foto: 'images/SH-1061.jpg', fotos: [], categoria: 'solitarios' },
   { code: 'SH-1062', name: 'Anel Solitário com Laterais Cravejadas', colecao: 'Shimmer Joias', material: 'Pedra central · Laterais cravejadas · Ouro 18k', preco: 'R$ 1.450,00', precoOld: '', badge: 'Solitário', foto: 'images/SH-1062.jpg', fotos: [], categoria: 'solitarios' },
   { code: 'SH-1063', name: 'Anel Solitário Clássico Liso', colecao: 'Shimmer Joias', material: 'Pedra central redonda · Haste lisa · Ouro 18k', preco: 'R$ 1.650,00', precoOld: '', badge: 'Solitário', foto: 'images/SH-1063.jpg', fotos: [], categoria: 'solitarios' },
   { code: 'SH-1064', name: 'Anel Solitário Cravejado', colecao: 'Shimmer Joias', material: 'Pedra central · Haste cravejada com moissanites · Ouro 18k', preco: 'R$ 2.750,00', precoOld: '', badge: 'Solitário', foto: 'images/SH-1064.jpg', fotos: [], categoria: 'solitarios' },
