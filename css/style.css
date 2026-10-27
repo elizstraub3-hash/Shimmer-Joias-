@@ -1796,3 +1796,12 @@ header.scrolled { box-shadow: 0 2px 20px rgba(74,52,36,0.1); }
   .hero-slide-serena .hero-ctas { gap: 18px; }
   .serena-foto { order: -1; }
 }
+
+/* Banners em imagem sem corte: a caixa segue a proporção da arte.
+   Arte do computador: 1920 x 550 px · arte do celular: 1080 x 770 px
+   (o JS liga .so-banners quando o slider só tem banners em imagem) */
+.hero-slider.so-banners { height: auto; aspect-ratio: 1920 / 550; }
+.hero-slider.so-banners .hero-slide img { object-fit: cover; object-position: center; }
+@media (max-width: 768px) {
+  .hero-slider.so-banners { aspect-ratio: 1080 / 770; }
+}
