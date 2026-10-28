@@ -17,7 +17,7 @@ function dbVazio() {
   return {
     versao: 1,
     config: { nome: 'Minha Gráfica', telefone: '', endereco: '', cnpj: '', chavePix: '', fundoCaixa: 100, statusProducao: STATUS_PADRAO.slice() },
-    clientes: [], produtos: [], estoque: [], movimentos: [], vendas: [], caixa: [], fechamentos: [],
+    clientes: [], produtos: [], estoque: [], movimentos: [], vendas: [], caixa: [], fechamentos: [], funcionarias: [], comissoesPagas: [],
     seq: { venda: 1 },
     ultimoBackup: null,
   };
@@ -175,7 +175,7 @@ function resumoDia(data) {
 
 /* ---------------------------- NAVEGAÇÃO ---------------------------- */
 
-const TITULOS = { inicio: 'Início', vendas: 'Pedidos e orçamentos', semanal: 'Relatório semanal', clientes: 'Clientes', produtos: 'Produtos', estoque: 'Estoque', fechamento: 'Fechamento de caixa', config: 'Configurações' };
+const TITULOS = { inicio: 'Início', vendas: 'Pedidos e orçamentos', semanal: 'Relatório semanal', comissoes: 'Comissões', clientes: 'Clientes', produtos: 'Produtos', estoque: 'Estoque', fechamento: 'Fechamento de caixa', config: 'Configurações' };
 let painelAtual = 'inicio';
 
 function irPara(p) {
@@ -193,7 +193,7 @@ function render() {
   $('#brand-nome').textContent = db.config.nome || 'Minha Gráfica';
   document.title = `Painel — ${db.config.nome || 'Gráfica'}`;
   renderBackupInfo();
-  ({ inicio: renderInicio, vendas: renderVendas, semanal: renderSemanal, clientes: renderClientes, produtos: renderProdutos, estoque: renderEstoque, fechamento: renderFechamento, config: renderConfig })[painelAtual]();
+  ({ inicio: renderInicio, vendas: renderVendas, semanal: renderSemanal, comissoes: renderComissoes, clientes: renderClientes, produtos: renderProdutos, estoque: renderEstoque, fechamento: renderFechamento, config: renderConfig })[painelAtual]();
 }
 
 /* ------------------------------ INÍCIO ------------------------------ */
@@ -350,7 +350,7 @@ function renderVendas() {
     return `<tr>
       <td class="strong">${v.numero}</td>
       <td>${fmtData(v.data)}${!ehOrc(v) && v.entrega ? `<span class="sub-line">entrega ${fmtData(v.entrega)}</span>` : ''}</td>
-      <td>${esc(nomeCliente(v))}<span class="sub-line">${esc(v.canal)}</span></td>
+      <td>${esc(nomeCliente(v))}<span class="sub-line">${esc(v.canal)}${getFuncionaria(v.funcionariaId) ? ` · ${esc(getFuncionaria(v.funcionariaId).nome)}` : ''}</span></td>
       <td style="max-width:260px">${esc(resumoItens(v))}</td>
       <td class="num strong">${brl(v.total)}</td>
       <td class="num">${ehOrc(v) ? '<span class="muted">—</span>' : saldo > 0.009 ? `<span class="badge bad">${brl(saldo)}</span>` : '<span class="badge good">Pago</span>'}${boletosAbertos(v).map(b => `<br>${badgeBoleto(b, v.id)}`).join('')}</td>
@@ -444,6 +444,11 @@ function abrirVenda(id, tipoInicial) {
         <label>Canal<select name="canal">${opts(CANAIS, v?.canal || 'Loja física')}</select></label>
       </div>
       <div class="row">
+        <label>Atendido por<select name="funcionaria">${opts(db.funcionarias.filter(x => x.ativo !== false || x.id === v?.funcionariaId).map(x => [x.id, x.nome]), v?.funcionariaId, db.funcionarias.length ? '— ninguém / sem comissão —' : '— cadastre em Comissões —')}</select></label>
+        <label>Comissão (R$)<input name="comissao" type="number" step="0.01" min="0" value="${v?.comissao || ''}" placeholder="0,00" ${v?.comissaoPagaEm ? 'disabled title="Comissão já paga"' : ''} />
+          <span class="sub-line" id="com-sugestao"></span></label>
+      </div>
+      <div class="row">
         <label><span id="lbl-data">Data da venda</span><input type="date" name="data" value="${v?.data || hoje()}" required /></label>
         <label class="so-orc">Válido até<input type="date" name="validade" value="${v?.validade || addDias(hoje(), 7)}" /></label>
         <label class="so-ped">Prazo de entrega<input type="date" name="entrega" value="${v?.entrega || ''}" /></label>
@@ -487,6 +492,16 @@ function abrirVenda(id, tipoInicial) {
     $('#btn-salvar-venda').textContent = v ? (ehOrc(v) && !orc ? 'Aprovar e salvar pedido' : 'Salvar alterações') : (orc ? 'Salvar orçamento' : 'Registrar venda');
     calc();
   }
+  function sugerir() {
+    const el = $('#com-sugestao');
+    const sug = sugestaoComissao(f.funcionaria.value, totalAtual());
+    const func = getFuncionaria(f.funcionaria.value);
+    el.innerHTML = !f.funcionaria.value ? '' : v?.comissaoPagaEm ? 'comissão já paga'
+      : sug ? `sugestão ${fmtQtd(func.percentual)}% = ${brl(sug)} <button type="button" class="link" id="usar-sug">usar</button>` : 'digite o valor';
+    const b = $('#usar-sug'); if (b) b.onclick = () => { f.comissao.value = sug.toFixed(2); };
+  }
+  f.funcionaria.addEventListener('change', sugerir);
+  f.addEventListener('input', e => { if (e.target.name !== 'comissao') sugerir(); });
   $$('input[name=tipo]', f).forEach(r => r.addEventListener('change', aplicarTipo));
 
   function addItem(it = {}) {
@@ -555,6 +570,7 @@ function abrirVenda(id, tipoInicial) {
   $('#pag-50').onclick = () => preencherPag(r2(totalAtual() / 2));
   f.desconto.addEventListener('input', calc);
   aplicarTipo();
+  sugerir();
 
   f.addEventListener('submit', e => {
     e.preventDefault();
@@ -592,6 +608,8 @@ function abrirVenda(id, tipoInicial) {
       validade: orc ? f.validade.value : (v?.validade || ''),
       status: orc ? db.config.statusProducao[0] : f.status.value,
       itens, desconto: num(f.desconto.value), total, pagamentos, obs: f.obs.value.trim(),
+      funcionariaId: f.funcionaria.value || null,
+      comissao: f.funcionaria.value ? (v?.comissaoPagaEm ? v.comissao : num(f.comissao.value)) : 0,
     };
     const aprovando = v && ehOrc(v) && !orc;
     if (aprovando) { dados.dataOrcamento = v.data; dados.recusado = false; }
@@ -1245,6 +1263,188 @@ function abrirFechamento(data) {
   irPara('fechamento');
 }
 
+/* ----------------------------- COMISSÕES ----------------------------- */
+// Cada pedido guarda quem atendeu (funcionariaId) e o valor da comissão em R$,
+// digitado à mão (o % cadastrado da funcionária só serve de sugestão).
+// A comissão fica "liberada" quando o cliente termina de pagar o pedido.
+
+const getFuncionaria = id => db.funcionarias.find(f => f.id === id);
+function sugestaoComissao(funcId, total) {
+  const f = getFuncionaria(funcId);
+  return f && num(f.percentual) ? r2(total * num(f.percentual) / 100) : 0;
+}
+function statusComissao(v) {
+  if (v.comissaoPagaEm) return 'paga';
+  return saldoVenda(v) > 0.009 ? 'aguardando' : 'liberada';
+}
+const BADGE_COMISSAO = {
+  paga: '<span class="badge good">Paga</span>',
+  liberada: '<span class="badge warn">A pagar</span>',
+  aguardando: '<span class="badge">Aguardando cliente</span>',
+};
+const comComissao = () => pedidos().filter(v => v.funcionariaId && num(v.comissao) > 0);
+
+let periodoComissao = 'mes';
+function intervaloComissao() {
+  const h = hoje(), [y, m] = h.split('-').map(Number);
+  const iniMes = (yy, mm) => `${yy}-${String(mm).padStart(2, '0')}-01`;
+  if (periodoComissao === 'semana') return [inicioSemana(h), addDias(inicioSemana(h), 6)];
+  if (periodoComissao === 'mespassado') {
+    const ini = m === 1 ? iniMes(y - 1, 12) : iniMes(y, m - 1);
+    return [ini, addDias(iniMes(y, m), -1)];
+  }
+  if (periodoComissao === 'personalizado') return [$('#com-de').value || '0000', $('#com-ate').value || '9999'];
+  const prox = m === 12 ? iniMes(y + 1, 1) : iniMes(y, m + 1);
+  return [iniMes(y, m), addDias(prox, -1)];
+}
+
+function renderComissoes() {
+  $('#com-periodo').value = periodoComissao;
+  $$('.com-custom').forEach(el => el.hidden = periodoComissao !== 'personalizado');
+  const [de, ate] = intervaloComissao();
+  const todas = comComissao();
+  const doPeriodo = todas.filter(v => v.data >= de && v.data <= ate);
+  const ativas = db.funcionarias.filter(f => f.ativo !== false);
+
+  if (!db.funcionarias.length) {
+    $('#com-conteudo').innerHTML = `<div class="empty">Cadastre quem atende na gráfica para controlar as comissões.<br><br>
+      <button class="btn btn-primary" onclick="abrirFuncionaria()">+ Cadastrar funcionária</button></div>`;
+  } else {
+    const soma = (lista) => r2(lista.reduce((s, v) => s + num(v.comissao), 0));
+    const totalAPagar = soma(todas.filter(v => statusComissao(v) === 'liberada'));
+    $('#com-conteudo').innerHTML = `
+      <div class="kpis kpis-3" style="margin-bottom:16px">
+        <div class="kpi"><span>Comissões geradas no período</span><strong>${brl(soma(doPeriodo))}</strong><small>sobre ${brl(doPeriodo.reduce((s, v) => s + v.total, 0))} vendidos</small></div>
+        <div class="kpi ${totalAPagar ? 'is-warn' : ''}"><span>Liberadas a pagar (total)</span><strong>${brl(totalAPagar)}</strong><small>pedidos já pagos pelo cliente</small></div>
+        <div class="kpi"><span>Aguardando o cliente pagar</span><strong>${brl(soma(todas.filter(v => statusComissao(v) === 'aguardando')))}</strong><small>liberam quando o pedido for quitado</small></div>
+      </div>
+      <div class="table-wrap"><table class="table">
+        <thead><tr><th>Funcionária</th><th class="num">Pedidos no período</th><th class="num">Vendido</th><th class="num">Comissão gerada</th><th class="num">% médio</th><th class="num">A pagar</th><th class="num">Aguardando</th><th></th></tr></thead>
+        <tbody>${db.funcionarias.map(f => {
+          const p = doPeriodo.filter(v => v.funcionariaId === f.id);
+          const vendido = r2(p.reduce((s, v) => s + v.total, 0)), gerada = soma(p);
+          const minhas = todas.filter(v => v.funcionariaId === f.id);
+          const aPagar = soma(minhas.filter(v => statusComissao(v) === 'liberada'));
+          return `<tr style="${f.ativo === false ? 'opacity:.55' : ''}">
+            <td class="strong">${esc(f.nome)}<span class="sub-line">${num(f.percentual) ? `sugestão ${fmtQtd(f.percentual)}%` : 'sem % padrão'}${f.ativo === false ? ' · inativa' : ''}</span></td>
+            <td class="num">${p.length}</td><td class="num">${brl(vendido)}</td><td class="num strong">${brl(gerada)}</td>
+            <td class="num">${vendido ? (gerada / vendido * 100).toFixed(1) + '%' : '—'}</td>
+            <td class="num">${aPagar ? `<span class="badge warn">${brl(aPagar)}</span>` : '—'}</td>
+            <td class="num">${brl(soma(minhas.filter(v => statusComissao(v) === 'aguardando')))}</td>
+            <td><div class="actions">
+              ${aPagar ? `<button class="btn btn-primary btn-sm" onclick="pagarComissao('${f.id}')">Pagar</button>` : ''}
+              <button class="icon-btn" title="Ver pedidos" onclick="verComissoes('${f.id}')">${ICON.view}</button>
+              <button class="icon-btn" title="Editar" onclick="abrirFuncionaria('${f.id}')">${ICON.edit}</button>
+              <button class="icon-btn" title="Excluir" onclick="excluirFuncionaria('${f.id}')">${ICON.del}</button>
+            </div></td></tr>`;
+        }).join('')}</tbody>
+      </table></div>
+      ${ativas.length && !todas.length ? '<p class="hint" style="margin-top:14px">Para lançar comissão: ao registrar ou editar um pedido, escolha <b>Atendido por</b> e digite o valor da comissão.</p>' : ''}`;
+  }
+
+  const pagas = db.comissoesPagas.slice().sort((a, b) => b.data.localeCompare(a.data));
+  $('#tabela-com-pagas').innerHTML = pagas.length
+    ? `<thead><tr><th>Data</th><th>Funcionária</th><th class="num">Pedidos</th><th class="num">Valor</th><th>Forma</th><th></th></tr></thead>
+       <tbody>${pagas.map(p => `<tr><td>${fmtData(p.data)}</td><td>${esc(getFuncionaria(p.funcionariaId)?.nome || '—')}</td>
+         <td class="num">${p.vendaIds.length}</td><td class="num strong">${brl(p.valor)}</td><td>${esc(p.forma)}</td>
+         <td><div class="actions"><button class="icon-btn" title="Desfazer pagamento" onclick="desfazerPagamentoComissao('${p.id}')">${ICON.del}</button></div></td></tr>`).join('')}</tbody>`
+    : '<tbody><tr><td class="empty">Nenhuma comissão paga ainda.</td></tr></tbody>';
+}
+
+function abrirFuncionaria(id) {
+  const f = id ? getFuncionaria(id) : { ativo: true };
+  abrirModal(id ? 'Editar funcionária' : 'Nova funcionária', `
+    <form id="form-func" class="form">
+      <label>Nome<input name="nome" value="${esc(f.nome || '')}" required /></label>
+      <div class="row">
+        <label>% de comissão sugerido<input name="percentual" type="number" step="0.1" min="0" max="100" value="${f.percentual ?? ''}" placeholder="ex.: 5" /></label>
+        <label>WhatsApp<input name="whatsapp" value="${esc(f.whatsapp || '')}" inputmode="tel" /></label>
+      </div>
+      <p class="hint" style="margin:0">O % é só uma <b>sugestão</b>: em cada pedido você digita o valor da comissão que quiser.</p>
+      <label class="check"><input type="checkbox" name="ativo" ${f.ativo !== false ? 'checked' : ''} /> Ativa (aparece nos pedidos)</label>
+      <div class="form-actions">
+        <button type="button" class="btn btn-ghost" onclick="fecharModal()">Cancelar</button>
+        <button class="btn btn-primary" type="submit">Salvar</button>
+      </div>
+    </form>`);
+  $('#form-func').addEventListener('submit', e => {
+    e.preventDefault();
+    const t = e.target;
+    const dados = { nome: t.nome.value.trim(), percentual: num(t.percentual.value), whatsapp: t.whatsapp.value.trim(), ativo: t.ativo.checked };
+    if (id) Object.assign(f, dados); else db.funcionarias.push({ id: uid(), ...dados });
+    salvar(); fecharModal(); render(); toast('Funcionária salva');
+  });
+}
+function excluirFuncionaria(id) {
+  const f = getFuncionaria(id);
+  if (db.vendas.some(v => v.funcionariaId === id)) {
+    if (confirm(`${f.nome} já tem pedidos com comissão. Em vez de excluir, deseja desativar (some dos pedidos novos, mas mantém o histórico)?`)) {
+      f.ativo = false; salvar(); render();
+    }
+    return;
+  }
+  if (!confirm(`Excluir ${f.nome}?`)) return;
+  db.funcionarias = db.funcionarias.filter(x => x.id !== id);
+  salvar(); render();
+}
+function verComissoes(id) {
+  const f = getFuncionaria(id);
+  const lista = comComissao().filter(v => v.funcionariaId === id).sort((a, b) => b.data.localeCompare(a.data));
+  abrirModal(`Comissões — ${f.nome}`, `<div class="table-wrap"><table class="table">
+    ${lista.length ? `<thead><tr><th>Nº</th><th>Data</th><th>Cliente</th><th class="num">Total</th><th class="num">Comissão</th><th>Situação</th></tr></thead><tbody>
+    ${lista.map(v => `<tr><td>${v.numero}</td><td>${fmtData(v.data)}</td><td>${esc(nomeCliente(v))}</td><td class="num">${brl(v.total)}</td>
+      <td class="num strong">${brl(num(v.comissao))}<span class="sub-line">${v.total ? (num(v.comissao) / v.total * 100).toFixed(1) + '%' : ''}</span></td>
+      <td>${BADGE_COMISSAO[statusComissao(v)]}${v.comissaoPagaEm ? `<span class="sub-line">em ${fmtData(v.comissaoPagaEm)}</span>` : ''}</td></tr>`).join('')}</tbody>`
+    : '<tbody><tr><td class="empty">Nenhum pedido com comissão.</td></tr></tbody>'}</table></div>`, true);
+}
+function pagarComissao(id) {
+  const f = getFuncionaria(id);
+  const minhas = comComissao().filter(v => v.funcionariaId === id && !v.comissaoPagaEm);
+  const linha = v => `<label class="check"><input type="checkbox" name="v" value="${v.id}" ${statusComissao(v) === 'liberada' ? 'checked' : ''} />
+    nº ${v.numero} · ${esc(nomeCliente(v))} · <b>${brl(num(v.comissao))}</b> ${statusComissao(v) === 'aguardando' ? '<span class="muted">(cliente ainda não quitou)</span>' : ''}</label>`;
+  abrirModal(`Pagar comissão — ${f.nome}`, `
+    <form id="form-pagcom" class="form">
+      <fieldset><legend>Pedidos</legend>${minhas.map(linha).join('')}</fieldset>
+      <div class="row">
+        <label>Data<input type="date" name="data" value="${hoje()}" required /></label>
+        <label>Forma<select name="forma">${opts(FORMAS, 'Pix')}</select></label>
+      </div>
+      <label class="check"><input type="checkbox" name="caixa" checked /> Lançar como despesa no fechamento de caixa</label>
+      <div class="totais"><div class="total"><span>Total a pagar</span><span id="pagcom-total"></span></div></div>
+      <div class="form-actions">
+        <button type="button" class="btn btn-ghost" onclick="fecharModal()">Cancelar</button>
+        <button class="btn btn-primary" type="submit">Confirmar pagamento</button>
+      </div>
+    </form>`);
+  const form = $('#form-pagcom');
+  const selecionadas = () => $$('input[name=v]:checked', form).map(i => db.vendas.find(v => v.id === i.value));
+  const atualizar = () => { $('#pagcom-total').textContent = brl(selecionadas().reduce((s, v) => s + num(v.comissao), 0)); };
+  form.addEventListener('change', atualizar); atualizar();
+  form.addEventListener('submit', e => {
+    e.preventDefault();
+    const vs = selecionadas();
+    if (!vs.length) return alert('Selecione pelo menos um pedido.');
+    const valor = r2(vs.reduce((s, v) => s + num(v.comissao), 0));
+    const pg = { id: uid(), funcionariaId: id, data: form.data.value, forma: form.forma.value, valor, vendaIds: vs.map(v => v.id) };
+    if (form.caixa.checked) {
+      if (db.fechamentos.some(x => x.data === pg.data)) return alert('O caixa desse dia já está fechado. Reabra o caixa ou desmarque "Lançar como despesa".');
+      pg.caixaId = uid();
+      db.caixa.push({ id: pg.caixaId, data: pg.data, tipo: 'despesa', valor, forma: pg.forma, descricao: `Comissão ${f.nome}` });
+    }
+    vs.forEach(v => { v.comissaoPagaEm = pg.data; v.comissaoPagamentoId = pg.id; });
+    db.comissoesPagas.push(pg);
+    salvar(); fecharModal(); render(); toast(`Comissão de ${brl(valor)} paga para ${f.nome}`);
+  });
+}
+function desfazerPagamentoComissao(id) {
+  const pg = db.comissoesPagas.find(p => p.id === id);
+  if (!confirm(`Desfazer o pagamento de ${brl(pg.valor)}? Os pedidos voltam para "a pagar"${pg.caixaId ? ' e a despesa sai do caixa' : ''}.`)) return;
+  db.vendas.forEach(v => { if (v.comissaoPagamentoId === id) { v.comissaoPagaEm = null; v.comissaoPagamentoId = null; } });
+  if (pg.caixaId) db.caixa = db.caixa.filter(c => c.id !== pg.caixaId);
+  db.comissoesPagas = db.comissoesPagas.filter(p => p.id !== id);
+  salvar(); render();
+}
+
 /* ---------------------------- FECHAMENTO ---------------------------- */
 
 function renderFechamento() {
@@ -1454,8 +1654,8 @@ function exportCSV(tipo) {
   const q = v => `"${String(v ?? '').replace(/"/g, '""')}"`;
   const n = v => (v || 0).toFixed(2).replace('.', ',');
   if (tipo === 'vendas') {
-    linhas.push(['Nº', 'Tipo', 'Data', 'Cliente', 'Canal', 'Itens', 'Desconto', 'Total', 'Pago', 'Saldo', 'Produção', 'Entrega'].map(q).join(';'));
-    db.vendas.slice().sort((a, b) => a.numero - b.numero).forEach(v => linhas.push([v.numero, { orcamento: 'Orçamento', recusado: 'Orçamento recusado', andamento: 'Em andamento', feito: 'Feito' }[situacao(v)], fmtData(v.data), nomeCliente(v), v.canal, resumoItens(v), n(v.desconto), n(v.total), n(totalPago(v)), n(saldoVenda(v)), v.status, fmtData(v.entrega)].map(q).join(';')));
+    linhas.push(['Nº', 'Tipo', 'Data', 'Atendido por', 'Comissão', 'Cliente', 'Canal', 'Itens', 'Desconto', 'Total', 'Pago', 'Saldo', 'Produção', 'Entrega'].map(q).join(';'));
+    db.vendas.slice().sort((a, b) => a.numero - b.numero).forEach(v => linhas.push([v.numero, { orcamento: 'Orçamento', recusado: 'Orçamento recusado', andamento: 'Em andamento', feito: 'Feito' }[situacao(v)], fmtData(v.data), getFuncionaria(v.funcionariaId)?.nome || '', n(v.comissao), nomeCliente(v), v.canal, resumoItens(v), n(v.desconto), n(v.total), n(totalPago(v)), n(saldoVenda(v)), v.status, fmtData(v.entrega)].map(q).join(';')));
   } else {
     linhas.push(['Nome', 'Tipo', 'CPF/CNPJ', 'WhatsApp', 'E-mail', 'Endereço', 'Origem', 'Pedidos', 'Total comprado', 'Última compra', 'Obs'].map(q).join(';'));
     db.clientes.forEach(c => { const s = statsCliente(c.id); linhas.push([c.nome, c.tipo, c.doc, c.whatsapp, c.email, c.endereco, c.origem, s.qtd, n(s.total), fmtData(s.ultima), c.obs].map(q).join(';')); });
@@ -1535,6 +1735,10 @@ function carregarExemplos() {
   orcamento(2, c3, 'WhatsApp', [[adesivo, 3], [arte, 1]]);
   orcamento(1, null, 'Instagram', [[camisetaP, 30]], { clienteNome: 'Igreja Nova Vida' });
   orcamento(0, c4, 'WhatsApp', [[flyer, 5]]);
+  const ana = { id: uid(), nome: 'Ana', percentual: 5, whatsapp: '', ativo: true };
+  const bia = { id: uid(), nome: 'Bia', percentual: 3, whatsapp: '', ativo: true };
+  db.funcionarias.push(ana, bia);
+  pedidos().forEach((v, i) => { const fu = i % 3 === 2 ? null : i % 2 ? bia : ana; if (fu) { v.funcionariaId = fu.id; v.comissao = sugestaoComissao(fu.id, v.total); } });
   db.caixa.push({ id: uid(), data: addDias(hoje(), -8), tipo: 'despesa', valor: 380, forma: 'Pix', descricao: 'Compra de lona' });
   db.caixa.push({ id: uid(), data: addDias(hoje(), -3), tipo: 'despesa', valor: 120, forma: 'Pix', descricao: 'Conta de internet' });
   db.caixa.push({ id: uid(), data: hoje(), tipo: 'despesa', valor: 25, forma: 'Dinheiro', descricao: 'Motoboy entrega' });
@@ -1568,6 +1772,8 @@ document.addEventListener('DOMContentLoaded', () => {
   ['#f-prod-busca', '#f-prod-cat'].forEach(s => $(s).addEventListener('input', renderProdutos));
   ['#f-est-busca', '#f-est-cat', '#f-est-baixo'].forEach(s => $(s).addEventListener('input', renderEstoque));
   $('#fech-data').addEventListener('change', renderFechamento);
+  $('#com-periodo').addEventListener('change', e => { periodoComissao = e.target.value; renderComissoes(); });
+  ['#com-de', '#com-ate'].forEach(s => $(s).addEventListener('change', renderComissoes));
   $('#form-config').addEventListener('submit', salvarConfig);
   $('#input-restore').addEventListener('change', e => { if (e.target.files[0]) importBackup(e.target.files[0]); e.target.value = ''; });
 
