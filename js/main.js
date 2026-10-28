@@ -4,14 +4,16 @@
   const dots = document.querySelectorAll('.hero-dot');
   if (!slider) return;
   const slides = slider.querySelectorAll('.hero-slide');
+  // só banners em imagem → a caixa assume a proporção da arte (sem cortar o texto da arte)
+  if (![...slides].some(s => !s.querySelector(':scope > img, :scope > picture'))) slider.classList.add('so-banners');
   let cur = 0, timer;
 
   function goTo(idx) {
     slides[cur].classList.remove('active');
-    dots[cur].classList.remove('active');
+    if (dots[cur]) dots[cur].classList.remove('active');
     cur = (idx + slides.length) % slides.length;
     slides[cur].classList.add('active');
-    dots[cur].classList.add('active');
+    if (dots[cur]) dots[cur].classList.add('active');
   }
 
   function start() { timer = setInterval(() => goTo(cur + 1), 5000); }

@@ -127,8 +127,11 @@
           <h1 class="hero-title">Solitário <em>Serena</em></h1>
           <p class="serena-spec">Pedra central 5mm · 12 moissanites laterais · Ouro 18k</p>
           <div class="serena-preco">
-            <span class="serena-preco-valor">R$ 1.999,00</span>
-            <span class="serena-preco-parcela">ou 10x de R$ 199,90 sem juros</span>
+            <div class="serena-pix">
+              <span class="serena-preco-valor">R$ 1.799,10</span>
+              <span class="serena-pix-tag">no Pix · 10% OFF</span>
+            </div>
+            <span class="serena-preco-parcela">ou <strong>10x de R$ 199,90</strong> sem juros no cartão <span class="serena-preco-total">(total R$ 1.999,00)</span></span>
           </div>
           <div class="hero-ctas">
             <a href="#mais-pedidos" class="btn-gold" onclick="var c=document.querySelector('#mais-pedidos .produto-card[data-code=&quot;SH-1061&quot;]');if(c){c.click();return false;}">Quero o meu</a>
@@ -139,7 +142,11 @@
           <img src="images/SH-1061.jpg" alt="Solitário Serena em ouro 18k com moissanites laterais — Shimmer Joias" />
         </div>
       </div>
-      <!-- Banners antigos pausados (reativar junto com os dots abaixo):
+      <!-- Banners antigos pausados (reativar junto com os dots abaixo).
+           Medidas das artes, para não cortar nada:
+             computador: images/hero-slide-N.jpg        → 1920 x 550 px
+             celular:    images/hero-slide-N-mobile.jpg → 1080 x 770 px
+           Use <picture> com as duas versões, como no slide 1:
       <div class="hero-slide">
         <picture>
           <source media="(max-width: 768px)" srcset="images/hero-slide-1-mobile.jpg" />

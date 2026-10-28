@@ -424,7 +424,7 @@ header.scrolled { box-shadow: 0 2px 20px rgba(74,52,36,0.1); }
 .hero-slide-serena {
   display: grid;
   grid-template-columns: 1.15fr 0.85fr;
-  background: var(--cream);
+  background: #fff;
 }
 .serena-text {
   display: flex;
@@ -1795,4 +1795,32 @@ header.scrolled { box-shadow: 0 2px 20px rgba(74,52,36,0.1); }
   .hero-slide-serena .btn-gold { padding: 13px 24px; }
   .hero-slide-serena .hero-ctas { gap: 18px; }
   .serena-foto { order: -1; }
+}
+
+/* Banners em imagem sem corte: a caixa segue a proporção da arte.
+   Arte do computador: 1920 x 550 px · arte do celular: 1080 x 770 px
+   (o JS liga .so-banners quando o slider só tem banners em imagem) */
+.hero-slider.so-banners { height: auto; aspect-ratio: 1920 / 550; }
+.hero-slider.so-banners .hero-slide img { object-fit: cover; object-position: center; }
+@media (max-width: 768px) {
+  .hero-slider.so-banners { aspect-ratio: 1080 / 770; }
+}
+
+/* Serena: preço no Pix em destaque + parcelamento bem visível */
+.serena-pix { display: flex; align-items: center; flex-wrap: wrap; gap: 6px 12px; }
+.hero-slide-serena .serena-preco { gap: 6px; }
+.hero-slide-serena .serena-preco-valor { font-size: 44px; font-weight: 600; }
+.serena-pix-tag {
+  display: inline-block; padding: 5px 12px; border-radius: 20px;
+  background: var(--gold); color: #fff;
+  font-size: 12px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase;
+}
+.hero-slide-serena .serena-preco-parcela { font-size: 16px; color: var(--brown-deep); }
+.hero-slide-serena .serena-preco-parcela strong { font-weight: 700; color: var(--brown-darkest); }
+.serena-preco-total { font-size: 13px; color: var(--brown-mid); white-space: nowrap; }
+@media (max-width: 768px) {
+  .hero-slide-serena .serena-preco-valor { font-size: 34px; }
+  .serena-pix-tag { font-size: 10px; padding: 4px 10px; }
+  .hero-slide-serena .serena-preco-parcela { font-size: 13px; }
+  .serena-preco-total { font-size: 11px; }
 }
