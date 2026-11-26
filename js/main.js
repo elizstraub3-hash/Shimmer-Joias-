@@ -156,7 +156,7 @@ formSenha.addEventListener('submit', (e) => {
 });
 
 // ===== CARRINHO =====
-const WA_NUMBER = '554199441433';
+const WA_NUMBER = '5541999441433';
 let shimmerCart = JSON.parse(localStorage.getItem('shimmer_cart') || '[]');
 
 function cartParsePreco(p) {
