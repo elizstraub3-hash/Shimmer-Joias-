@@ -119,7 +119,7 @@
     <div class="announcement-items">
       <span class="announcement-item">
         <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
-        Frete Grátis acima de R$&nbsp;300
+        Até 10x sem juros
       </span>
       <span class="announcement-sep">·</span>
       <span class="announcement-item">
@@ -438,7 +438,7 @@
             <p class="produto-material">${p.material}</p>
             ${p.precoOld
               ? `<div class="preco-grupo"><p class="produto-preco-old">${p.precoOld}</p><p class="produto-preco">${p.preco}</p></div>`
-              : `<p class="produto-preco${p.preco === 'A consultar' ? ' sem-avista' : ''}">${p.preco}</p>`
+              : `<p class="produto-preco${p.preco === 'A consultar' ? ' sem-avista' : ''}">${p.preco}</p>${p.preco === 'A consultar' ? `<a class="btn-consultar-wa" href="https://wa.me/5541999441433?text=${encodeURIComponent('Olá! Gostaria de saber o valor de *' + p.name + '* (' + p.code + ').')}" target="_blank" rel="noopener" onclick="event.stopPropagation()">Consultar valor no WhatsApp</a>` : ''}`
             }
           </div>
         </div>
